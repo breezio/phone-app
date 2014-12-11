@@ -1,0 +1,19 @@
+<ion-view title="Messages" hide-tab-bar="true">
+    <ion-content class="padding">
+		<ion-refresher
+			pulling-text="Pull to refresh..."
+			on-refresh="refresh()">
+		</ion-refresher>    
+		<ul ion-list class="messages">
+		  <li ion-item ng-repeat="item in items">
+		    <p>{{item.title}}</p>
+		  </li>
+		</ul>
+	</ion-content>
+	<ion-footer-bar class="bar-stable item-input-inset">
+		<label class="item-input-wrapper">
+		  <input type="text" placeholder="Type your message..." />
+		</label>
+		<button class="button  button-clear">Send</button>
+	</ion-footer-bar>	
+</ion-view>
