@@ -1,7 +1,7 @@
 {
-  "name": "pictalk",
+  "name": "Programming.com Phone App",
   "version": "1.0.0",
-  "description": "pictalk: An Ionic project",
+  "description": "Programming.com Phone App",
   "dependencies": {
     "gulp": "^3.5.6",
     "gulp-sass": "^0.7.1",
