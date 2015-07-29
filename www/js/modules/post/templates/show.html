@@ -1,5 +1,15 @@
 <ion-view title="{{item.title}}">
-    <ion-content class="padding">
-	    {{item.subtitle}}
+  <ion-content class="padding">
+    <a class="info item item-thumbnail-left" href="#">
+      <img src="{{item.imagePath}}" width="100">
+      <h2>Author: {{item.user.firstName}} {{item.user.lastName}}</h2>
+      <h2>Posted: {{item.creationDate | date}}</h2>
+    </a>
+
+    <ion-list>
+      <ion-item ng-repeat="blurb in item.content">
+        {{blurb.content}}
+      </ion-item>
+    </ion-list>
 	</ion-content>
 </ion-view>
