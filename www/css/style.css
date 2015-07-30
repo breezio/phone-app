@@ -52,3 +52,21 @@
 .info {
   margin:10px;
 }
+
+.content p {
+  text-overflow: clip;
+  white-space: normal;
+  margin-bottom: 15px;
+}
+
+.content ul {
+  list-style: disc;
+  margin: 5px 20px;
+  font-size: 14px;
+}
+
+.content pre {
+  font-size: 11px;
+  margin: 20px;
+  padding: 0;
+}

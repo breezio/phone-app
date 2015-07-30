@@ -6,10 +6,7 @@
       <h2>Posted: {{item.creationDate | date}}</h2>
     </a>
 
-    <ion-list>
-      <ion-item ng-repeat="blurb in item.content">
-        {{blurb.content}}
-      </ion-item>
-    </ion-list>
+    <div class="content item" ng-bind-html="renderedHtml">
+    </div>
 	</ion-content>
 </ion-view>

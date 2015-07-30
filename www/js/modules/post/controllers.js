@@ -49,7 +49,32 @@ angular.module('neo.post.controllers', [])
     })
     .controller('PostShowCtrl', function ($scope, $stateParams, Posts) {
 
-		$scope.item = Posts.get({postId: $stateParams.postId});
-    })
+      $scope.renderedHtml = "";
+      $scope.item = Posts.get({postId: $stateParams.postId}, function() {
 
-    ;
+        for(var i in $scope.item.content) {
+          var blurb = $scope.item.content[i];
+
+          if(blurb.type == "paragraph") {
+            var p = "<p>%a</p>".replace("%a", blurb.content);
+            $scope.renderedHtml += p;
+          } else if(blurb.type == "heading") {
+            var h = "<%a>%b</%a>".replace("%a", blurb.headingType)
+                                 .replace("%b", blurb.content)
+                                 .replace("%a", blurb.headingType);
+            $scope.renderedHtml += h;
+          } else if(blurb.type == "list") {
+            var u = "<ul>";
+            for(var i in blurb.items) {
+              var item = blurb.items[i];
+              u += "<li>" + item + "</li>";
+            }
+            u += "</ul>";
+            $scope.renderedHtml += u;
+          } else if(blurb.type == "code") {
+            var c = "<pre>" + blurb.content + "</pre>";
+            $scope.renderedHtml += c;
+          }
+        }
+      });
+    });
