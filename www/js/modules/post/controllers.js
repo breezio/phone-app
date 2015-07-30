@@ -52,17 +52,18 @@ angular.module('neo.post.controllers', [])
       $scope.renderedHtml = "";
       $scope.item = Posts.get({postId: $stateParams.postId}, function() {
 
+        var html = "";
         for(var i in $scope.item.content) {
           var blurb = $scope.item.content[i];
 
           if(blurb.type == "paragraph") {
             var p = "<p>%a</p>".replace("%a", blurb.content);
-            $scope.renderedHtml += p;
+            html += p;
           } else if(blurb.type == "heading") {
             var h = "<%a>%b</%a>".replace("%a", blurb.headingType)
                                  .replace("%b", blurb.content)
                                  .replace("%a", blurb.headingType);
-            $scope.renderedHtml += h;
+            html += h;
           } else if(blurb.type == "list") {
             var u = "<ul>";
             for(var i in blurb.items) {
@@ -70,11 +71,13 @@ angular.module('neo.post.controllers', [])
               u += "<li>" + item + "</li>";
             }
             u += "</ul>";
-            $scope.renderedHtml += u;
+            html += u;
           } else if(blurb.type == "code") {
             var c = "<pre>" + blurb.content + "</pre>";
-            $scope.renderedHtml += c;
+            html += c;
           }
         }
+
+        $scope.renderedHtml = html;
       });
     });
