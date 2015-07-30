@@ -1,6 +1,6 @@
 <ion-view title="{{item.title}}">
   <ion-content class="padding">
-    <a class="info item item-thumbnail-left" href="#">
+    <a class="info item item-thumbnail-left" href="#/user/{{item.user.id}}">
       <img src="{{item.imagePath | staticurl}}" width="100">
       <h2>{{item.user.firstName}} {{item.user.lastName}}</h2>
       <h2>{{item.creationDate | date}}</h2>
