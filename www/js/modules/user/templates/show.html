@@ -1,5 +1,15 @@
 <ion-view title="{{user.username}}">
   <ion-content>
-    <h1>{{user.firstName}} {{user.lastName}}</h1>
+    <div class="card list">
+      <div class="item">
+        <h2>{{user.username}}</h2>
+        <h2>{{user.firstName}} {{user.lastName}}</h2>
+        <h2>Member since {{user.creationDate | date}}</h2>
+        <h2><a ng-href={{user.website}}>{{user.website}}</a></h2>
+      </div>
+      <div class="item">
+        <p>{{user.bio}}</p>
+      </div>
+    </div>
   </ion-content>
 </ion-view>
