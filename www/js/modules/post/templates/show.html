@@ -1,9 +1,9 @@
 <ion-view title="{{item.title}}">
   <ion-content class="padding">
     <a class="info item item-thumbnail-left" href="#">
-      <img src="{{item.imagePath}}" width="100">
-      <h2>Author: {{item.user.firstName}} {{item.user.lastName}}</h2>
-      <h2>Posted: {{item.creationDate | date}}</h2>
+      <img src="{{item.imagePath | staticurl}}" width="100">
+      <h2>{{item.user.firstName}} {{item.user.lastName}}</h2>
+      <h2>{{item.creationDate | date}}</h2>
     </a>
 
     <div class="content item" ng-bind-html="renderedHtml">

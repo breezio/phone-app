@@ -1,16 +1,22 @@
 angular.module('neo.base', ['ngResource'])
     .factory('Config', function() {
         var config = {
-            baseUrl: 'https://programming.com',
+          baseUrl: 'http://192.168.2.108:8080',
             version: '1.0.0'
         };
 
         if (window.cordova)
-            config.baseUrl = 'https://programming.com';
+            config.baseUrl = 'http://192.168.2.108:8080';
 
         config.apiUrl = config.baseUrl + '/api/1';
 
         return config;
+    })
+
+    .filter('staticurl', function(Config) {
+      return function(input) {
+        return Config.baseUrl + input;
+      };
     })
 
     .factory('Resource', function ($resource, Config) {
