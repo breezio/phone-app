@@ -1,79 +1,79 @@
 angular.module('neo.post.controllers', [])
 
-    .controller('PostListCtrl', function ($scope, Posts, Auth) {
+    .controller('PostListCtrl', function($scope, Posts, Auth) {
 
-        $scope.searchKey = "";
-        $scope.start = undefined;
-        $scope.limit = 20;
+      $scope.searchKey = '';
+      $scope.start = undefined;
+      $scope.limit = 20;
 
 
-        $scope.clearSearch = function () {
+      $scope.clearSearch = function() {
         	$scope.start = undefined;
-            $scope.searchKey = "";
-            $scope.items = Posts.query();
-        };
+        $scope.searchKey = '';
+        $scope.items = Posts.query();
+      };
 
-        $scope.search = function () {
+      $scope.search = function() {
         	$scope.start = undefined;
-            $scope.items = Posts.query({query: $scope.searchKey, limit: $scope.limit});
-        };
+        $scope.items = Posts.query({query: $scope.searchKey, limit: $scope.limit});
+      };
 
-        $scope.refresh = function () {
-        	$scope.start = undefined;        	
-            Posts.queryFresh({limit: $scope.limit}, function(data) {
-            	$scope.items = data;
-				$scope.$broadcast('scroll.refreshComplete');            	
-            });
-        };
+      $scope.refresh = function() {
+        	$scope.start = undefined;
+        Posts.queryFresh({limit: $scope.limit}, function(data) {
+          $scope.items = data;
+          $scope.$broadcast('scroll.refreshComplete');
+        });
+      };
 
-        $scope.logout = function() {
-            Auth.logout();
-        } 
+      $scope.logout = function() {
+        Auth.logout();
+      }
 
 
-        $scope.showLogin = function() {
-            Auth.showLogin();
-        } 
+      $scope.showLogin = function() {
+        Auth.showLogin();
+      }
 
-        $scope.loadMore = function() {
-        	$scope.start = $scope.start || 0;        	
+      $scope.loadMore = function() {
+        	$scope.start = $scope.start || 0;
         	$scope.start = $scope.start + $scope.limit;
-            Posts.query({start: $scope.start, limit: $scope.limit}, function(data) {
-            	$scope.items = $scope.items.concat(data);
-				$scope.$broadcast('scroll.infiniteScrollComplete');
-            });
+        Posts.query({start: $scope.start, limit: $scope.limit}, function(data) {
+          $scope.items = $scope.items.concat(data);
+          $scope.$broadcast('scroll.infiniteScrollComplete');
+        });
 
-        }
+      }
 
-		$scope.items = Posts.query({start: $scope.start, limit: $scope.limit});
+      $scope.items = Posts.query({start: $scope.start, limit: $scope.limit});
     })
-    .controller('PostShowCtrl', function ($scope, $stateParams, Posts) {
+    .controller('PostShowCtrl', function($scope, $stateParams, Posts) {
 
-      $scope.renderedHtml = "";
+      $scope.renderedHtml = '';
       $scope.item = Posts.get({postId: $stateParams.postId}, function() {
 
-        var html = "";
-        for(var i in $scope.item.content) {
+        var html = '';
+        for (var i in $scope.item.content) {
           var blurb = $scope.item.content[i];
 
-          if(blurb.type == "paragraph") {
-            var p = "<p>%a</p>".replace("%a", blurb.content);
+          if (blurb.type == 'paragraph') {
+            var p = '<p>%a</p>'.replace('%a', blurb.content);
             html += p;
-          } else if(blurb.type == "heading") {
-            var h = "<%a>%b</%a>".replace("%a", blurb.headingType)
-                                 .replace("%b", blurb.content)
-                                 .replace("%a", blurb.headingType);
+          } else if (blurb.type == 'heading') {
+            var h = '<%a>%b</%a>'.replace('%a', blurb.headingType)
+                                 .replace('%b', blurb.content)
+                                 .replace('%a', blurb.headingType);
             html += h;
-          } else if(blurb.type == "list") {
-            var u = "<ul>";
-            for(var i in blurb.items) {
+          } else if (blurb.type == 'list') {
+            var u = '<ul>';
+            for (var i in blurb.items) {
               var item = blurb.items[i];
-              u += "<li>" + item + "</li>";
+              u += '<li>' + item + '</li>';
             }
-            u += "</ul>";
+            u += '</ul>';
             html += u;
-          } else if(blurb.type == "code") {
-            var c = "<pre>" + blurb.content + "</pre>";
+          } else if (blurb.type == 'code') {
+            var c = '<pre>' + blurb.content + '</pre>';
             html += c;
           }
         }

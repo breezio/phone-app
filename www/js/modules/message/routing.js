@@ -1,24 +1,24 @@
 angular.module('neo.message',['neo.message.controllers','neo.message.services'])
-    .config(function($stateProvider){
+    .config(function($stateProvider) {
 
-        $stateProvider
+      $stateProvider
             .state('tab.messageList', {
-                url: '/messages',
-                views: {
+              url: '/messages',
+              views: {
                 	'tab-messages': {
-						templateUrl: 'js/modules/message/templates/list.html',
-						controller: 'MessageListCtrl'
-                	}
-                }
+                  templateUrl: 'js/modules/message/templates/list.html',
+                  controller: 'MessageListCtrl',
+                	},
+              },
             })
             .state('tab.messageShow', {
-                url: '/messages/:messageId',
-                views: {
+              url: '/messages/:messageId',
+              views: {
                 	'tab-messages': {
-						templateUrl: 'js/modules/message/templates/show.html',
-						controller: 'MessageShowCtrl'
-                	}
-                }
+                  templateUrl: 'js/modules/message/templates/show.html',
+                  controller: 'MessageShowCtrl',
+                	},
+              },
             })
 
             ;

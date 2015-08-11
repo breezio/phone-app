@@ -4,11 +4,11 @@ angular.module('neo', ['ionic', 'ngStorage', 'ngCordova.plugins', 'neo.base', 'n
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
-    if(window.cordova && window.cordova.plugins.Keyboard) {
+    if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-      cordova.plugins.Keyboard.disableScroll(true); 
+      cordova.plugins.Keyboard.disableScroll(true);
     }
-    if(window.StatusBar) {
+    if (window.StatusBar) {
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
@@ -24,7 +24,7 @@ angular.module('neo', ['ionic', 'ngStorage', 'ngCordova.plugins', 'neo.base', 'n
         }
       }
 
-      if ( event.badge )
+      if (event.badge)
         $cordovaPush.setBadgeNumber(event.badge);
 
     }, this);
@@ -33,16 +33,16 @@ angular.module('neo', ['ionic', 'ngStorage', 'ngCordova.plugins', 'neo.base', 'n
 
     if (Auth.user) {
       $cordovaPush.register({
-        "badge":"true",
-        "sound":"true",
-        "alert":"true"
+        'badge': 'true',
+        'sound': 'true',
+        'alert': 'true',
       }).then(function(token) {
 
         $http.post(Config.apiUrl + '/user/devices', {
           registrationId: token,
           deviceType: $cordovaDevice.getPlatform(),
           model: $cordovaDevice.getModel(),
-          version: Config.version
+          version: Config.version,
         }).success(function(data) {
           console.log(data);
         }).error(function(err) {
@@ -57,7 +57,7 @@ angular.module('neo', ['ionic', 'ngStorage', 'ngCordova.plugins', 'neo.base', 'n
 
     $cordovaGeolocation
       .getCurrentPosition()
-      .then(function (position) {
+      .then(function(position) {
         console.log('Latitude: '          + position.coords.latitude          + '\n' +
                     'Longitude: '         + position.coords.longitude         + '\n' +
                     'Accuracy: '          + position.coords.accuracy);
@@ -76,9 +76,9 @@ angular.module('neo', ['ionic', 'ngStorage', 'ngCordova.plugins', 'neo.base', 'n
 
   $stateProvider
     .state('tab', {
-      url: "/tab",
+      url: '/tab',
       abstract: true,
-      templateUrl: "templates/tabs.html"
+      templateUrl: 'templates/tabs.html',
     });
 
   $urlRouterProvider.otherwise('/tab/posts');
