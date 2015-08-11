@@ -47,7 +47,7 @@ angular.module('neo.post.controllers', [])
 
       $scope.items = Posts.query({start: $scope.start, limit: $scope.limit});
     })
-    .controller('PostShowCtrl', function($scope, $stateParams, Posts) {
+    .controller('PostShowCtrl', function($scope, $stateParams, Posts, Experts) {
 
       $scope.renderedHtml = '';
       $scope.item = Posts.get({postId: $stateParams.postId}, function() {
@@ -79,6 +79,11 @@ angular.module('neo.post.controllers', [])
         }
 
         $scope.renderedHtml = html;
+      });
+
+      var experts = Experts.get({postId: $stateParams.postId}, function() {
+        console.log($scope.experts);
+        $scope.experts = experts;
       });
     })
     .controller('UserShowCtrl', function($scope, $stateParams, User) {

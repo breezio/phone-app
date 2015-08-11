@@ -1,17 +1,22 @@
 <ion-view title="{{item.title}}">
   <ion-content class="padding">
     <div class="card list">
-      <a class="info item" href="#/tab/posts/user/{{item.user.id}}">
+      <div class="info item">
         <div class="left">
-          <img class="circular" src="{{item.user.imagePath | staticurl}}">
+          <a href="#/tab/posts/user/{{item.user.id}}">
+            <img class="circular" title="{{item.user.firstName}} {{item.user.lastName}}" src="{{item.user.imagePath | staticurl}}">
+          </a>
           <div>
             <h2>{{item.user.firstName}} {{item.user.lastName}}</h2>
             <h2>{{item.creationDate | date}}</h2>
           </div>
         </div>
-        <div class="right">
+        <div class="experts right">
+          <a href="#/tab/posts/user/{{expert.user.id}}" ng-repeat="expert in experts.items">
+            <img class="circular" title="{{expert.user.firstName}} {{expert.user.lastName}}" src="{{expert.user.imagePath | staticurl}}" >
+          </a>
         </div>
-      </a>
+      </div>
 
       <div class="content item" ng-bind-html="renderedHtml">
       </div>

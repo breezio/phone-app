@@ -101,3 +101,10 @@
 .right {
   float: right;
 }
+
+.experts a {
+  margin: 0px;
+  height: 66px;
+  margin-left: 5px;
+  padding: 0px;
+}
