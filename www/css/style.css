@@ -66,3 +66,38 @@
   margin: 20px;
   padding: 0;
 }
+
+.circular {
+  width: 66px;
+  height: 66px;
+  border-radius: 33px;
+  -webkit-border-radius: 33px;
+  -moz-border-radius: 33px;
+}
+
+.circular-small {
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  -webkit-border-radius: 25px;
+  -moz-border-radius: 25px;
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  height: 100px;
+}
+
+.left img {
+  float: left;
+}
+
+.left div {
+  float: right;
+  margin-left: 10px;
+}
+
+.right {
+  float: right;
+}
