@@ -1,12 +1,14 @@
 <ion-view title="{{item.title}}">
   <ion-content class="padding">
-    <a class="info item item-thumbnail-left" href="#/tab/posts/user/{{item.user.id}}">
-      <img src="{{item.imagePath | staticurl}}" width="100">
-      <h2>{{item.user.firstName}} {{item.user.lastName}}</h2>
-      <h2>{{item.creationDate | date}}</h2>
-    </a>
+    <div class="card list">
+      <a class="item item-thumbnail-left" href="#/tab/posts/user/{{item.user.id}}">
+        <img src="{{item.imagePath | staticurl}}" width="100">
+        <h2>{{item.user.firstName}} {{item.user.lastName}}</h2>
+        <h2>{{item.creationDate | date}}</h2>
+      </a>
 
-    <div class="content item" ng-bind-html="renderedHtml">
+      <div class="content item" ng-bind-html="renderedHtml">
+      </div>
     </div>
 	</ion-content>
 </ion-view>

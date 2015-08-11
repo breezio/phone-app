@@ -49,10 +49,6 @@
 	border-radius:.75rem;
 }
 
-.info {
-  margin:10px;
-}
-
 .content p {
   text-overflow: clip;
   white-space: normal;
