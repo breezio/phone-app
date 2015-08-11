@@ -87,6 +87,11 @@
   display: flex;
   justify-content: space-between;
   height: 100px;
+  padding: 0px;
+}
+
+.left, .right {
+  padding: 16px;
 }
 
 .left img {
@@ -102,7 +107,7 @@
   float: right;
 }
 
-.experts a {
+.experts img {
   margin: 0px;
   height: 66px;
   margin-left: 5px;

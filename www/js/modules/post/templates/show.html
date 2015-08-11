@@ -11,11 +11,11 @@
             <h2>{{item.creationDate | date}}</h2>
           </div>
         </div>
-        <div class="experts right">
-          <a href="#/tab/posts/user/{{expert.user.id}}" ng-repeat="expert in experts.items">
-            <img class="circular" title="{{expert.user.firstName}} {{expert.user.lastName}}" src="{{expert.user.imagePath | staticurl}}" >
-          </a>
-        </div>
+        <a class="button button-stable" href="#">
+          <div class="experts right">
+            <img ng-repeat="expert in experts.items" class="circular" title="{{expert.user.firstName}} {{expert.user.lastName}}" src="{{expert.user.imagePath | staticurl}}" >
+          </div>
+        </a>
       </div>
 
       <div class="content item" ng-bind-html="renderedHtml">
