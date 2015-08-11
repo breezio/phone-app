@@ -4,5 +4,5 @@ angular.module('neo.post.services', [])
       return Resource('/posts/:postId/:data');
     })
     .factory('Experts', function(Resource) {
-      return Resource('/posts/:postId/users/expert/:data'); 
+      return Resource('/posts/:postId/users/expert/:data');
     });
