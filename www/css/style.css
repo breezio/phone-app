@@ -90,8 +90,16 @@
   padding: 0px;
 }
 
-.left, .right {
+.info a {
+  padding: 0px;
+}
+
+.left {
   padding: 16px;
+}
+
+.right {
+  padding-top: 25px;
 }
 
 .left img {
@@ -99,17 +107,12 @@
 }
 
 .left div {
-  float: right;
-  margin-left: 10px;
-}
-
-.right {
-  float: right;
+  margin-left: 70px;
 }
 
 .experts img {
   margin: 0px;
-  height: 66px;
+  height: 50px;
   margin-left: 5px;
   padding: 0px;
 }

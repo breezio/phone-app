@@ -1,8 +1,10 @@
 <ion-view title="{{item.title}}">
   <ion-content class="padding">
     <div class="card list">
-      <div class="info item">
-        <div class="left">
+      <div class="info row">
+
+        <!-- left -->
+        <div class="left item col col-67">
           <a href="#/tab/posts/user/{{item.user.id}}">
             <img class="circular" title="{{item.user.firstName}} {{item.user.lastName}}" src="{{item.user.imagePath | staticurl}}">
           </a>
@@ -11,11 +13,14 @@
             <h2>{{item.creationDate | date}}</h2>
           </div>
         </div>
-        <a class="button button-stable" href="#">
+
+        <!-- right -->
+        <a class="button button-stable col col-33" href="#">
           <div class="experts right">
-            <img ng-repeat="expert in experts.items" class="circular" title="{{expert.user.firstName}} {{expert.user.lastName}}" src="{{expert.user.imagePath | staticurl}}" >
+            <img ng-repeat="expert in experts.items" class="circular-small" title="{{expert.user.firstName}} {{expert.user.lastName}}" src="{{expert.user.imagePath | staticurl}}" >
           </div>
         </a>
+
       </div>
 
       <div class="content item" ng-bind-html="renderedHtml">
