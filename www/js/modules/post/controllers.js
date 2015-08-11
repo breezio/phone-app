@@ -80,4 +80,9 @@ angular.module('neo.post.controllers', [])
 
         $scope.renderedHtml = html;
       });
+    })
+    .controller('UserShowCtrl', function($scope, $stateParams, User) {
+      $scope.user = User.get({userId: $stateParams.userId}, function() {
+        console.log($scope.user);
+      });
     });

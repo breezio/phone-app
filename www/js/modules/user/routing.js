@@ -7,9 +7,4 @@ angular.module('neo.user',['neo.user.controllers','neo.user.services'])
         //         controller: 'UserLoginCtrl'
         //     });
         $stateProvider
-          .state('user', {
-            url: '/user/:userId',
-            templateUrl: 'js/modules/user/templates/show.html',
-            controller: 'UserShowCtrl'
-          });
     });
