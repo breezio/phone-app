@@ -51,7 +51,6 @@ angular.module('neo.post.controllers', [])
 
       $scope.renderedHtml = '';
       $scope.item = Posts.get({postId: $stateParams.postId}, function() {
-        $scope.postId = $stateParams.postId;
 
         var html = '';
         for (var i in $scope.item.content) {
