@@ -68,8 +68,10 @@
 }
 
 .circular {
-  width: 66px;
+  width: 66px !important;
   height: 66px;
+  top: 17px !important;
+  left: 17px !important;
   border-radius: 33px;
   -webkit-border-radius: 33px;
   -moz-border-radius: 33px;
@@ -131,7 +133,21 @@
 }
 
 .experts-modal ion-footer-bar button.button-block,
+.experts-modal ion-footer-bar button h1,
 .experts-modal ion-footer-bar {
+  color: white;
   margin: 0px;
   padding: 0px;
+}
+
+.chat {
+  height: 100px;
+  top: 0px;
+  margin: 0px;
+  padding: 0px;
+  max-height: 100%;
+}
+
+.chat i {
+  padding-left: 10px;
 }

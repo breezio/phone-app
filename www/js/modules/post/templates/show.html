@@ -1,6 +1,6 @@
 <ion-view title="{{item.title}}">
   <ion-content class="padding">
-    <div class="card list">
+    <div class="list card">
       <div class="info row">
 
         <!-- left -->
@@ -36,7 +36,17 @@
       <h1 class="title">Experts</h1>
     </ion-header-bar>
     <ion-content>
-      <p>asdfasdfsdfsdf</p>
+      <div class="list card">
+        <div class="row item" ng-repeat="expert in experts.items">
+          <div class="col col-67">
+            <img src="{{expert.user.imagePath | staticurl}}" class="circular">
+            {{expert.user.firstName}} {{expert.user.lastName}}
+          </div>
+          <button class="button button-clear button-dark chat col col-33">
+            Message<i class="icon ion-chatbox"></i>
+          </button>
+        </div>
+      </div>
     </ion-content>
     <ion-footer-bar>
       <button class="button button-block button-royal" ng-click="closeExperts()">
