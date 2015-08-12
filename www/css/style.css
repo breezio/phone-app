@@ -116,3 +116,21 @@
   margin-left: 5px;
   padding: 0px;
 }
+
+.experts-modal {
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.experts-modal ion-content {
+  background-color: white;
+}
+
+.experts-modal ion-footer-bar button.button-block,
+.experts-modal ion-footer-bar {
+  margin: 0px;
+  padding: 0px;
+}

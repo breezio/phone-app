@@ -47,7 +47,20 @@ angular.module('neo.post.controllers', [])
 
       $scope.items = Posts.query({start: $scope.start, limit: $scope.limit});
     })
-    .controller('PostShowCtrl', function($scope, $stateParams, Posts, Experts) {
+    .controller('PostShowCtrl', function($scope, $stateParams, $ionicModal, Posts, Experts) {
+
+      $ionicModal.fromTemplateUrl('experts.html', {
+        scope: $scope
+      }).then(function(modal) {
+        $scope.expertsModal = modal;
+      });
+
+      $scope.openExperts = function() {
+        $scope.expertsModal.show();
+      };
+      $scope.closeExperts = function() {
+        $scope.expertsModal.hide();
+      };
 
       $scope.renderedHtml = '';
       $scope.item = Posts.get({postId: $stateParams.postId}, function() {
