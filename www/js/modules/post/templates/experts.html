@@ -1,7 +1,4 @@
-<ion-modal-view class="experts-modal">
-  <ion-header-bar class="bar-positive nav-title-slide-ios7">
-    <h1 class="title">Experts</h1>
-  </ion-header-bar>
+<ion-view title="Experts" class="experts-modal">
   <ion-content>
     <div class="list card">
       <div class="expert-pane row item" ng-repeat="expert in experts.items">
@@ -15,9 +12,4 @@
       </div>
     </div>
   </ion-content>
-  <ion-footer-bar>
-    <button class="button button-block button-royal" ng-click="closeExperts()">
-      <h1 class="title">Close</h1>
-    </button>
-  </ion-footer-bar>
-</ion-modal-view>
+</ion-view>

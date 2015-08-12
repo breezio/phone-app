@@ -49,21 +49,9 @@ angular.module('neo.post.controllers', [])
     })
     .controller('PostShowCtrl', function($scope, $stateParams, $ionicModal, Posts, Experts) {
 
-      $ionicModal.fromTemplateUrl('js/modules/post/templates/experts.html', {
-        scope: $scope
-      }).then(function(modal) {
-        $scope.expertsModal = modal;
-      });
-
-      $scope.openExperts = function() {
-        $scope.expertsModal.show();
-      };
-      $scope.closeExperts = function() {
-        $scope.expertsModal.hide();
-      };
-
       $scope.renderedHtml = '';
       $scope.item = Posts.get({postId: $stateParams.postId}, function() {
+        $scope.postId = $stateParams.postId;
 
         var html = '';
         for (var i in $scope.item.content) {
@@ -102,5 +90,10 @@ angular.module('neo.post.controllers', [])
     .controller('UserShowCtrl', function($scope, $stateParams, User) {
       $scope.user = User.get({userId: $stateParams.userId}, function() {
         console.log($scope.user);
+      });
+    })
+    .controller('UserExpertsCtrl', function($scope, $stateParams, Experts) {
+      var experts = Experts.get({postId: $stateParams.postId}, function() {
+        $scope.experts = experts;
       });
     });

@@ -29,4 +29,13 @@ angular.module('neo.post',['neo.post.controllers','neo.post.services'])
                   },
                 },
             })
+            .state('tab.postExperts', {
+              url: '/posts/:postId/experts',
+              views: {
+                  'tab-posts': {
+                    templateUrl: 'js/modules/post/templates/experts.html',
+                    controller: 'UserExpertsCtrl',
+                  },
+                },
+            })
     });
