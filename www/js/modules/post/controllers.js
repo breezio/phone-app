@@ -49,7 +49,7 @@ angular.module('neo.post.controllers', [])
     })
     .controller('PostShowCtrl', function($scope, $stateParams, $ionicModal, Posts, Experts) {
 
-      $ionicModal.fromTemplateUrl('experts.html', {
+      $ionicModal.fromTemplateUrl('js/modules/post/templates/experts.html', {
         scope: $scope
       }).then(function(modal) {
         $scope.expertsModal = modal;

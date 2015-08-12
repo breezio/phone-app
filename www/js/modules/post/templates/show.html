@@ -28,30 +28,3 @@
     </div>
 	</ion-content>
 </ion-view>
-
-<!-- experts modal -->
-<script id="experts.html" type="text/ng-template">
-  <ion-modal-view class="experts-modal">
-    <ion-header-bar class="bar-positive nav-title-slide-ios7">
-      <h1 class="title">Experts</h1>
-    </ion-header-bar>
-    <ion-content>
-      <div class="list card">
-        <div class="expert-pane row item" ng-repeat="expert in experts.items">
-          <a class="col col-67" ng-click="closeExperts()" href="#/tab/posts/user/{{expert.user.id}}">
-            <img src="{{expert.user.imagePath | staticurl}}" class="circular">
-            {{expert.user.firstName}} {{expert.user.lastName}}
-          </a>
-          <button class="button button-clear button-dark chat col col-33">
-            Message<i class="icon ion-chatbox"></i>
-          </button>
-        </div>
-      </div>
-    </ion-content>
-    <ion-footer-bar>
-      <button class="button button-block button-royal" ng-click="closeExperts()">
-        <h1 class="title">Close</h1>
-      </button>
-    </ion-footer-bar>
-  </ion-modal-view>
-</script>
