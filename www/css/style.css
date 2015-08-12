@@ -1,4 +1,4 @@
-.keyboard-open .tabs{
+.keyboar-open .tabs{
   display:none !important;
  }
 
@@ -138,6 +138,11 @@
   color: white;
   margin: 0px;
   padding: 0px;
+}
+
+.expert-pane a {
+  text-decoration: none;
+  color: black;
 }
 
 .chat {

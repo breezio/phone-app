@@ -37,11 +37,11 @@
     </ion-header-bar>
     <ion-content>
       <div class="list card">
-        <div class="row item" ng-repeat="expert in experts.items">
-          <div class="col col-67">
+        <div class="expert-pane row item" ng-repeat="expert in experts.items">
+          <a class="col col-67" ng-click="closeExperts()" href="#/tab/posts/user/{{expert.user.id}}">
             <img src="{{expert.user.imagePath | staticurl}}" class="circular">
             {{expert.user.firstName}} {{expert.user.lastName}}
-          </div>
+          </a>
           <button class="button button-clear button-dark chat col col-33">
             Message<i class="icon ion-chatbox"></i>
           </button>
