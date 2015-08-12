@@ -96,6 +96,7 @@
 
 .left {
   padding: 16px;
+  border-right: 0px;
 }
 
 .right {
