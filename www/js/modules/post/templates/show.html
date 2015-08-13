@@ -20,7 +20,7 @@
       <div class="comments item">
         <ul>
           <li ng-repeat="note in notes.items" on-hold="showUser(note.user.id)">
-            <img ng-src="{{note.user.imagePath}}" class="crop experts-crop">
+            <img ng-src="{{note.user.imagePath | staticurl}}" class="crop experts-crop">
             <p>{{note.content}}</p>
           </li>
         </ul>
