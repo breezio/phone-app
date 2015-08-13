@@ -126,3 +126,26 @@
 .hidden {
   display: none !important;
 }
+
+.comments ul {
+  display: inline-block;
+  width: inherit;
+}
+
+.comments ul li {
+  background-color: #E6E5EB;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: .75rem;
+  display: table;
+}
+
+.comments ul li * {
+  display: inline;
+}
+
+.comments ul li p {
+  display: table-cell;
+  vertical-align: middle;
+  padding-left: 10px;j
+}

@@ -16,6 +16,14 @@
 
       <div class="content item" ng-bind-html="renderedHtml">
       </div>
+
+      <div class="comments item">
+        <ul>
+          <li ng-repeat="note in notes.items">
+            <img ng-src="{{note.user.imagePath}}" class="crop experts-crop"><p>{{note.content}}</p>
+          </li>
+        </ul>
+      </div>
     </div>
 	</ion-content>
 </ion-view>
