@@ -87,7 +87,6 @@ angular.module('neo.post.controllers', [])
     })
     .controller('UserShowCtrl', function($scope, $stateParams, User) {
       $scope.user = User.get({userId: $stateParams.userId}, function() {
-        console.log($scope.user);
       });
     })
     .controller('UserExpertsCtrl', function($scope, $stateParams, Experts) {
