@@ -88,6 +88,10 @@ angular.module('neo.post.controllers', [])
 
       var notes = Notes.get({postId: $stateParams.postId}, function() {
         $scope.notes = notes;
+
+        $scope.showUser = function(id) {
+          window.location.href = '#/tab/posts/user/' + id;
+        }
       });
     })
     .controller('UserShowCtrl', function($scope, $stateParams, User) {
