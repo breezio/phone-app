@@ -15,7 +15,15 @@ angular.module('neo.base', ['ngResource'])
 
     .filter('staticurl', function(Config) {
       return function(input) {
-        return Config.baseUrl + input;
+        if (input) {
+          if (input.split(Config.baseUrl).length > 1) {
+            return input;
+          } else {
+            return Config.baseUrl + input;
+          }
+        } else {
+          return input;
+        }
       };
     })
 
