@@ -82,7 +82,6 @@ angular.module('neo.post.controllers', [])
       });
 
       var experts = Experts.get({postId: $stateParams.postId}, function() {
-        console.log($scope.experts);
         $scope.experts = experts;
       });
     })
