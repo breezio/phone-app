@@ -9,7 +9,7 @@
             <h2>{{item.creationDate | date}}</h2>
           </div>
         </a>
-        <a href="#/tab/posts/{{item.id}}/experts" class="experts button button-outline button-royal col col-33" ng-class="(experts.items.length < 1) ? 'hidden' : ''">
+        <a ng-href="{{experts.items.length == 1 ? '#/tab/posts/user/' + experts.items[0].user.id : '#/tab/posts/' + item.id + '/experts'}}" class="experts button button-outline button-royal col col-33" ng-class="(experts.items.length < 1) ? 'hidden' : ''">
           <img ng-repeat="expert in experts.items" class="crop experts-crop" src="{{expert.user.imagePath | staticurl}}">
         </a>
       </div>
