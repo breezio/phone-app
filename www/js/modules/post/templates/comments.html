@@ -1,4 +1,9 @@
 <ion-modal-view class="comments-modal">
+  <ion-header-bar class="bar-positive">
+    <div class="buttons">
+      <button class="button-icon icon ion-ios7-close-empty button back-button" ng-click="commentModal.hide()">Close</button>
+    </div>
+  </ion-header-bar>
   <ion-content>
     <div class="comments list">
       <ul class="padding">
@@ -9,16 +14,11 @@
       </ul>
     </div>
   </ion-content>
-  <ion-footer-bar class="bar-light item-input-inset" style="bottom: 44px;">
+  <ion-footer-bar class="bar-light item-input-inset">
     <label class="item-input-wrapper">
       <i class="icon ion-ios7-search placeholder-icon"></i>
       <input type="text" placeholder="Write a comment..." value="{{text}}" ng-model="text">
     </label>
     <button class="button button-clear" ng-click="postComment()">Post</button>
-  </ion-footer-bar>
-  <ion-footer-bar class="bar-assertive">
-    <button class="button button-clear" ng-click="commentModal.hide()">
-      Cancel
-    </button>
   </ion-footer-bar>
 </ion-modal-view>
