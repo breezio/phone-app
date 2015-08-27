@@ -1,4 +1,9 @@
 <ion-view title="{{item.title}}">
+  <ion-nav-buttons side="right">
+    <button class="button button-clear" ng-click="commentModal.show()">
+      Comments
+    </button>
+  </ion-nav-buttons>
   <ion-content class="padding">
     <div class="list card">
       <div class="user-card item button-bar row">
@@ -17,14 +22,6 @@
       <div class="content item" ng-bind-html="renderedHtml">
       </div>
 
-      <div class="comments item">
-        <ul>
-          <li ng-repeat="note in notes.items" on-hold="showUser(note.user.id)">
-            <img ng-src="{{note.user.imagePath | staticurl}}" class="crop experts-crop">
-            <p>{{note.content}}</p>
-          </li>
-        </ul>
-      </div>
     </div>
 	</ion-content>
 </ion-view>

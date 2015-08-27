@@ -49,6 +49,17 @@ angular.module('neo.post.controllers', [])
     })
     .controller('PostShowCtrl', function($scope, $stateParams, $ionicModal, Posts, Experts, Notes) {
 
+      $ionicModal.fromTemplateUrl('js/modules/post/templates/comments.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+      }).then(function(modal) {
+        modal.scope.postComment = function() {
+          modal.scope.$$childHead.text = '';
+        };
+        $scope.commentModal = modal;
+      });
+
+
       $scope.renderedHtml = '';
       $scope.item = Posts.get({postId: $stateParams.postId}, function() {
 

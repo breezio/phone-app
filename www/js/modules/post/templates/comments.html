@@ -1,0 +1,24 @@
+<ion-modal-view class="comments-modal">
+  <ion-content>
+    <div class="comments list">
+      <ul class="padding">
+        <li ng-repeat="note in notes.items" on-hold="showUser(note.user.id)">
+          <img ng-src="{{note.user.imagePath | staticurl}}" class="crop experts-crop">
+          <p>{{note.content}}</p>
+        </li>
+      </ul>
+    </div>
+  </ion-content>
+  <ion-footer-bar class="bar-light item-input-inset" style="bottom: 44px;">
+    <label class="item-input-wrapper">
+      <i class="icon ion-ios7-search placeholder-icon"></i>
+      <input type="text" placeholder="Write a comment..." value="{{text}}" ng-model="text">
+    </label>
+    <button class="button button-clear" ng-click="postComment()">Post</button>
+  </ion-footer-bar>
+  <ion-footer-bar class="bar-assertive">
+    <button class="button button-clear" ng-click="commentModal.hide()">
+      Cancel
+    </button>
+  </ion-footer-bar>
+</ion-modal-view>

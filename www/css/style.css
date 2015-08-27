@@ -127,9 +127,27 @@
   display: none !important;
 }
 
+.comments-modal {
+  width: 100%;
+  left: 0;
+  right: 0;
+  height: 100%;
+  top: 0;
+  bottom: 0;
+}
+
+.comments-modal * button {
+  margin: 0 auto;
+}
+
+.comments {
+  margin: 0;
+  padding: 0;
+}
+
 .comments ul {
   display: inline-block;
-  width: inherit;
+  width: 100%;
 }
 
 .comments ul li {
