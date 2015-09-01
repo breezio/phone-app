@@ -9,7 +9,7 @@
       <ul class="padding">
         <li ng-repeat="note in currentPost.notes.items">
           <img ng-src="{{note.user.imagePath | staticurl}}" class="crop experts-crop">
-          <p>{{note.content}}</p>
+          <p ng-bind-html="note.content"></p>
         </li>
       </ul>
     </div>
