@@ -8,4 +8,16 @@ angular.module('neo.post.services', [])
     })
     .factory('Notes', function(Resource) {
       return Resource('/posts/:postId/notes');
+    })
+    .service('CurrentTopic', function() {
+      var post = null;
+
+      return {
+        getPost: function() {
+
+        },
+        setPost: function(val) {
+          post = val;
+        }
+      };
     });
