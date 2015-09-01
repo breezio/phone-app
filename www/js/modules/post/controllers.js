@@ -83,13 +83,12 @@ angular.module('neo.post.controllers', [])
         $scope.renderedHtml = html;
       });
 
-      $scope.experts = {items: {length: 0}};
+      $scope.currentPost.experts = {items: {length: 0}};
       var experts = Experts.get({postId: $stateParams.postId}, function() {
-        $scope.experts = experts;
+        CurrentPost.experts = experts;
       });
 
       var notes = Notes.get({postId: $stateParams.postId}, function() {
-        $scope.notes = notes;
         CurrentPost.notes = notes;
 
         $scope.showUser = function(id) {
@@ -101,10 +100,8 @@ angular.module('neo.post.controllers', [])
       $scope.user = User.get({userId: $stateParams.userId}, function() {
       });
     })
-    .controller('UserExpertsCtrl', function($scope, $stateParams, Experts) {
-      var experts = Experts.get({postId: $stateParams.postId}, function() {
-        $scope.experts = experts;
-      });
+    .controller('UserExpertsCtrl', function($scope, $stateParams, Experts, CurrentPost) {
+      $scope.currentPost = CurrentPost;
     })
     .controller('CommentModalCtrl', function($scope, CurrentPost) {
       $scope.currentPost = CurrentPost;
