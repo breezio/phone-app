@@ -18,6 +18,6 @@ angular.module('neo.post.services', [])
         },
         setPost: function(val) {
           post = val;
-        }
+        },
       };
     });

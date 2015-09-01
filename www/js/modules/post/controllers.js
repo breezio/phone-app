@@ -51,7 +51,7 @@ angular.module('neo.post.controllers', [])
 
       $ionicModal.fromTemplateUrl('js/modules/post/templates/comments.html', {
         scope: $scope,
-        animation: 'slide-in-up'
+        animation: 'slide-in-up',
       }).then(function(modal) {
         modal.scope.postComment = function() {
           modal.scope.$$childHead.text = '';
