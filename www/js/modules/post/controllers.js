@@ -47,21 +47,12 @@ angular.module('neo.post.controllers', [])
 
       $scope.items = Posts.query({start: $scope.start, limit: $scope.limit});
     })
-    .controller('PostShowCtrl', function($scope, $stateParams, $ionicModal, Posts, Experts, Notes) {
-
-      $ionicModal.fromTemplateUrl('js/modules/post/templates/comments.html', {
-        scope: $scope,
-        animation: 'slide-in-up',
-      }).then(function(modal) {
-        modal.scope.postComment = function() {
-          modal.scope.$$childHead.text = '';
-        };
-        $scope.commentModal = modal;
-      });
-
+    .controller('PostShowCtrl', function($scope, $stateParams, CurrentPost, Posts, Experts, Notes) {
+      $scope.currentPost = CurrentPost;
 
       $scope.renderedHtml = '';
       $scope.item = Posts.get({postId: $stateParams.postId}, function() {
+        CurrentPost.item = $scope.item;
 
         var html = '';
         for (var i in $scope.item.content) {
@@ -99,6 +90,7 @@ angular.module('neo.post.controllers', [])
 
       var notes = Notes.get({postId: $stateParams.postId}, function() {
         $scope.notes = notes;
+        CurrentPost.notes = notes;
 
         $scope.showUser = function(id) {
           window.location.href = '#/tab/posts/user/' + id;
@@ -113,4 +105,10 @@ angular.module('neo.post.controllers', [])
       var experts = Experts.get({postId: $stateParams.postId}, function() {
         $scope.experts = experts;
       });
+    })
+    .controller('CommentModalCtrl', function($scope, CurrentPost) {
+      $scope.currentPost = CurrentPost;
+      $scope.postComment = function() {
+        $scope.$parent.$$childHead.text = '';
+      }
     });

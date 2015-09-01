@@ -1,13 +1,13 @@
-<ion-modal-view class="comments-modal">
+<ion-modal-view ng-controller="CommentModalCtrl" class="comments-modal">
   <ion-header-bar class="bar-positive">
     <div class="buttons">
-      <button class="button-icon icon ion-ios7-close-empty button back-button" ng-click="commentModal.hide()">Close</button>
+      <button class="button-icon icon ion-ios7-close-empty button back-button" ng-click="currentPost.commentModal.hide()">Close</button>
     </div>
   </ion-header-bar>
   <ion-content>
     <div class="comments list">
       <ul class="padding">
-        <li ng-repeat="note in notes.items" on-hold="showUser(note.user.id)">
+        <li ng-repeat="note in currentPost.notes.items">
           <img ng-src="{{note.user.imagePath | staticurl}}" class="crop experts-crop">
           <p>{{note.content}}</p>
         </li>

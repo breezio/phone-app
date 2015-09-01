@@ -9,15 +9,26 @@ angular.module('neo.post.services', [])
     .factory('Notes', function(Resource) {
       return Resource('/posts/:postId/notes');
     })
-    .service('CurrentTopic', function() {
-      var post = null;
+    .service('CurrentPost', function($ionicModal) {
+      var _item = null;
+      var _notes = null;
+      $ionicModal.fromTemplateUrl('js/modules/post/templates/comments.html', {
+        animation: 'slide-in-up',
+      }).then(function(modal) {
+        modal.scope.postComment = function() {
+          modal.scope.$$childHead.text = '';
+        };
+        data.commentModal = modal;
+      });
 
-      return {
-        getPost: function() {
-
-        },
-        setPost: function(val) {
-          post = val;
+      var data = {
+        notes: _notes,
+        item: _item,
+        updateModal: function(vals) {
+          data.modal.scope.item = vals.item;
+          data.modal.scope.notes = vals.notes;
         },
       };
+
+      return data;
     });
