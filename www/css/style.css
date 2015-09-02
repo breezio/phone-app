@@ -77,33 +77,30 @@
 }
 
 .user-card {
-  padding: 0px;
-  margin: 0px;
-}
-
-.user-card.button-bar > .button {
-  padding: 0px;
   display: flex;
-}
-
-.user-card .button[disabled] {
-  opacity: 1;
-}
-
-.user-card a {
-  margin: 0px;
+  align-items: center;
+  align-content: center;
   padding: 0px;
-  height: 100px;
 }
 
-.user-card a * {
-  margin: 5px;
+.user-card div {
+  margin: 10px;
 }
 
-.user-card .card-data {
-  overflow: visible;
-  text-align: left;
-  padding: 15px;
+.user-card .button-bar {
+  float: left;
+}
+
+.user-card .button-bar {
+  justify-content: flex-end;
+  margin: 0px;
+  height: 10%;
+}
+
+.user-card .button-bar button {
+  max-width: 150px;
+  margin: 0;
+  height: 117px;
 }
 
 .crop {

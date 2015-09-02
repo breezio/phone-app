@@ -1,5 +1,14 @@
 angular.module('neo.post.services', [])
 
+    .filter('created', function() {
+      return function(input) {
+        if(input != undefined) {
+          return 'Created On ' + input;
+        }
+
+        return '';
+      };
+    })
     .factory('Posts', function(Resource) {
       return Resource('/posts/:postId/:data');
     })
