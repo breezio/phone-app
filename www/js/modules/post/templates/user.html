@@ -16,6 +16,42 @@
       <div class="content item">
         <p>{{user.bio}}</p>
       </div>
+
+      <div class="item item-divider">
+        Skills
+      </div>
+      <div class="tags content item">
+        <div>
+          <div class="tag button-bar" ng-repeat="skill in tags.items.skill">
+            <a class="button button-royal">{{skill.score}}</a>
+            <a class="button button-stable">{{skill.name}}</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="item item-divider">
+        Work Experience
+      </div>
+      <div class="tags content item">
+        <div>
+          <div class="tag button-bar" ng-repeat="work in tags.items.work">
+            <a class="button button-royal">{{work.score}}</a>
+            <a class="button button-stable">{{work.name}}</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="item item-divider">
+        Education
+      </div>
+      <div class="tags content item">
+        <div>
+          <div class="tag button-bar" ng-repeat="education in tags.items.education">
+            <a class="button button-royal">{{education.score}}</a>
+            <a class="button button-stable">{{education.name}}</a>
+          </div>
+        </div>
+      </div>
     </div>
   </ion-content>
 </ion-view>

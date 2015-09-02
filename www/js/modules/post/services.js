@@ -9,6 +9,9 @@ angular.module('neo.post.services', [])
     .factory('Notes', function(Resource) {
       return Resource('/posts/:postId/notes');
     })
+    .factory('Tags', function(Resource) {
+      return Resource('/users/:userId/tags/:tagType');
+    })
     .service('CurrentPost', function($ionicModal) {
       var _item = null;
       var _notes = null;

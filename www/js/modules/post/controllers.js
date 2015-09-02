@@ -96,9 +96,10 @@ angular.module('neo.post.controllers', [])
         }
       });
     })
-    .controller('UserShowCtrl', function($scope, $stateParams, User, CurrentPost) {
+    .controller('UserShowCtrl', function($scope, $stateParams, User, CurrentPost, Tags) {
       $scope.user = User.get({userId: $stateParams.userId}, function() {});
       $scope.currentPost = CurrentPost;
+      $scope.tags = Tags.get({userId: $stateParams.userId}, function() {});
     })
     .controller('UserExpertsCtrl', function($scope, $stateParams, Experts, CurrentPost) {
       $scope.currentPost = CurrentPost;

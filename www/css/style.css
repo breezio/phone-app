@@ -165,5 +165,38 @@
 .comments ul li p {
   display: table-cell;
   vertical-align: middle;
-  padding-left: 10px;j
+  padding-left: 10px;
+}
+
+.row + .row {
+  padding: 5px;
+  margin: 0px;
+}
+
+.tags div {
+  display: flex;
+  flex-wrap: wrap;
+  width: inherit;
+  height: 100%;
+}
+
+.tag {
+  max-height: 57px;
+  min-width: auto;
+  max-width: 500px;
+  width: 100%;
+  margin: 5px;
+  flex: auto;
+}
+
+.tag a:first-child{
+  width: 50px;
+  max-width: 50px;
+  float: left;
+}
+
+.tag a:last-child{
+  width: 100%;
+  overflow: visible;
+  float: right;
 }
