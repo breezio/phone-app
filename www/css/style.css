@@ -83,8 +83,19 @@
   padding: 0px;
 }
 
-.user-card div {
-  margin: 10px;
+.card-data {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  padding: 5px;
+  height: 117px;
+  width: 100%;
+  max-width: 70%;
+  text-align: left;
+}
+
+.card-data div {
+  margin-left: 10px;
 }
 
 .user-card .button-bar {
@@ -99,6 +110,7 @@
 
 .user-card .button-bar button {
   max-width: 150px;
+  min-width: 117px;
   margin: 0;
   height: 117px;
 }
@@ -180,7 +192,6 @@
 .tag {
   max-height: 57px;
   min-width: auto;
-  max-width: 500px;
   width: 100%;
   margin: 5px;
   flex: auto;
