@@ -30,7 +30,7 @@
       <div class="experts item">
         <a href="#/tab/posts/{{item.id}}/experts" class="button button-outline button-light button-borderless">
           <div>
-            <img class="crop experts-crop" ng-repeat="expert in currentPost.experts.items" src="{{expert.user.imagePath | staticurl}}">
+            <img class="crop experts-crop" ng-repeat="expert in currentPost.experts.items" ng-src="{{expert.user.imagePath | staticurl}}">
           </div>
         </a>
       </div>
