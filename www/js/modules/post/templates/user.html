@@ -12,7 +12,7 @@
             <h2>{{user.creationDate | date | created}}</h2>
           </div>
         </a>
-        <div class="button-bar">
+        <div class="button-bar" ng-show="(currentUser != false ? true : false)" >
           <button class="button button-energized" ng-click="">
             Follow
           </button>

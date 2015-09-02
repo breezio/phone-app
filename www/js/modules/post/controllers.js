@@ -47,8 +47,9 @@ angular.module('neo.post.controllers', [])
 
       $scope.items = Posts.query({start: $scope.start, limit: $scope.limit});
     })
-    .controller('PostShowCtrl', function($scope, $stateParams, CurrentPost, Posts, Experts, Notes) {
+    .controller('PostShowCtrl', function($scope, $rootScope, $stateParams, CurrentPost, Posts, Experts, Notes) {
       $scope.currentPost = CurrentPost;
+      $scope.currentUser = $rootScope.currentUser;
 
       $scope.renderedHtml = '';
       $scope.item = Posts.get({postId: $stateParams.postId}, function() {
@@ -96,13 +97,17 @@ angular.module('neo.post.controllers', [])
         }
       });
     })
-    .controller('UserShowCtrl', function($scope, $stateParams, User, CurrentPost, Tags) {
+    .controller('UserShowCtrl', function($scope, $rootScope, $stateParams, User, CurrentPost, Tags) {
       $scope.user = User.get({userId: $stateParams.userId}, function() {});
       $scope.currentPost = CurrentPost;
       $scope.tags = Tags.get({userId: $stateParams.userId}, function() {});
+      $scope.currentUser = $rootScope.currentUser;
+
+      console.log($rootScope.currentUser);
     })
-    .controller('UserExpertsCtrl', function($scope, $stateParams, Experts, CurrentPost) {
+    .controller('UserExpertsCtrl', function($scope, $rootScope, $stateParams, Experts, CurrentPost) {
       $scope.currentPost = CurrentPost;
+      $scope.currentUser = $rootScope.currentUser;
     })
     .controller('CommentModalCtrl', function($scope, CurrentPost) {
       $scope.currentPost = CurrentPost;
