@@ -69,11 +69,33 @@
 
 .experts {
   margin: 0px;
+  width: 100%;
+  padding: 0px;
+  overflow: visible;
+}
+
+.experts a {
+  width: 100%;
+  padding: 0px;
+  margin: 0px;
+}
+
+.experts a > div {
+  padding: 10px 0px;
+  color: black;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   align-content: space-around;
+}
+
+.experts a > div img:first-child {
+  margin-left: 0px;
+}
+
+.experts a > div img {
+  margin-left: 10px;
 }
 
 .user-card {
@@ -94,6 +116,10 @@
   text-align: left;
 }
 
+.card-data.button, .button-borderless {
+  border-width: 0px;
+}
+
 .card-data div {
   margin-left: 10px;
 }
@@ -109,7 +135,6 @@
 }
 
 .user-card .button-bar button {
-  max-width: 150px;
   min-width: 117px;
   margin: 0;
   height: 117px;
@@ -128,8 +153,8 @@
 }
 
 .experts-crop {
-  max-width: 35px;
-  max-height: 35px;
+  max-width: 50px;
+  max-height: 50px;
 }
 
 .hidden {
@@ -178,7 +203,7 @@
 }
 
 .row + .row {
-  padding: 5px;
+  padding: 0px;
   margin: 0px;
 }
 
