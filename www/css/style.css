@@ -224,6 +224,7 @@
 .tag {
   max-height: 57px;
   min-width: auto;
+  max-width: 100%;
   width: 100%;
   margin: 5px;
   flex: auto;
@@ -237,6 +238,6 @@
 
 .tag a:last-child{
   width: 100%;
-  overflow: visible;
+  overflow: hidden;
   float: right;
 }
