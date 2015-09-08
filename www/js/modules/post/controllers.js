@@ -109,8 +109,9 @@ angular.module('neo.post.controllers', [])
       $scope.currentPost = CurrentPost;
       $scope.currentUser = $rootScope.currentUser;
     })
-    .controller('CommentModalCtrl', function($scope, CurrentPost) {
+    .controller('CommentModalCtrl', function($scope, $rootScope, CurrentPost) {
       $scope.currentPost = CurrentPost;
+      $scope.$parent.$$childHead.currentUser = $rootScope.currentUser;
       $scope.postComment = function() {
         $scope.$parent.$$childHead.text = '';
       }

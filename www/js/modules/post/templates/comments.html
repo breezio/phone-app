@@ -15,7 +15,7 @@
       </ul>
     </div>
   </ion-content>
-  <ion-footer-bar class="bar-light item-input-inset">
+  <ion-footer-bar class="bar-light item-input-inset" ng-show="(currentUser != false ? true : false)">
     <label class="item-input-wrapper">
       <i class="icon ion-ios7-search placeholder-icon"></i>
       <input type="text" placeholder="Write a comment..." value="{{text}}" ng-model="text">
