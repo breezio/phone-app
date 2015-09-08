@@ -2,7 +2,7 @@ angular.module('neo.post.services', [])
 
     .filter('created', function() {
       return function(input) {
-        if(input != undefined) {
+        if (input != undefined) {
           return 'Created On ' + input;
         }
 
@@ -11,7 +11,7 @@ angular.module('neo.post.services', [])
     })
     .filter('member', function() {
       return function(input) {
-        if(input != undefined) {
+        if (input != undefined) {
           return 'Member Since ' + input;
         }
 
@@ -28,8 +28,8 @@ angular.module('neo.post.services', [])
       var actions = {
         post: {
           url: '/posts/:postId/0/notes',
-          method: 'POST'
-        }
+          method: 'POST',
+        },
       };
 
       return Resource('/posts/:postId/notes', {}, actions);

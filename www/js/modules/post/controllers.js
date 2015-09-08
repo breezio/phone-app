@@ -113,10 +113,10 @@ angular.module('neo.post.controllers', [])
       $scope.currentPost = CurrentPost;
       $scope.notes = [];
       $scope.$watch('currentPost.notes', function(val) {
-        if(val != undefined) {
+        if (val != undefined) {
           $scope.notes = [];
-          for(var i in val.items) {
-            if(!val.items[i].deleted) {
+          for (var i in val.items) {
+            if (!val.items[i].deleted) {
               $scope.notes = $scope.notes.concat(val.items[i]);
             }
           }
@@ -131,7 +131,7 @@ angular.module('neo.post.controllers', [])
           content: $scope.$parent.$$childHead.text,
           section: 'posts',
           itemType: 'ARTICLE',
-          elementId: '0'
+          elementId: '0',
         }, function() {
           $scope.$parent.$$childHead.text = '';
           Notes.get({postId: CurrentPost.item.id}, function(notes) {

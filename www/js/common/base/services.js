@@ -58,9 +58,9 @@ angular.module('neo.base', ['ngResource'])
         url = Config.apiUrl + url;
         methods = angular.extend(defaults, methods);
 
-        for(var i in methods) {
+        for (var i in methods) {
           var method = methods[i];
-          if(method.method != undefined) {
+          if (method.method != undefined) {
             method.url = Config.apiUrl + method.url;
           }
         }
