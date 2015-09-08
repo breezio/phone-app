@@ -108,12 +108,17 @@
 .author-info .author-inner {
   width: 100%;
   display: flex;
+  flex-wrap: none;
   align-items: center;
   align-content: center;
   justify-content: center;
-  padding: 5px;
+  margin: 0px 5px;
   height: 117px;
   text-align: left;
+}
+
+.author-info .author-inner div h2 {
+  font-size: 4vmin;
 }
 
 .author-info .author-data {
