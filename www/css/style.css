@@ -100,12 +100,12 @@
   height: 50px;
 }
 
-.author-info {
+.user-info {
   width: 100%;
   border-bottom-width: 0px;
 }
 
-.author-info .author-inner {
+.user-info .user-inner {
   width: 100%;
   display: flex;
   flex-wrap: none;
@@ -117,11 +117,11 @@
   text-align: left;
 }
 
-.author-info .author-inner div h2 {
+.user-info .user-inner div h2 {
   font-size: 4vmin;
 }
 
-.author-info .author-data {
+.user-info .user-data {
   margin-left: 10px;
 }
 
