@@ -100,46 +100,28 @@
   height: 50px;
 }
 
-.user-card {
-  display: flex;
-  align-items: center;
-  align-content: center;
-  padding: 0px;
+.author-info {
+  width: 100%;
+  border-bottom-width: 0px;
 }
 
-.card-data {
+.author-info .author-inner {
+  width: 100%;
   display: flex;
   align-items: center;
   align-content: center;
+  justify-content: center;
   padding: 5px;
   height: 117px;
-  width: 100%;
-  max-width: 70%;
   text-align: left;
 }
 
-.card-data.button, .button-borderless {
-  border-width: 0px;
-}
-
-.card-data div {
+.author-info .author-data {
   margin-left: 10px;
 }
 
-.user-card .button-bar {
-  float: left;
-}
-
-.user-card .button-bar {
-  justify-content: flex-end;
-  margin: 0px;
-  height: 10%;
-}
-
-.user-card .button-bar button {
-  min-width: 117px;
-  margin: 0;
-  height: 117px;
+.button-borderless {
+  border-width: 0px;
 }
 
 .crop {
@@ -152,6 +134,8 @@
 .user-crop {
   width: 85px;
   min-width: 85px;
+  max-width: 85px;
+  max-height: 85px;
   padding: 5px;
   height: 85px;
 }
