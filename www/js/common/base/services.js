@@ -43,7 +43,8 @@ angular.module('neo.base', ['ngResource'])
             },
           },
           get: {
-            cache: true,
+            // TODO: check if disabling caching is okay
+            cache: false,
           },
         };
 
