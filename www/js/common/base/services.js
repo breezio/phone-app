@@ -1,12 +1,12 @@
 angular.module('neo.base', ['ngResource'])
     .factory('Config', function() {
       var config = {
-          baseUrl: 'https://testing.breezio.com',
+          baseUrl: 'https://health.breezio.com',
           version: '1.0.0',
         };
 
       if (window.cordova)
-          config.baseUrl = 'https://testing.breezio.com';
+          config.baseUrl = 'https://health.breezio.com';
 
       config.apiUrl = config.baseUrl + '/api/1';
 
