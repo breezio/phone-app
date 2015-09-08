@@ -151,6 +151,8 @@
 
 .user-crop {
   width: 85px;
+  min-width: 85px;
+  padding: 5px;
   height: 85px;
 }
 
