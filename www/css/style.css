@@ -176,6 +176,11 @@
   margin: 0 auto;
 }
 
+.comments-modal > .bar .title {
+  left: 97px;
+  right: 97px;
+}
+
 .comments {
   margin: 0;
   padding: 0;
