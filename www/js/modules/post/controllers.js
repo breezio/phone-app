@@ -109,7 +109,7 @@ angular.module('neo.post.controllers', [])
       $scope.currentPost = CurrentPost;
       $scope.currentUser = $rootScope.currentUser;
     })
-    .controller('CommentModalCtrl', function($scope, $rootScope, CurrentPost, Notes) {
+    .controller('CommentModalCtrl', function($scope, $rootScope, CurrentPost, Notes, $ionicScrollDelegate) {
       $scope.currentPost = CurrentPost;
       $scope.notes = [];
       $scope.$watch('currentPost.notes', function(val) {
@@ -120,6 +120,7 @@ angular.module('neo.post.controllers', [])
               $scope.notes = $scope.notes.concat(val.items[i]);
             }
           }
+
         }
       });
 
@@ -133,7 +134,9 @@ angular.module('neo.post.controllers', [])
           elementId: '0'
         }, function() {
           $scope.$parent.$$childHead.text = '';
-          var notes = Notes.get({postId: CurrentPost.item.id}, function() {
+          Notes.get({postId: CurrentPost.item.id}, function(notes) {
+            $ionicScrollDelegate.resize();
+            $ionicScrollDelegate.scrollBottom(true);
             CurrentPost.notes = notes;
           });
         });
@@ -143,6 +146,8 @@ angular.module('neo.post.controllers', [])
         Notes.get({postId: CurrentPost.item.id}, function(notes) {
           CurrentPost.notes = notes;
           $scope.$broadcast('scroll.refreshComplete');
+          $ionicScrollDelegate.resize();
+          $ionicScrollDelegate.scrollBottom(true);
         });
       };
     });
