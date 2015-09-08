@@ -16,7 +16,14 @@ angular.module('neo.post.services', [])
       return Resource('/posts/:postId/users/expert/:data');
     })
     .factory('Notes', function(Resource) {
-      return Resource('/posts/:postId/notes');
+      var actions = {
+        post: {
+          url: '/posts/:postId/0/notes',
+          method: 'POST'
+        }
+      };
+
+      return Resource('/posts/:postId/notes', {}, actions);
     })
     .factory('Tags', function(Resource) {
       return Resource('/users/:userId/tags/:tagType');
