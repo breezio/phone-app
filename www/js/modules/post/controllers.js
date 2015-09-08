@@ -121,6 +121,16 @@ angular.module('neo.post.controllers', [])
           elementId: '0'
         }, function() {
           $scope.$parent.$$childHead.text = '';
+          var notes = Notes.get({postId: CurrentPost.item.id}, function() {
+            CurrentPost.notes = notes;
+          });
         });
-      }
+      };
+
+      $scope.refreshComments = function() {
+        var notes = Notes.get({postId: CurrentPost.item.id}, function() {
+          CurrentPost.notes = notes;
+          $scope.$broadcast('scroll.refreshComplete');
+        });
+      };
     });

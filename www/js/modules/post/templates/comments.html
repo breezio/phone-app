@@ -6,14 +6,18 @@
     </div>
   </ion-header-bar>
   <ion-content>
-    <div class="comments list">
+    <ion-refresher
+      pulling-text="Pull to refresh..."
+      on-refresh="refreshComments()">
+    </ion-refresher>
+    <ion-list class="comments list">
       <ul class="padding">
         <li ng-repeat="note in currentPost.notes.items">
           <img ng-src="{{note.user.imagePath | staticurl}}" class="crop experts-crop">
           <p ng-bind-html="note.content"></p>
         </li>
       </ul>
-    </div>
+    </ion-list>
   </ion-content>
   <ion-footer-bar class="bar-light item-input-inset" ng-show="(currentUser != false ? true : false)">
     <label class="item-input-wrapper">
