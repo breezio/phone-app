@@ -85,11 +85,11 @@ angular.module('neo.post.controllers', [])
       });
 
       $scope.currentPost.experts = {items: {length: 0}};
-      var experts = Experts.get({postId: $stateParams.postId}, function() {
+      Experts.get({postId: $stateParams.postId}, function(experts) {
         CurrentPost.experts = experts;
       });
 
-      var notes = Notes.get({postId: $stateParams.postId}, function() {
+      Notes.get({postId: $stateParams.postId}, function(notes) {
         CurrentPost.notes = notes;
 
         $scope.showUser = function(id) {
@@ -111,6 +111,18 @@ angular.module('neo.post.controllers', [])
     })
     .controller('CommentModalCtrl', function($scope, $rootScope, CurrentPost, Notes) {
       $scope.currentPost = CurrentPost;
+      $scope.notes = [];
+      $scope.$watch('currentPost.notes', function(val) {
+        if(val != undefined) {
+          $scope.notes = [];
+          for(var i in val.items) {
+            if(!val.items[i].deleted) {
+              $scope.notes = $scope.notes.concat(val.items[i]);
+            }
+          }
+        }
+      });
+
       $scope.$parent.$$childHead.currentUser = $rootScope.currentUser;
       $scope.postComment = function() {
         Notes.post({postId: $scope.currentPost.item.id}, {
@@ -128,7 +140,7 @@ angular.module('neo.post.controllers', [])
       };
 
       $scope.refreshComments = function() {
-        var notes = Notes.get({postId: CurrentPost.item.id}, function() {
+        Notes.get({postId: CurrentPost.item.id}, function(notes) {
           CurrentPost.notes = notes;
           $scope.$broadcast('scroll.refreshComplete');
         });
