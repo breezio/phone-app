@@ -9,6 +9,15 @@ angular.module('neo.post.services', [])
         return '';
       };
     })
+    .filter('member', function() {
+      return function(input) {
+        if(input != undefined) {
+          return 'Member Since ' + input;
+        }
+
+        return '';
+      };
+    })
     .factory('Posts', function(Resource) {
       return Resource('/posts/:postId/:data');
     })
