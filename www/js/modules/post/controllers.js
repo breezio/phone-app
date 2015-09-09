@@ -5,7 +5,7 @@ angular.module('neo.post.controllers', [])
       $scope.searchKey = '';
       $scope.start = undefined;
       $scope.limit = 20;
-
+      $scope.doneLoading = false;
 
       $scope.clearSearch = function() {
         	$scope.start = undefined;
@@ -35,10 +35,15 @@ angular.module('neo.post.controllers', [])
         Auth.showLogin();
       }
 
+      $scope.canLoadMore = function() {
+        return !$scope.doneLoading;
+      }
+
       $scope.loadMore = function() {
         	$scope.start = $scope.start || 0;
         	$scope.start = $scope.start + $scope.limit;
         Posts.query({start: $scope.start, limit: $scope.limit}, function(data) {
+          if(data.length == 0) $scope.doneLoading = true;
           $scope.items = $scope.items.concat(data);
           $scope.$broadcast('scroll.infiniteScrollComplete');
         });

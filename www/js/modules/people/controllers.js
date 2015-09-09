@@ -5,6 +5,7 @@ angular.module('neo.people.controllers', [])
       $scope.searchKey = '';
       $scope.start = undefined;
       $scope.limit = 20;
+      $scope.doneLoading = false;
 
       $scope.clearSearch = function() {
         $scope.start = undefined;
@@ -26,19 +27,14 @@ angular.module('neo.people.controllers', [])
       };
 
       $scope.canLoadMore = function() {
-        if ($scope.start > 0 && $scope.start % $scope.limit != $scope.limit) {
-          console.log('false');
-          return false;
-        }
-
-        console.log('true');
-        return true;
+        return !$scope.doneLoading;
       };
 
       $scope.loadMore = function() {
         $scope.start = $scope.start || 0;
         $scope.start = $scope.start + $scope.limit;
         User.query({start: $scope.start, limit: $scope.limit}, function(data) {
+          if(data.length == 0) $scope.doneLoading = true;
           $scope.items = $scope.items.concat(data);
           $scope.$broadcast('scroll.infiniteScrollComplete');
         });
