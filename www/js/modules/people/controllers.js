@@ -20,7 +20,7 @@ angular.module('neo.people.controllers', [])
 
       $scope.refresh = function() {
         $scope.start = undefined;
-        User.queryFresh({limit: $scope.limit}, function(data) {
+        User.queryFresh({query: $scope.searchKey, limit: $scope.limit}, function(data) {
           $scope.items = data;
           $scope.$broadcast('scroll.refreshComplete');
         });
