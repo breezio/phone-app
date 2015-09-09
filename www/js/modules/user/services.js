@@ -12,7 +12,7 @@ angular.module('neo.user.services', ['http-auth-interceptor'])
       }
     };
 
-    return Resource('/users/:userId/:data', actions);
+    return Resource('/users/:userId/:data', {}, actions);
 	})
 
 	.service('Auth', function($http, Config, $localStorage, $rootScope, $location, $ionicLoading, $ionicModal, authService) {
