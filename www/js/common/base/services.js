@@ -33,7 +33,7 @@ angular.module('neo.base', ['ngResource'])
         defaults = {
           query: {
             isArray: true,
-            cache: true,
+            cache: false,
             transformResponse: function(data) {
               data = angular.fromJson(data);
               if (data) {

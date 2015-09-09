@@ -2,9 +2,20 @@ angular.module('neo.conversation.controllers', [])
 
     .controller('ConversationListCtrl', function($scope, Conversations) {
 
-      $scope.items = Conversations.query({limit: 10});
+      $scope.doneLoading = false;
+
+      $scope.refresh = function() {
+        $scope.start = undefined;
+        Conversations.query(function(data) {
+          console.log(data);
+          $scope.items = data;
+          $scope.$broadcast('scroll.refreshComplete');
+        });
+      };
+
+      $scope.items = Conversations.query();
     })
-    .controller('ConversationShowCtrl', function($scope, $stateParams, Conversations) {
+    .controller('ConversationChatCtrl', function($scope, $stateParams, Conversations) {
 
       $scope.item = Conversations.get({postId: $stateParams.postId});
     })

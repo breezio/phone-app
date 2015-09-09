@@ -16,7 +16,7 @@ angular.module('neo.conversation',['neo.conversation.controllers','neo.conversat
               views: {
                 	'tab-conversations': {
                   templateUrl: 'js/modules/conversation/templates/chat.html',
-                  controller: 'ConversationShowCtrl',
+                  controller: 'ConversationChatCtrl',
                 	},
               },
             })
