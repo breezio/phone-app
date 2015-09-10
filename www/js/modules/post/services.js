@@ -1,5 +1,64 @@
 angular.module('neo.post.services', [])
 
+    .run(function($rootScope, $ionicModal) {
+      $rootScope.currentPost = {
+        post: null,
+        notes: null,
+        experts: null
+      };
+
+      $ionicModal.fromTemplateUrl('js/modules/post/templates/comments.html', {
+        animation: 'slide-in-up',
+      }).then(function(modal) {
+        modal.scope.postComment = function() {
+          modal.scope.$$childHead.text = '';
+        };
+
+        $rootScope.currentPost.commentModal = modal;
+      });
+    })
+    .controller('CommentModalCtrl', function($scope, $rootScope, Notes, $ionicScrollDelegate) {
+      $scope.currentPost = $rootScope.currentPost;
+      $scope.notes = [];
+      $scope.$watch('currentPost.notes', function(val) {
+        if (val != undefined) {
+          $scope.notes = [];
+          for (var i in val.items) {
+            if (!val.items[i].deleted) {
+              $scope.notes = $scope.notes.concat(val.items[i]);
+            }
+          }
+
+        }
+      });
+
+      $scope.$parent.$$childHead.currentUser = $rootScope.currentUser;
+      $scope.postComment = function() {
+        Notes.post({postId: $scope.currentPost.post.id}, {
+          itemId: $scope.currentPost.post.id,
+          content: $scope.$parent.$$childHead.text,
+          section: 'posts',
+          itemType: 'ARTICLE',
+          elementId: '0',
+        }, function() {
+          $scope.$parent.$$childHead.text = '';
+          Notes.get({postId: $scope.currentPost.post.id}, function(notes) {
+            $ionicScrollDelegate.resize();
+            $ionicScrollDelegate.scrollBottom(true);
+            $scope.currentPost.notes = notes;
+          });
+        });
+      };
+
+      $scope.refreshComments = function() {
+        Notes.get({postId: $scope.currentPost.post.id}, function(notes) {
+          $scope.currentPost.notes = notes;
+          $scope.$broadcast('scroll.refreshComplete');
+          $ionicScrollDelegate.resize();
+          $ionicScrollDelegate.scrollBottom(true);
+        });
+      };
+    })
     .filter('created', function() {
       return function(input) {
         if (input != undefined) {
@@ -36,69 +95,4 @@ angular.module('neo.post.services', [])
     })
     .factory('Tags', function(Resource) {
       return Resource('/users/:userId/tags/:tagType');
-    })
-    .service('CurrentPost', function($ionicModal) {
-      var _item = null;
-      var _notes = null;
-      $ionicModal.fromTemplateUrl('js/modules/post/templates/comments.html', {
-        animation: 'slide-in-up',
-      }).then(function(modal) {
-        modal.scope.postComment = function() {
-          modal.scope.$$childHead.text = '';
-        };
-        data.commentModal = modal;
-      });
-
-      var data = {
-        notes: _notes,
-        item: _item,
-        updateModal: function(vals) {
-          data.modal.scope.item = vals.item;
-          data.modal.scope.notes = vals.notes;
-        },
-      };
-
-      return data;
-    })
-    .controller('CommentModalCtrl', function($scope, $rootScope, CurrentPost, Notes, $ionicScrollDelegate) {
-      $scope.currentPost = CurrentPost;
-      $scope.notes = [];
-      $scope.$watch('currentPost.notes', function(val) {
-        if (val != undefined) {
-          $scope.notes = [];
-          for (var i in val.items) {
-            if (!val.items[i].deleted) {
-              $scope.notes = $scope.notes.concat(val.items[i]);
-            }
-          }
-
-        }
-      });
-
-      $scope.$parent.$$childHead.currentUser = $rootScope.currentUser;
-      $scope.postComment = function() {
-        Notes.post({postId: $scope.currentPost.item.id}, {
-          itemId: $scope.currentPost.item.id,
-          content: $scope.$parent.$$childHead.text,
-          section: 'posts',
-          itemType: 'ARTICLE',
-          elementId: '0',
-        }, function() {
-          $scope.$parent.$$childHead.text = '';
-          Notes.get({postId: CurrentPost.item.id}, function(notes) {
-            $ionicScrollDelegate.resize();
-            $ionicScrollDelegate.scrollBottom(true);
-            CurrentPost.notes = notes;
-          });
-        });
-      };
-
-      $scope.refreshComments = function() {
-        Notes.get({postId: CurrentPost.item.id}, function(notes) {
-          CurrentPost.notes = notes;
-          $scope.$broadcast('scroll.refreshComplete');
-          $ionicScrollDelegate.resize();
-          $ionicScrollDelegate.scrollBottom(true);
-        });
-      };
     });

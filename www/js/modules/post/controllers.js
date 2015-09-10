@@ -52,13 +52,13 @@ angular.module('neo.post.controllers', [])
 
       $scope.items = Posts.query({start: $scope.start, limit: $scope.limit});
     })
-    .controller('PostShowCtrl', function($scope, $rootScope, $stateParams, CurrentPost, Posts, Experts, Notes) {
-      $scope.currentPost = CurrentPost;
+    .controller('PostShowCtrl', function($scope, $rootScope, $stateParams, Posts, Experts, Notes) {
+      $scope.currentPost = $rootScope.currentPost;
       $scope.loggedIn = $rootScope.loggedIn;
 
       $scope.renderedHtml = '';
       $scope.item = Posts.get({postId: $stateParams.postId}, function() {
-        CurrentPost.item = $scope.item;
+        $scope.currentPost.post = $scope.item;
 
         var html = '';
         for (var i in $scope.item.content) {
@@ -91,23 +91,23 @@ angular.module('neo.post.controllers', [])
 
       $scope.currentPost.experts = {items: {length: 0}};
       Experts.get({postId: $stateParams.postId}, function(experts) {
-        CurrentPost.experts = experts;
+        $scope.currentPost.experts = experts;
       });
 
       Notes.get({postId: $stateParams.postId}, function(notes) {
-        CurrentPost.notes = notes;
+        $scope.currentPost.notes = notes;
 
         $scope.showUser = function(id) {
           window.location.href = '#/tab/people/' + id;
         }
       });
     })
-    .controller('UserExpertsCtrl', function($scope, $rootScope, $stateParams, Experts, CurrentPost) {
-      $scope.currentPost = CurrentPost;
+    .controller('UserExpertsCtrl', function($scope, $rootScope, $stateParams, Experts) {
+      $scope.currentPost = $rootScope.currentPost;
       $scope.loggedIn = $rootScope.loggedIn;
     })
-    .controller('CommentModalCtrl', function($scope, $rootScope, CurrentPost, Notes, $ionicScrollDelegate) {
-      $scope.currentPost = CurrentPost;
+    .controller('CommentModalCtrl', function($scope, $rootScope, Notes, $ionicScrollDelegate) {
+      $scope.currentPost = $rootScope.currentPost;
       $scope.notes = [];
       $scope.$watch('currentPost.notes', function(val) {
         if (val != undefined) {
@@ -131,17 +131,17 @@ angular.module('neo.post.controllers', [])
           elementId: '0',
         }, function() {
           $scope.$parent.$$childHead.text = '';
-          Notes.get({postId: CurrentPost.item.id}, function(notes) {
+          Notes.get({postId: $scope.currentPost.item.id}, function(notes) {
             $ionicScrollDelegate.resize();
             $ionicScrollDelegate.scrollBottom(true);
-            CurrentPost.notes = notes;
+            $scope.currentPost.notes = notes;
           });
         });
       };
 
       $scope.refreshComments = function() {
-        Notes.get({postId: CurrentPost.item.id}, function(notes) {
-          CurrentPost.notes = notes;
+        Notes.get({postId: $scope.currentPost.item.id}, function(notes) {
+          $scope.currentPost.notes = notes;
           $scope.$broadcast('scroll.refreshComplete');
           $ionicScrollDelegate.resize();
           $ionicScrollDelegate.scrollBottom(true);
