@@ -54,7 +54,7 @@ angular.module('neo.post.controllers', [])
     })
     .controller('PostShowCtrl', function($scope, $rootScope, $stateParams, CurrentPost, Posts, Experts, Notes) {
       $scope.currentPost = CurrentPost;
-      $scope.currentUser = $rootScope.currentUser;
+      $scope.loggedIn = $rootScope.loggedIn;
 
       $scope.renderedHtml = '';
       $scope.item = Posts.get({postId: $stateParams.postId}, function() {
@@ -104,7 +104,7 @@ angular.module('neo.post.controllers', [])
     })
     .controller('UserExpertsCtrl', function($scope, $rootScope, $stateParams, Experts, CurrentPost) {
       $scope.currentPost = CurrentPost;
-      $scope.currentUser = $rootScope.currentUser;
+      $scope.loggedIn = $rootScope.loggedIn;
     })
     .controller('CommentModalCtrl', function($scope, $rootScope, CurrentPost, Notes, $ionicScrollDelegate) {
       $scope.currentPost = CurrentPost;

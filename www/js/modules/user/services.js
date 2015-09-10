@@ -21,6 +21,11 @@ angular.module('neo.user.services', ['http-auth-interceptor'])
   $rootScope.currentUser = this.user = false;
   this.refreshingToken = false;
   window._Auth = this;
+
+  $rootScope.$watch('currentUser', function(val) {
+    $rootScope.loggedIn = $rootScope.currentUser != false ? true : false;
+  });
+
   this.init = function() {
 
     $rootScope.$on('event:auth-loginRequired', function(e, rejection) {

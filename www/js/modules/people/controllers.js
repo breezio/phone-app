@@ -47,5 +47,5 @@ angular.module('neo.people.controllers', [])
       $scope.user = User.get({userId: $stateParams.userId}, function() {});
       $scope.currentPost = CurrentPost;
       $scope.tags = Tags.get({userId: $stateParams.userId}, function() {});
-      $scope.currentUser = $rootScope.currentUser;
+      $scope.loggedIn = $rootScope.loggedIn;
     });
