@@ -20,15 +20,6 @@ angular.module('neo.post',['neo.post.controllers','neo.post.services'])
                 	},
               },
             })
-            .state('tab.postUser', {
-              url: '/posts/user/:userId',
-              views: {
-                  'tab-posts': {
-                    templateUrl: 'js/modules/post/templates/user.html',
-                    controller: 'UserShowCtrl',
-                  },
-                },
-            })
             .state('tab.postExperts', {
               url: '/posts/:postId/experts',
               views: {

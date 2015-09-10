@@ -98,60 +98,7 @@ angular.module('neo.post.controllers', [])
         CurrentPost.notes = notes;
 
         $scope.showUser = function(id) {
-          window.location.href = '#/tab/posts/user/' + id;
+          window.location.href = '#/tab/people/' + id;
         }
       });
-    })
-    .controller('UserShowCtrl', function($scope, $rootScope, $stateParams, User, CurrentPost, Tags) {
-      $scope.user = User.get({userId: $stateParams.userId}, function() {});
-      console.log($scope.user);
-      $scope.currentPost = CurrentPost;
-      $scope.tags = Tags.get({userId: $stateParams.userId}, function() {});
-      $scope.currentUser = $rootScope.currentUser;
-    })
-    .controller('UserExpertsCtrl', function($scope, $rootScope, $stateParams, Experts, CurrentPost) {
-      $scope.currentPost = CurrentPost;
-      $scope.currentUser = $rootScope.currentUser;
-    })
-    .controller('CommentModalCtrl', function($scope, $rootScope, CurrentPost, Notes, $ionicScrollDelegate) {
-      $scope.currentPost = CurrentPost;
-      $scope.notes = [];
-      $scope.$watch('currentPost.notes', function(val) {
-        if (val != undefined) {
-          $scope.notes = [];
-          for (var i in val.items) {
-            if (!val.items[i].deleted) {
-              $scope.notes = $scope.notes.concat(val.items[i]);
-            }
-          }
-
-        }
-      });
-
-      $scope.$parent.$$childHead.currentUser = $rootScope.currentUser;
-      $scope.postComment = function() {
-        Notes.post({postId: $scope.currentPost.item.id}, {
-          itemId: $scope.currentPost.item.id,
-          content: $scope.$parent.$$childHead.text,
-          section: 'posts',
-          itemType: 'ARTICLE',
-          elementId: '0',
-        }, function() {
-          $scope.$parent.$$childHead.text = '';
-          Notes.get({postId: CurrentPost.item.id}, function(notes) {
-            $ionicScrollDelegate.resize();
-            $ionicScrollDelegate.scrollBottom(true);
-            CurrentPost.notes = notes;
-          });
-        });
-      };
-
-      $scope.refreshComments = function() {
-        Notes.get({postId: CurrentPost.item.id}, function(notes) {
-          CurrentPost.notes = notes;
-          $scope.$broadcast('scroll.refreshComplete');
-          $ionicScrollDelegate.resize();
-          $ionicScrollDelegate.scrollBottom(true);
-        });
-      };
     });
