@@ -83,5 +83,12 @@ angular.module('neo', ['ionic', 'ngStorage', 'ngCordova.plugins', 'neo.base', 'n
 
   $urlRouterProvider.otherwise('/tab/posts');
 
+})
+
+.controller('TabCtrl', function($scope, $rootScope) {
+  $scope.loggedIn = false;
+  $rootScope.$watch('currentUser', function(val) {
+    $scope.loggedIn = val != false ? true : false;
+  });
 });
 
