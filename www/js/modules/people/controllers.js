@@ -45,7 +45,6 @@ angular.module('neo.people.controllers', [])
     })
     .controller('PeopleShowCtrl', function($scope, $rootScope, $stateParams, User, CurrentPost, Tags) {
       $scope.user = User.get({userId: $stateParams.userId}, function() {});
-      console.log($scope.user);
       $scope.currentPost = CurrentPost;
       $scope.tags = Tags.get({userId: $stateParams.userId}, function() {});
       $scope.currentUser = $rootScope.currentUser;
