@@ -1,6 +1,7 @@
 angular.module('neo.people.controllers', [])
 
-    .controller('PeopleListCtrl', function($scope, User) {
+    .controller('PeopleListCtrl', function($scope, $rootScope, User) {
+      $scope.showUser = $rootScope.showUser;
 
       $scope.searchKey = '';
       $scope.start = undefined;
@@ -42,10 +43,4 @@ angular.module('neo.people.controllers', [])
 
       $scope.items = User.query({start: $scope.start, limit: $scope.limit});
 
-    })
-    .controller('PeopleShowCtrl', function($scope, $rootScope, $stateParams, User, Tags) {
-      $scope.user = User.get({userId: $stateParams.userId}, function() {});
-      $scope.currentPost = $rootScope.currentPost;
-      $scope.tags = Tags.get({userId: $stateParams.userId}, function() {});
-      $scope.loggedIn = $rootScope.loggedIn;
     });

@@ -53,6 +53,7 @@ angular.module('neo.post.controllers', [])
       $scope.items = Posts.query({start: $scope.start, limit: $scope.limit});
     })
     .controller('PostShowCtrl', function($scope, $rootScope, $stateParams, Posts, Experts, Notes) {
+      $scope.showUser = $rootScope.showUser;
       $scope.currentPost = $rootScope.currentPost;
       $scope.loggedIn = $rootScope.loggedIn;
 
@@ -97,14 +98,12 @@ angular.module('neo.post.controllers', [])
       Notes.get({postId: $stateParams.postId}, function(notes) {
         $scope.currentPost.notes = notes;
 
-        $scope.showUser = function(id) {
-          window.location.href = '#/tab/people/' + id;
-        }
       });
     })
     .controller('UserExpertsCtrl', function($scope, $rootScope, $stateParams, Experts) {
       $scope.currentPost = $rootScope.currentPost;
       $scope.loggedIn = $rootScope.loggedIn;
+      $scope.showUser = $rootScope.showUser;
     })
     .controller('CommentModalCtrl', function($scope, $rootScope, Notes, $ionicScrollDelegate) {
       $scope.currentPost = $rootScope.currentPost;

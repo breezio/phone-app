@@ -158,7 +158,7 @@
   display: none !important;
 }
 
-.comments-modal {
+.modal {
   width: 100%;
   left: 0;
   right: 0;
@@ -167,11 +167,11 @@
   bottom: 0;
 }
 
-.comments-modal * button {
+.modal * button {
   margin: 0 auto;
 }
 
-.comments-modal > .bar .title {
+.modal > .bar .title {
   left: 97px;
   right: 97px;
 }
