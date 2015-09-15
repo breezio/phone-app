@@ -85,10 +85,35 @@ angular.module('neo', ['ionic', 'ngStorage', 'ngCordova.plugins', 'neo.base', 'n
 
 })
 
-.controller('TabCtrl', function($scope, $rootScope) {
+.controller('TabCtrl', function($scope, $rootScope, $ionicTabsDelegate) {
   $scope.loggedIn = false;
   $rootScope.$watch('currentUser', function(val) {
     $scope.loggedIn = val != false ? true : false;
+  });
+
+  $scope.selectTab = function(href) {
+    for (var i = 0; i < $scope.tabs.length; i++) {
+      if ($scope.tabs[i].href == href) {
+        if ($ionicTabsDelegate.selectedIndex() == i) {
+          window.location = href;
+        } else {
+          $ionicTabsDelegate.select(i);
+        }
+      }
+    }
+  };
+
+  $scope.tabs = [];
+  $scope.$watch('$$childTail', function(val) {
+    if (val != null) {
+      var prev = $scope.$$childTail;
+      while (prev != null) {
+
+        $scope.tabs = $scope.tabs.concat(prev);
+        prev = prev.$$prevSibling;
+      }
+      $scope.tabs.reverse();
+    }
   });
 });
 
