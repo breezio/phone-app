@@ -13,14 +13,14 @@ angular.module('neo.conversation.controllers', [])
             $scope.items[i].users = JSON.parse($scope.items[i].users);
             for (var j in $scope.items[i].users) {
               if ($scope.items[i].users[j] != $rootScope.currentUser.id) {
-                $scope.items[i].users[j] = User.get({userId: $scope.items[i].users[j]}, function() {});
+                $scope.items[i].users[j] = User.get({userId: $scope.items[i].users[j]}, function(data) {});
+                $scope.items[i].recipient = $scope.items[i].users[j];
               } else {
                 $scope.items[i].users[j] = $rootScope.currentUser;
               }
             }
           }
 
-          console.log($scope.items);
           $scope.$broadcast('scroll.refreshComplete');
         });
       };
