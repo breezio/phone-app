@@ -5,8 +5,20 @@
       on-refresh="refresh()">
     </ion-refresher>
     <ion-list>
-      <ion-item ng-repeat="item in items">
-        <h2>{{item.title}}</h2>
+      <ion-item ng-repeat="item in items" ng-if="item.deleted == false">
+        <div class="item item-divider">
+          {{item.title}}
+        </div>
+        <div class="user-info button-bar">
+          <a class="button button-outline button-light">
+            <div class="user-inner">
+              <div class="user-data">
+                <h2>Hsadfasdfasd</h2>
+                <h2>Hsadfasdfasd</h2>
+              </div>
+            </div>
+          </a>
+        </div>
       </ion-item>
     </ion-list>
 	</ion-content>

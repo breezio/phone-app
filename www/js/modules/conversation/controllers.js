@@ -9,6 +9,7 @@ angular.module('neo.conversation.controllers', [])
         Conversations.query(function(data) {
           console.log(data);
           $scope.items = data;
+          console.log($scope.items);
           $scope.$broadcast('scroll.refreshComplete');
         });
       };
