@@ -1,6 +1,6 @@
 angular.module('neo.people.services', [])
 
-    .run(function($rootScope, $ionicModal, $stateParams) {
+    .run(function($rootScope, $ionicModal) {
       $ionicModal.fromTemplateUrl('js/modules/people/templates/show.html', {
         animation: 'slide-in-up',
       }).then(function(modal) {

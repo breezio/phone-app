@@ -10,16 +10,5 @@ angular.module('neo.conversation',['neo.conversation.controllers','neo.conversat
                   controller: 'ConversationListCtrl',
                 	},
               },
-            })
-            .state('tab.conversationChat', {
-              url: '/conversations/:conversationId',
-              views: {
-                	'tab-conversations': {
-                  templateUrl: 'js/modules/conversation/templates/chat.html',
-                  controller: 'ConversationChatCtrl',
-                	},
-              },
-            })
-
-            ;
+            });
     });

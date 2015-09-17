@@ -1,19 +1,25 @@
-<ion-view title="Messages" hide-tab-bar="true">
-    <ion-content class="padding">
-		<ion-refresher
-			pulling-text="Pull to refresh..."
-			on-refresh="refresh()">
-		</ion-refresher>    
-		<ul ion-list class="messages">
-		  <li ion-item ng-repeat="item in items">
-		    <p>{{item.title}}</p>
-		  </li>
-		</ul>
-	</ion-content>
-	<ion-footer-bar class="bar-stable item-input-inset">
-		<label class="item-input-wrapper">
-		  <input type="text" placeholder="Type your message..." />
-		</label>
-		<button class="button  button-clear">Send</button>
-	</ion-footer-bar>	
-</ion-view>
+<ion-modal-view ng-controller="ChatShowCtrl">
+  <ion-header-bar class="bar-positive">
+    <div class="buttons">
+      <button class="button button-clear" ng-click="modal.hide()"><i class="icon ion-ios7-close-empty"></i> Close</button>
+      <h2 class="title">Chat</h2>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+    <ion-refresher
+      pulling-text="Pull to refresh..."
+      on-refresh="refresh()">
+    </ion-refresher>
+    <ion-list class="comments list">
+      <ul class="padding">
+      </ul>
+    </ion-list>
+  </ion-content>
+  <ion-footer-bar class="bar-light item-input-inset" ng-show="(currentUser != false ? true : false)">
+    <label class="item-input-wrapper">
+      <i class="icon ion-ios7-search placeholder-icon"></i>
+      <input type="text" placeholder="Write a comment..." value="{{text}}" ng-model="text">
+    </label>
+    <button class="button button-clear" ng-click="postComment()">Post</button>
+  </ion-footer-bar>
+</ion-modal-view>
