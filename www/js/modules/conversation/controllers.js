@@ -26,10 +26,4 @@ angular.module('neo.conversation.controllers', [])
       };
 
       $scope.refresh();
-    })
-    .controller('ConversationChatCtrl', function($scope, $stateParams, Conversations) {
-
-      $scope.item = Conversations.get({postId: $stateParams.postId});
-    })
-
-    ;
+    });

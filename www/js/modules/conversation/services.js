@@ -7,14 +7,29 @@ angular.module('neo.conversation.services', [])
         $rootScope.chatModal = modal;
       });
 
-      $rootScope.showChat = function(data) {
-        $rootScope.chatData = data;
+      $rootScope.showChat = function(id) {
+        $rootScope.chatId = id;
         $rootScope.chatModal.show();
       };
     })
-    .controller('ChatShowCtrl', function($scope, $rootScope, Conversations) {
-
-    })
     .factory('Conversations', function(Resource) {
       return Resource('/conversations/:conversationId');
+    })
+    .factory('Chats', function(Resource) {
+      return Resource('/conversations/:conversationId/messages/:messageLimit');
+    })
+    .controller('ChatShowCtrl', function($scope, $rootScope, Chats, $ionicScrollDelegate) {
+      $scope.$on('modal.shown', function() {
+        $scope.chatData = Chats.get({conversationId: $rootScope.chatId}, function () {});
+        console.log($scope.chatData);
+      });
+
+      $scope.refresh = function() {
+        Chats.get({conversationId: $rootScope.chatId}, function(chats) {
+          $scope.chatData = chats;
+          $scope.$broadcast('scroll.refreshComplete');
+          $ionicScrollDelegate.resize();
+          $ionicScrollDelegate.scrollBottom(true);
+        });
+      };
     });
