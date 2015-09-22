@@ -3,6 +3,7 @@ angular.module('neo.conversation.services', [])
     .run(function($rootScope, $ionicModal) {
       $ionicModal.fromTemplateUrl('js/modules/conversation/templates/chat.html', {
         animation: 'slide-in-up',
+        id: 'chat',
       }).then(function(modal) {
         $rootScope.chatModal = modal;
       });
@@ -19,9 +20,16 @@ angular.module('neo.conversation.services', [])
       return Resource('/conversations/:conversationId/messages/:messageLimit');
     })
     .controller('ChatShowCtrl', function($scope, $rootScope, Chats, $ionicScrollDelegate) {
-      $scope.$on('modal.shown', function() {
-        $scope.chatData = Chats.get({conversationId: $rootScope.chatId}, function () {});
-        console.log($scope.chatData);
+      $scope.$on('modal.shown', function(e, m) {
+        if (m.id == 'chat') {
+          $scope.refresh();
+        }
+      });
+
+      $scope.$on('modal.hidden', function(e, m) {
+        if (m.id == 'chat') {
+          $scope.chatData = {};
+        }
       });
 
       $scope.refresh = function() {
