@@ -41,4 +41,9 @@ angular.module('neo.conversation.services', [])
           $ionicScrollDelegate.scrollBottom(true);
         });
       };
+
+      $scope.postComment = function() {
+        $scope.refresh()
+        $scope.$parent.$$childHead.text = '';
+      };
     });
