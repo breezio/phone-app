@@ -18,6 +18,7 @@ angular.module('neo.post.services', [])
       });
     })
     .controller('CommentModalCtrl', function($scope, $rootScope, Notes, $ionicScrollDelegate) {
+      $scope.showUser = $rootScope.showUser;
       $scope.currentPost = $rootScope.currentPost;
       $scope.notes = [];
       $scope.$watch('currentPost.notes', function(val) {

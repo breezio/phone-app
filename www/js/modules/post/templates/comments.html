@@ -13,7 +13,7 @@
     <ion-list class="comments list">
       <ul class="padding">
         <li ng-repeat="note in notes">
-          <img ng-src="{{note.user.imagePath | staticurl}}" class="crop experts-crop">
+          <img ng-click="showUser(note.user.id)" ng-src="{{note.user.imagePath | staticurl}}" class="crop experts-crop">
           <p ng-bind-html="note.content"></p>
         </li>
       </ul>

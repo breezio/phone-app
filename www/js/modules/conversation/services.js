@@ -20,6 +20,7 @@ angular.module('neo.conversation.services', [])
       return Resource('/conversations/:conversationId/messages/:messageLimit');
     })
     .controller('ChatShowCtrl', function($scope, $rootScope, Chats, $ionicScrollDelegate) {
+      $scope.showUser = $rootScope.showUser;
       $scope.$on('modal.shown', function(e, m) {
         if (m.id == 'chat') {
           $scope.refresh();

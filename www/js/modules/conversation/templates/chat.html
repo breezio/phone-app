@@ -13,7 +13,7 @@
     <ion-list class="comments list">
       <ul class="padding">
         <li ng-repeat="chat in chatData.items">
-          <img ng-src="{{chatData.users[chat.sender].imagePath | staticurl}}" class="crop experts-crop">
+          <img ng-click="showUser(chat.sender)" ng-src="{{chatData.users[chat.sender].imagePath | staticurl}}" class="crop experts-crop">
           <p ng-bind-html="chat.message"></p>
         </li>
       </ul>
