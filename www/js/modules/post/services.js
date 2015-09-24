@@ -1,6 +1,18 @@
 angular.module('neo.post.services', [])
 
-    .run(function($rootScope, $ionicModal) {
+    .run(function($rootScope, $ionicModal, Posts) {
+      $rootScope.followPost = function(id, cb) {
+        Posts.subscribe({postId: id}, {type: 'notify,feed'}, function(ret) {
+          cb(ret);
+        });
+      };
+
+      $rootScope.unfollowPost = function(id, cb) {
+        Posts.unsubscribe({postId: id}, function(ret) {
+          cb(ret);
+        });
+      };
+
       $rootScope.currentPost = {
         post: null,
         notes: null,

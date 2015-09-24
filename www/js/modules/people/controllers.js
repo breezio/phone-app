@@ -33,14 +33,15 @@ angular.module('neo.people.controllers', [])
         });
       };
 
-      $scope.followUser = function(user) {
-        if (user.isFollowing) {
-          User.unsubscribe({userId: user.id}, function() {
-            user.isFollowing = false;
+      $scope.followUser = function(item) {
+        console.log(item);
+        if (item.isFollowing) {
+          User.unsubscribe({userId: item.id}, function() {
+            item.isFollowing = false;
           });
-        } else if (!user.isFollowing) {
-          User.subscribe({userId: user.id}, {type: 'notify,feed'}, function() {
-            user.isFollowing = true;
+        } else if (!item.isFollowing) {
+          User.subscribe({userId: item.id}, {type: 'notify,feed'}, function() {
+            item.isFollowing = true;
           });
         }
       };

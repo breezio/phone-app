@@ -59,11 +59,11 @@ angular.module('neo.post.controllers', [])
 
       $scope.followPost = function() {
         if ($scope.item.isFollowing) {
-          Posts.unsubscribe({postId: $scope.currentPost.post.id}, function() {
+          $rootScope.unfollowPost($scope.currentPost.post.id, function() {
             $scope.item.isFollowing = false;
           });
         } else if (!$scope.item.isFollowing) {
-          Posts.subscribe({postId: $scope.currentPost.post.id}, {type: 'notify,feed'}, function() {
+          $rootScope.followPost($scope.currentPost.post.id, function() {
             $scope.item.isFollowing = true;
           });
         }
