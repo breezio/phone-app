@@ -79,10 +79,21 @@ angular.module('neo.post.services', [])
       };
     })
     .factory('Posts', function(Resource) {
-      return Resource('/posts/:postId/:data');
+      var actions = {
+        subscribe: {
+          method: 'POST',
+          url: '/subscription/post/:postId'
+        },
+        unsubscribe: {
+          method: 'DELETE',
+          url: '/subscription/post/:postId'
+        }
+      };
+
+      return Resource('/posts/:postId/:data', {fields: 'isFollowing'}, actions);
     })
     .factory('Experts', function(Resource) {
-      return Resource('/posts/:postId/users/expert/:data');
+      return Resource('/posts/:postId/users/expert/:data', {fields: 'isFollowing'});
     })
     .factory('Notes', function(Resource) {
       var actions = {
@@ -92,7 +103,7 @@ angular.module('neo.post.services', [])
         },
       };
 
-      return Resource('/posts/:postId/notes', {}, actions);
+      return Resource('/posts/:postId/notes', {fields: 'isFollowing'}, actions);
     })
     .factory('Tags', function(Resource) {
       return Resource('/users/:userId/tags/:tagType');

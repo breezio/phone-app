@@ -23,8 +23,26 @@ angular.module('neo.people.controllers', [])
         $scope.start = undefined;
         User.queryFresh({query: $scope.searchKey, limit: $scope.limit}, function(data) {
           $scope.items = data;
+
+          for (var i = 0; i < $scope.items.length; i++) {
+            var item = $scope.items[i];
+            item.isFollowing = item.isFollowing != false ? true : false;
+          }
+
           $scope.$broadcast('scroll.refreshComplete');
         });
+      };
+
+      $scope.followUser = function(user) {
+        if (user.isFollowing) {
+          User.unsubscribe({userId: user.id}, function() {
+            user.isFollowing = false;
+          });
+        } else if (!user.isFollowing) {
+          User.subscribe({userId: user.id}, {type: 'notify,feed'}, function() {
+            user.isFollowing = true;
+          });
+        }
       };
 
       $scope.canLoadMore = function() {

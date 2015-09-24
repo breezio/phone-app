@@ -25,8 +25,8 @@
         </a>
 
         <div class="go item row">
-          <button class="button button-light col col-50" ng-click="">
-            Follow
+          <button class="button button-light col col-50" ng-click="followUser(item)">
+            <span ng-bind-html="(item.isFollowing ? 'Following' : 'Follow')"></span>
           </button>
           <button class="button button-light col col-50" ng-click="currentPost.commentModal.show()">
             Message

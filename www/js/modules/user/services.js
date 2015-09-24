@@ -4,15 +4,15 @@ angular.module('neo.user.services', ['http-auth-interceptor'])
     var actions = {
       subscribe: {
         method: 'POST',
-        url: '/subscription/post/:userId'
+        url: '/subscription/user/:userId'
       },
       unsubscribe: {
         method: 'DELETE',
-        url: '/subscription/post/:userId'
+        url: '/subscription/user/:userId'
       }
     };
 
-    return Resource('/users/:userId/:data', {}, actions);
+    return Resource('/users/:userId/:data', {fields: 'isFollowing'}, actions);
 	})
 
 	.service('Auth', function($http, Config, $localStorage, $rootScope, $location, $ionicLoading, $ionicModal, authService) {

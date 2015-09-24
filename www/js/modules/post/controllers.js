@@ -57,8 +57,21 @@ angular.module('neo.post.controllers', [])
       $scope.currentPost = $rootScope.currentPost;
       $scope.loggedIn = $rootScope.loggedIn;
 
+      $scope.followPost = function() {
+        if ($scope.item.isFollowing) {
+          Posts.unsubscribe({postId: $scope.currentPost.post.id}, function() {
+            $scope.item.isFollowing = false;
+          });
+        } else if (!$scope.item.isFollowing) {
+          Posts.subscribe({postId: $scope.currentPost.post.id}, {type: 'notify,feed'}, function() {
+            $scope.item.isFollowing = true;
+          });
+        }
+      };
+
       $scope.renderedHtml = '';
       $scope.item = Posts.get({postId: $stateParams.postId}, function() {
+        $scope.item.isFollowing = $scope.item.isFollowing != false ? true : false;
         $scope.currentPost.post = $scope.item;
 
         var html = '';

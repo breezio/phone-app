@@ -18,11 +18,25 @@ angular.module('neo.people.services', [])
       $scope.$on('modal.shown', function(e, m) {
         if (m.id == 'user') {
           $scope.tags = Tags.get({userId: $rootScope.userId}, function() {});
-          $scope.user = User.get({userId: $rootScope.userId}, function() {});
+          $scope.user = User.get({userId: $rootScope.userId}, function() {
+            $scope.user.isFollowing = $scope.user.isFollowing != false ? true : false;
+          });
         }
       });
 
       $scope.userModal = $rootScope.userModal;
+
+      $scope.followUser = function() {
+        if ($scope.user.isFollowing) {
+          User.unsubscribe({userId: $scope.user.id}, function() {
+            $scope.user.isFollowing = false;
+          });
+        } else if (!$scope.user.isFollowing) {
+          User.subscribe({userId: $scope.user.id}, {type: 'notify,feed'}, function() {
+            $scope.user.isFollowing = true;
+          });
+        }
+      };
     })
     .factory('People', function(Resource) {
       return null;
