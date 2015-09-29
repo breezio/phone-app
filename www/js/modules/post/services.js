@@ -116,7 +116,4 @@ angular.module('neo.post.services', [])
       };
 
       return Resource('/posts/:postId/notes', {fields: 'isFollowing'}, actions);
-    })
-    .factory('Tags', function(Resource) {
-      return Resource('/users/:userId/tags/:tagType');
     });

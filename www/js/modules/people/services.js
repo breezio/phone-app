@@ -24,6 +24,28 @@ angular.module('neo.people.services', [])
         }
       });
 
+      $scope.endorse = function(item) {
+        if (item.endorsed) {
+          Tags.unendorse({userId: $rootScope.userId, tagId: item.id}, {}, function(ret) {
+            item.score = ret.score;
+            if (ret.approved) {
+              item.endorsed = false;
+            }
+          });
+        } else if (!item.endorsed) {
+          Tags.endorse({userId: $rootScope.userId, tagId: item.id}, {
+            id: item.id,
+            tagId: item.id,
+            resourceId: $rootScope.userId
+          }, function(ret) {
+            item.score = ret.score;
+            if (ret.approved) {
+              item.endorsed = true;
+            }
+          });
+        }
+      };
+
       $scope.userModal = $rootScope.userModal;
 
       $scope.followUser = function() {
@@ -38,6 +60,17 @@ angular.module('neo.people.services', [])
         }
       };
     })
-    .factory('People', function(Resource) {
-      return null;
+    .factory('Tags', function(Resource) {
+      var actions = {
+        endorse: {
+          method: 'PUT',
+          url: '/users/:userId/tags/:tagId/endorsements'
+        },
+        unendorse: {
+          method: 'DELETE',
+          url: '/users/:userId/tags/:tagId/endorsements'
+        },
+      };
+
+      return Resource('/users/:userId/tags/:tagType', {}, actions);
     });

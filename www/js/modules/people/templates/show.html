@@ -38,7 +38,7 @@
       <div class="tags content item">
         <div>
           <div class="tag button-bar" ng-repeat="skill in tags.items.skill">
-            <a class="button button-royal">{{skill.score}}</a>
+            <a class="button" ng-class="{'button-royal': !skill.endorsed, 'button-assertive': skill.endorsed}" ng-click="endorse(skill)">{{skill.score}}</a>
             <a class="button button-stable">{{skill.name}}</a>
           </div>
         </div>
@@ -50,7 +50,7 @@
       <div class="tags content item">
         <div>
           <div class="tag button-bar" ng-repeat="work in tags.items.work">
-            <a class="button button-royal">{{work.score}}</a>
+            <a class="button" ng-class="{'button-royal': !work.endorsed, 'button-assertive': work.endorsed}" ng-click="endorse(work)">{{work.score}}</a>
             <a class="button button-stable">{{work.name}}</a>
           </div>
         </div>
@@ -62,7 +62,7 @@
       <div class="tags content item">
         <div>
           <div class="tag button-bar" ng-repeat="education in tags.items.education">
-            <a class="button button-royal">{{education.score}}</a>
+            <a class="button" ng-class="{'button-royal': !education.endorsed, 'button-assertive': education.endorsed}" ng-click="endorse(education)">{{education.score}}</a>
             <a class="button button-stable">{{education.name}}</a>
           </div>
         </div>
