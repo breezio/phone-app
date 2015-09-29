@@ -5,6 +5,7 @@ angular.module('neo.conversation.controllers', [])
       $scope.doneLoading = false;
 
       $scope.refresh = function() {
+        $rootScope.cacheFactory.removeAll();
         $scope.start = undefined;
         Conversations.query(function(data) {
           $scope.items = data;

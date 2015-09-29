@@ -34,6 +34,7 @@ angular.module('neo.conversation.services', [])
       });
 
       $scope.refresh = function() {
+        $rootScope.cacheFactory.removeAll();
         Chats.get({conversationId: $rootScope.chatId}, function(chats) {
           $scope.chatData = chats;
           $scope.$broadcast('scroll.refreshComplete');

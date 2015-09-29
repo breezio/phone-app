@@ -64,6 +64,7 @@ angular.module('neo.post.services', [])
       };
 
       $scope.refreshComments = function() {
+        $rootScope.cacheFactory.removeAll();
         Notes.get({postId: $scope.currentPost.post.id}, function(notes) {
           $scope.currentPost.notes = notes;
           $scope.$broadcast('scroll.refreshComplete');

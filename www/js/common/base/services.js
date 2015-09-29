@@ -1,4 +1,7 @@
 angular.module('neo.base', ['ngResource'])
+    .run(function($rootScope, $cacheFactory) {
+      $rootScope.cacheFactory = $cacheFactory();
+    })
     .factory('Config', function() {
       var config = {
           baseUrl: 'https://health.breezio.com',
@@ -27,13 +30,13 @@ angular.module('neo.base', ['ngResource'])
       };
     })
 
-    .factory('Resource', function($resource, Config) {
+    .factory('Resource', function($resource, $rootScope, Config) {
       return function(url, params, methods) {
 
         defaults = {
           query: {
             isArray: true,
-            cache: false,
+            cache: $rootScope.cacheFactory,
             transformResponse: function(data) {
               data = angular.fromJson(data);
               if (data) {
@@ -44,7 +47,7 @@ angular.module('neo.base', ['ngResource'])
           },
           get: {
             // TODO: check if disabling caching is okay
-            cache: false,
+            cache: $rootScope.cacheFactory,
           },
         };
 
