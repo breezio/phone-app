@@ -46,7 +46,6 @@ angular.module('neo.base', ['ngResource'])
             },
           },
           get: {
-            // TODO: check if disabling caching is okay
             cache: $rootScope.cacheFactory,
           },
         };
