@@ -49,10 +49,31 @@
 	border-radius:.75rem;
 }
 
+.content strong {
+  color: black;
+}
+
+.content a, a:hover, .content a:focus {
+  color: #428BCA;
+  text-decoration: none;
+}
+
+.content em {
+  font-style: italic;
+}
+
+.content h2 {
+  line-height: 1.75em;
+  font-size: 26px;
+  font-weight: bold;
+}
+
 .content p {
   text-overflow: clip;
   white-space: normal;
   margin-bottom: 15px;
+  font-size: 18px;
+  line-height: 1.5em;
 }
 
 .content ul {
