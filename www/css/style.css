@@ -53,7 +53,7 @@
   color: black;
 }
 
-.content a, a:hover, .content a:focus {
+.content a, .content a:hover, .content a:focus {
   color: #428BCA;
   text-decoration: none;
 }
@@ -76,8 +76,7 @@
   line-height: 1.5em;
 }
 
-.content ul {
-  list-style: disc;
+.content ul, .content ol {
   margin: 5px 20px;
   font-size: 14px;
 }

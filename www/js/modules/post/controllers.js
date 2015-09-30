@@ -87,12 +87,12 @@ angular.module('neo.post.controllers', [])
                                  .replace('%a', blurb.headingType);
             html += h;
           } else if (blurb.type == 'list') {
-            var u = '<ul>';
+            var u = '<ol>';
             for (var i in blurb.items) {
               var item = blurb.items[i];
               u += '<li>' + item + '</li>';
             }
-            u += '</ul>';
+            u += '</ol>';
             html += u;
           } else if (blurb.type == 'code') {
             var c = '<pre>' + blurb.content + '</pre>';
