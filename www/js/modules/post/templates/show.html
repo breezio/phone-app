@@ -40,6 +40,22 @@
       </div>
 
       <div class="item item-divider">
+        Tags
+      </div>
+      <div class="tags content item">
+        <div>
+          <div class="tag button-bar" ng-repeat="skill in tags.items.topic">
+            <a class="button" ng-class="{'button-royal': !skill.endorsed, 'button-assertive': skill.endorsed}" ng-click="endorse(skill)">{{skill.score}}</a>
+            <a class="button button-stable">{{skill.name}}</a>
+          </div>
+          <div class="tag button-bar" ng-repeat="skill in tags.items.skill">
+            <a class="button" ng-class="{'button-royal': !skill.endorsed, 'button-assertive': skill.endorsed}" ng-click="endorse(skill)">{{skill.score}}</a>
+            <a class="button button-stable">{{skill.name}}</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="item item-divider">
         Article
       </div>
       <div class="content item" ng-bind-html="renderedHtml">

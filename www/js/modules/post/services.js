@@ -117,4 +117,18 @@ angular.module('neo.post.services', [])
       };
 
       return Resource('/posts/:postId/notes', {fields: 'isFollowing'}, actions);
+    })
+    .factory('PostTags', function(Resource) {
+      var actions = {
+        endorse: {
+          method: 'PUT',
+          url: '/posts/:postId/tags/:tagId/endorsements'
+        },
+        unendorse: {
+          method: 'DELETE',
+          url: '/posts/:postId/tags/:tagId/endorsements'
+        },
+      };
+
+      return Resource('/posts/:postId/tags/:tagType', {}, actions);
     });

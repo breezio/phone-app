@@ -13,11 +13,11 @@ angular.module('neo.people.services', [])
         $rootScope.userModal.show();
       };
     })
-    .controller('PeopleShowCtrl', function($scope, $rootScope, User, Tags) {
+    .controller('PeopleShowCtrl', function($scope, $rootScope, User, UserTags) {
       $scope.loggedIn = $rootScope.loggedIn;
       $scope.$on('modal.shown', function(e, m) {
         if (m.id == 'user') {
-          $scope.tags = Tags.get({userId: $rootScope.userId}, function() {});
+          $scope.tags = UserTags.get({userId: $rootScope.userId}, function() {});
           $scope.user = User.get({userId: $rootScope.userId}, function() {
             $scope.user.isFollowing = $scope.user.isFollowing != false ? true : false;
           });
@@ -26,14 +26,14 @@ angular.module('neo.people.services', [])
 
       $scope.endorse = function(item) {
         if (item.endorsed) {
-          Tags.unendorse({userId: $rootScope.userId, tagId: item.id}, {}, function(ret) {
+          UserTags.unendorse({userId: $rootScope.userId, tagId: item.id}, {}, function(ret) {
             item.score = ret.score;
             if (ret.approved) {
               item.endorsed = false;
             }
           });
         } else if (!item.endorsed) {
-          Tags.endorse({userId: $rootScope.userId, tagId: item.id}, {
+          UserTags.endorse({userId: $rootScope.userId, tagId: item.id}, {
             id: item.id,
             tagId: item.id,
             resourceId: $rootScope.userId
@@ -60,7 +60,7 @@ angular.module('neo.people.services', [])
         }
       };
     })
-    .factory('Tags', function(Resource) {
+    .factory('UserTags', function(Resource) {
       var actions = {
         endorse: {
           method: 'PUT',
