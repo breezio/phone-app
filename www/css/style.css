@@ -64,7 +64,7 @@
 
 .content h2 {
   line-height: 1.75em;
-  font-size: 26px;
+  font-size: 24px;
   font-weight: bold;
 }
 
@@ -72,7 +72,7 @@
   text-overflow: clip;
   white-space: normal;
   margin-bottom: 15px;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1.5em;
 }
 
