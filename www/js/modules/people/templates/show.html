@@ -32,38 +32,44 @@
         <p>{{user.bio}}</p>
       </div>
 
-      <div class="item item-divider">
-        Skills
-      </div>
-      <div class="tags content item">
-        <div>
-          <div class="tag button-bar" ng-repeat="skill in tags.items.skill">
-            <a class="button" ng-class="{'button-royal': !skill.endorsed, 'button-assertive': skill.endorsed}" ng-click="endorse(skill)">{{skill.score}}</a>
-            <a class="button button-stable">{{skill.name}}</a>
+      <div ng-hide="!tags.items.skill">
+        <div class="item item-divider">
+          Skills
+        </div>
+        <div class="tags content item">
+          <div>
+            <div class="tag button-bar" ng-repeat="skill in tags.items.skill">
+              <a class="button" ng-class="{'button-royal': !skill.endorsed, 'button-assertive': skill.endorsed}" ng-click="endorse(skill)">{{skill.score}}</a>
+              <a class="button button-stable">{{skill.name}}</a>
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="item item-divider">
-        Work Experience
-      </div>
-      <div class="tags content item">
-        <div>
-          <div class="tag button-bar" ng-repeat="work in tags.items.work">
-            <a class="button" ng-class="{'button-royal': !work.endorsed, 'button-assertive': work.endorsed}" ng-click="endorse(work)">{{work.score}}</a>
-            <a class="button button-stable">{{work.name}}</a>
+      <div ng-hide="!tags.items.work">
+        <div class="item item-divider">
+          Work Experience
+        </div>
+        <div class="tags content item">
+          <div>
+            <div class="tag button-bar" ng-repeat="work in tags.items.work">
+              <a class="button" ng-class="{'button-royal': !work.endorsed, 'button-assertive': work.endorsed}" ng-click="endorse(work)">{{work.score}}</a>
+              <a class="button button-stable">{{work.name}}</a>
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="item item-divider">
-        Education
-      </div>
-      <div class="tags content item">
-        <div>
-          <div class="tag button-bar" ng-repeat="education in tags.items.education">
-            <a class="button" ng-class="{'button-royal': !education.endorsed, 'button-assertive': education.endorsed}" ng-click="endorse(education)">{{education.score}}</a>
-            <a class="button button-stable">{{education.name}}</a>
+      <div ng-hide="!tags.items.education">
+        <div class="item item-divider">
+          Education
+        </div>
+        <div class="tags content item">
+          <div>
+            <div class="tag button-bar" ng-repeat="education in tags.items.education">
+              <a class="button" ng-class="{'button-royal': !education.endorsed, 'button-assertive': education.endorsed}" ng-click="endorse(education)">{{education.score}}</a>
+              <a class="button button-stable">{{education.name}}</a>
+            </div>
           </div>
         </div>
       </div>
