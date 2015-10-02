@@ -150,7 +150,7 @@
   margin: 0px;
 }
 
-.go button {
+.go button, .go a{
   border-width: 0px;
 }
 

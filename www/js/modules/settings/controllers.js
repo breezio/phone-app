@@ -6,4 +6,6 @@ angular.module('neo.settings.controllers', [])
       $scope.showUser = $rootScope.showUser;
       $scope.showLogin = Auth.showLogin;
       $scope.logout = Auth.logout;
+    })
+    .controller('ProfileCtrl', function($scope, $rootScope, Auth) {
     });

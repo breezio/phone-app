@@ -10,5 +10,14 @@ angular.module('neo.settings',['neo.settings.controllers','neo.settings.services
                   controller: 'SettingsCtrl',
                 },
               },
+            })
+            .state('tab.editProfile', {
+              url: '/settings/profile',
+              views: {
+                'tab-settings': {
+                  templateUrl: 'js/modules/settings/templates/profile.html',
+                  controller: 'ProfileCtrl',
+                },
+              },
             });
     });
