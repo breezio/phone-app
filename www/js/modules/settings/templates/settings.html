@@ -28,10 +28,19 @@
 
       <!-- logged out -->
       <div ng-hide="loggedIn">
-        <ion-item ng-click="showLogin()">
-          Sign In
+        <ion-item class="go item row">
+          <button class="button button-light col col-50" ng-click="showLogin()">
+            Sign In
+          </button>
+          <button class="button button-light col col-50" ng-click="">
+            Sign Up
+          </button>
         </ion-item>
       </div>
+
+      <ion-item class="item item-divider">
+        Notifications
+      </ion-item>
     </ion-list>
   </ion-content>
 </ion-view>

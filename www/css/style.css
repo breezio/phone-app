@@ -145,6 +145,11 @@
   margin-left: 10px;
 }
 
+.go {
+  padding: 0px;
+  margin: 0px;
+}
+
 .go button {
   border-width: 0px;
 }
