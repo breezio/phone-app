@@ -5,4 +5,29 @@
       <h2 class="title">Sign Up</h2>
     </div>
   </ion-header-bar>
+  <ion-content>
+    <form ng-submit="register(registerForm)">
+      <div class="list">
+        <label class="item item-input">
+          <span class="input-label">Username</span>
+          <input placeholder="Username" ng-model="registerForm.username" type="text" />
+        </label>
+        <label class="item item-input">
+          <span class="input-label">Email</span>
+          <input placeholder="Email" ng-model="registerForm.email" type="email" />
+        </label>
+        <label class="item item-input">
+          <span class="input-label">Password</span>
+          <input placeholder="Password" ng-model="registerForm.password" type="password" />
+        </label>
+        <label class="item item-input">
+          <span class="input-label">Verify Password</span>
+          <input placeholder="Password" ng-model="registerForm.verifyPassword" type="password" />
+        </label>
+      </div>
+      <div class="padding">
+        <input class="button button-block button-positive" type="submit" value="Login" />
+      </div>
+    </form>
+  </ion-content>
 </ion-modal-view>
