@@ -1,5 +1,49 @@
 <ion-view title="Profile">
   <ion-content class="padding">
-    asdf
+    <form ng-submit="updateProfile(data)">
+      <div class="profile-list list">
+        <label class="no-edit item item-input">
+          <span class="input-label">Email</span>
+          <input ng-model="data.email" type="email" />
+        </label>
+        <label class="item item-input">
+          <span class="input-label">Username</span>
+          <input ng-model="data.username" type="text" />
+        </label>
+        <label class="item item-input">
+          <span class="input-label">First Name</span>
+          <input ng-model="data.firstName" type="text" />
+        </label>
+        <label class="item item-input">
+          <span class="input-label">Last Name</span>
+          <input ng-model="data.lastName" type="text" />
+        </label>
+        <label class="item item-input">
+          <span class="input-label">Title</span>
+          <input ng-model="data.title" type="text" />
+        </label>
+        <label class="item item-input item-select">
+          <div class="input-label">
+            Gender
+          </div>
+          <select ng-model="data.gender">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
+        </label>
+        <label class="item item-input">
+          <span class="input-label">Website</span>
+          <input ng-model="data.website" type="url" />
+        </label>
+        <label class="item item-input">
+          <span class="input-label">Bio</span>
+          <input ng-model="data.website" type="text" />
+        </label>
+      </div>
+      <div class="padding">
+        <input class="button button-block button-positive" type="submit" value="Update Profile" />
+      </div>
+    </form>
   </ion-content>
 </ion-view>

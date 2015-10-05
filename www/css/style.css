@@ -6,6 +6,15 @@
  bottom:0 !important;
 }
 
+.no-edit input[readonly]{
+  background-color: inherit;
+  color: black;
+}
+
+.profile-list label input {
+  text-align: right;
+}
+
 .messages {
 	margin:0;
 	padding:0;
