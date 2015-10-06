@@ -6,7 +6,7 @@
  bottom:0 !important;
 }
 
-.no-edit input[readonly]{
+.no-edit input[disabled]{
   background-color: inherit;
   color: black;
 }

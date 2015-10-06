@@ -9,6 +9,11 @@ angular.module('neo.user.services', ['http-auth-interceptor'])
       unsubscribe: {
         method: 'DELETE',
         url: '/subscription/user/:userId'
+      },
+      update: {
+        method: 'PUT',
+        url: '/users/:userId',
+        cache: false
       }
     };
 
