@@ -86,9 +86,8 @@ angular.module('neo', ['ionic', 'ngStorage', 'ngCordova.plugins', 'neo.base', 'n
 })
 
 .controller('TabCtrl', function($scope, $rootScope, $ionicTabsDelegate) {
-  $scope.loggedIn = false;
-  $rootScope.$watch('currentUser', function(val) {
-    $scope.loggedIn = val != false ? true : false;
+  $rootScope.$watch('loggedIn', function(val) {
+    $scope.loggedIn = val;
   });
 
   $scope.selectTab = function(href) {

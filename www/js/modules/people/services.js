@@ -14,7 +14,10 @@ angular.module('neo.people.services', [])
       };
     })
     .controller('PeopleShowCtrl', function($scope, $rootScope, User, UserTags) {
-      $scope.loggedIn = $rootScope.loggedIn;
+      $rootScope.$watch('loggedIn', function(val) {
+        $scope.loggedIn = val;
+      });
+
       $scope.$on('modal.shown', function(e, m) {
         if (m.id == 'user') {
           $scope.tags = UserTags.get({userId: $rootScope.userId}, function() {});

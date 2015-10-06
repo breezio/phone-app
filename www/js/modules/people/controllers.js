@@ -1,6 +1,10 @@
 angular.module('neo.people.controllers', [])
 
     .controller('PeopleListCtrl', function($scope, $rootScope, User) {
+      $rootScope.$watch('loggedIn', function(val) {
+        $scope.loggedIn = val;
+      });
+
       $scope.showUser = $rootScope.showUser;
 
       $scope.searchKey = '';

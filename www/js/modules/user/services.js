@@ -22,10 +22,6 @@ angular.module('neo.user.services', ['http-auth-interceptor'])
   this.refreshingToken = false;
   window._Auth = this;
 
-  $rootScope.$watch('currentUser', function(val) {
-    $rootScope.loggedIn = $rootScope.currentUser != false ? true : false;
-  });
-
   this.init = function() {
 
     $rootScope.$on('event:auth-loginRequired', function(e, rejection) {
@@ -99,6 +95,7 @@ angular.module('neo.user.services', ['http-auth-interceptor'])
     };
 
     $rootScope.currentUser = self.user = $localStorage.user = response.user;
+    $rootScope.loggedIn = true;
     $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.auth.access_token;
     authService.loginConfirmed(response, function(config) {
       config.headers.Authorization = 'Bearer ' + $localStorage.auth.access_token
@@ -125,6 +122,7 @@ angular.module('neo.user.services', ['http-auth-interceptor'])
 
   this.reset = function() {
     $rootScope.currentUser = self.user = false;
+    $rootScope.loggedIn = false;
     delete $localStorage.user;
     delete $localStorage.auth;
     delete $http.defaults.headers.common.Authorization;

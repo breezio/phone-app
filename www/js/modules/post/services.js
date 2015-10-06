@@ -30,6 +30,10 @@ angular.module('neo.post.services', [])
       });
     })
     .controller('CommentModalCtrl', function($scope, $rootScope, Notes, $ionicScrollDelegate) {
+      $rootScope.$watch('loggedIn', function(val) {
+        $scope.loggedIn = val;
+      });
+
       $scope.showUser = $rootScope.showUser;
       $scope.currentPost = $rootScope.currentPost;
       $scope.notes = [];
@@ -45,7 +49,6 @@ angular.module('neo.post.services', [])
         }
       });
 
-      $scope.$parent.$$childHead.currentUser = $rootScope.currentUser;
       $scope.postComment = function() {
         Notes.post({postId: $scope.currentPost.post.id}, {
           itemId: $scope.currentPost.post.id,
