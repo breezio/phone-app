@@ -1,0 +1,15 @@
+<ion-modal-view ng-controller="TagModalCtrl">
+  <ion-header-bar class="bar-positive">
+    <div class="buttons">
+      <button class="button button-clear" ng-click="modal.hide()"><i class="icon ion-ios7-close-empty"></i> Close</button>
+      <h2 class="title">{{tag.name}}</h2>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+		<ion-list>
+		  <ion-item ng-repeat="post in posts" ng-click="showPost(post.id)">
+		    {{post.title}}
+		  </ion-item>
+		</ion-list>
+	</ion-content>
+</ion-modal-view>

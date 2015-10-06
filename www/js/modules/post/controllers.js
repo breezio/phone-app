@@ -54,6 +54,7 @@ angular.module('neo.post.controllers', [])
     })
     .controller('PostShowCtrl', function($scope, $rootScope, $stateParams, Posts, Experts, Notes, PostTags) {
       $scope.showUser = $rootScope.showUser;
+      $scope.showTag = $rootScope.showTag;
       $scope.currentPost = $rootScope.currentPost;
       $scope.loggedIn = $rootScope.loggedIn;
 

@@ -28,6 +28,18 @@ angular.module('neo.post.services', [])
 
         $rootScope.currentPost.commentModal = modal;
       });
+
+      $ionicModal.fromTemplateUrl('js/modules/post/templates/tag.html', {
+        animation: 'slide-in-up',
+        id: 'tag',
+      }).then(function(modal) {
+        $rootScope.tagModal = modal;
+      });
+
+      $rootScope.showTag = function(id, name) {
+        $rootScope.tag = {id: id, name: name};
+        $rootScope.tagModal.show();
+      };
     })
     .controller('CommentModalCtrl', function($scope, $rootScope, Notes, $ionicScrollDelegate) {
       $rootScope.$watch('loggedIn', function(val) {
@@ -74,6 +86,24 @@ angular.module('neo.post.services', [])
           $ionicScrollDelegate.resize();
           $ionicScrollDelegate.scrollBottom(true);
         });
+      };
+    })
+    .controller('TagModalCtrl', function($scope, $rootScope, Posts) {
+      $scope.$on('modal.shown', function(e, m) {
+        if (m.id == 'tag') {
+          $scope.tag = $rootScope.tag;
+
+          $scope.posts = Posts.query({
+            start: $scope.start,
+            limit: $scope.limit,
+            tags: $scope.tag.id
+          });
+        }
+      });
+
+      $scope.showPost = function(id) {
+        $scope.modal.hide();
+        window.location.hash = '#/tab/posts/' + id;
       };
     })
     .filter('created', function() {
