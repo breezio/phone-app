@@ -7,7 +7,7 @@
   </ion-header-bar>
   <ion-content>
 		<ion-list>
-		  <ion-item ng-repeat="post in posts" ng-click="showPost(post.id)">
+		  <ion-item ng-hide="currentPost.post.id == post.id" ng-repeat="post in posts" ng-click="showPost(post.id)">
 		    {{post.title}}
 		  </ion-item>
 		</ion-list>

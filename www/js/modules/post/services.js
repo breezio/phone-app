@@ -92,7 +92,8 @@ angular.module('neo.post.services', [])
       $scope.$on('modal.shown', function(e, m) {
         if (m.id == 'tag') {
           $scope.tag = $rootScope.tag;
-
+          $scope.currentPost = $rootScope.currentPost;
+          console.log($scope.currentPost)
           $scope.posts = Posts.query({
             start: $scope.start,
             limit: $scope.limit,
