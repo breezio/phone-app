@@ -12,8 +12,22 @@ angular.module('neo.people.services', [])
         $rootScope.userId = id;
         $rootScope.userModal.show();
       };
+
+      $ionicModal.fromTemplateUrl('js/modules/people/templates/tag.html', {
+        animation: 'slide-in-up',
+        id: 'usertag',
+      }).then(function(modal) {
+        $rootScope.userTagModal = modal;
+      });
+
+      $rootScope.showUserTag = function(id, name) {
+        $rootScope.tag = {id, name};
+        $rootScope.userTagModal.show();
+      };
     })
     .controller('PeopleShowCtrl', function($scope, $rootScope, User, UserTags) {
+      $scope.showTag = $rootScope.showUserTag;
+
       $rootScope.$watch('loggedIn', function(val) {
         $scope.loggedIn = val;
       });
@@ -62,6 +76,19 @@ angular.module('neo.people.services', [])
           });
         }
       };
+    })
+    .controller('UserTagModalCtrl', function($scope, $rootScope, User) {
+      $scope.showUser = function(id) {
+        $rootScope.showUser(id);
+        $scope.modal.hide();
+      };
+
+      $scope.$on('modal.shown', function(e, m) {
+        if (m.id == 'usertag') {
+          $scope.tag = $rootScope.tag;
+          $scope.users = User.query({tags: $scope.tag.id});
+        }
+      });
     })
     .factory('UserTags', function(Resource) {
       var actions = {

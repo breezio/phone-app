@@ -50,7 +50,7 @@
           </div>
           <div class="tag button-bar" ng-repeat="skill in tags.items.skill">
             <a class="button" ng-class="{'button-royal': !skill.endorsed, 'button-assertive': skill.endorsed}" ng-click="endorse(skill)">{{skill.score}}</a>
-            <a class="button button-stable">{{skill.name}}</a>
+            <a class="button button-stable" ng-click="showTag(skill.id, skill.name)">{{skill.name}}</a>
           </div>
         </div>
       </div>

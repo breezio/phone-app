@@ -31,14 +31,14 @@ angular.module('neo.post.services', [])
 
       $ionicModal.fromTemplateUrl('js/modules/post/templates/tag.html', {
         animation: 'slide-in-up',
-        id: 'tag',
+        id: 'posttag',
       }).then(function(modal) {
-        $rootScope.tagModal = modal;
+        $rootScope.postTagModal = modal;
       });
 
-      $rootScope.showTag = function(id, name) {
+      $rootScope.showPostTag = function(id, name) {
         $rootScope.tag = {id: id, name: name};
-        $rootScope.tagModal.show();
+        $rootScope.postTagModal.show();
       };
     })
     .controller('CommentModalCtrl', function($scope, $rootScope, Notes, $ionicScrollDelegate) {
@@ -88,12 +88,11 @@ angular.module('neo.post.services', [])
         });
       };
     })
-    .controller('TagModalCtrl', function($scope, $rootScope, Posts) {
+    .controller('PostTagModalCtrl', function($scope, $rootScope, Posts) {
       $scope.$on('modal.shown', function(e, m) {
-        if (m.id == 'tag') {
+        if (m.id == 'posttag') {
           $scope.tag = $rootScope.tag;
           $scope.currentPost = $rootScope.currentPost;
-          console.log($scope.currentPost)
           $scope.posts = Posts.query({
             start: $scope.start,
             limit: $scope.limit,
