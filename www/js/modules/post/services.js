@@ -40,6 +40,18 @@ angular.module('neo.post.services', [])
         $rootScope.tag = {id: id, name: name};
         $rootScope.postTagModal.show();
       };
+
+      $ionicModal.fromTemplateUrl('js/modules/post/templates/filter.html', {
+        animation: 'slide-in-up',
+        id: 'postfilter',
+      }).then(function(modal) {
+        $rootScope.postFilterModal = modal;
+      });
+
+      $rootScope.postFilters = {};
+      $rootScope.showPostFilter = function() {
+        $rootScope.postFilterModal.show();
+      };
     })
     .controller('CommentModalCtrl', function($scope, $rootScope, Notes, $ionicScrollDelegate) {
       $rootScope.$watch('loggedIn', function(val) {

@@ -1,6 +1,7 @@
 angular.module('neo.post.controllers', [])
 
-    .controller('PostListCtrl', function($scope, Posts, Auth) {
+    .controller('PostListCtrl', function($scope, $rootScope, Posts, Auth) {
+      $scope.showFilter = $rootScope.showPostFilter;
 
       $scope.searchKey = '';
       $scope.start = undefined;

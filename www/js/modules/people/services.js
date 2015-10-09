@@ -24,6 +24,18 @@ angular.module('neo.people.services', [])
         $rootScope.tag = {id, name};
         $rootScope.userTagModal.show();
       };
+
+      $ionicModal.fromTemplateUrl('js/modules/people/templates/filter.html', {
+        animation: 'slide-in-up',
+        id: 'userfilter',
+      }).then(function(modal) {
+        $rootScope.userFilterModal = modal;
+      });
+
+      $rootScope.userFilters = {};
+      $rootScope.showUserFilter = function() {
+        $rootScope.userFilterModal.show();
+      };
     })
     .controller('PeopleShowCtrl', function($scope, $rootScope, User, UserTags) {
       $scope.showTag = $rootScope.showUserTag;

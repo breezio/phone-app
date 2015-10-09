@@ -1,6 +1,8 @@
 angular.module('neo.people.controllers', [])
 
     .controller('PeopleListCtrl', function($scope, $rootScope, User) {
+      $scope.showFilter = $rootScope.showUserFilter;
+
       $rootScope.$watch('loggedIn', function(val) {
         $scope.loggedIn = val;
       });
