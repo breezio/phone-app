@@ -53,6 +53,28 @@ angular.module('neo.post.services', [])
         $rootScope.postFilterModal.show();
       };
     })
+    .controller('PostFilterCtrl', function($scope, $rootScope, Tags) {
+      var categories = $scope.categories = [
+        ['project', 'Project'],
+        ['subject', 'Subject'],
+        ['work', 'Work'],
+        ['education', 'Education'],
+        ['skill', 'Skill'],
+        ['knownfor', 'Known For'],
+      ];
+
+      $scope.data = {};
+      $rootScope.postTagFilters = {};
+      $scope.$on('modal.shown', function(e, m) {
+        if (m.id == 'postfilter') {
+          categories.forEach(function(cat) {
+            Tags.get({tagType: cat[0]}, function(tags) {
+              $scope.data[cat[0]] = tags;
+            });
+          });
+        }
+      });
+    })
     .controller('CommentModalCtrl', function($scope, $rootScope, Notes, $ionicScrollDelegate) {
       $rootScope.$watch('loggedIn', function(val) {
         $scope.loggedIn = val;

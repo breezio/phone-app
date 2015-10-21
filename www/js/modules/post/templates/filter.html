@@ -1,4 +1,4 @@
-<ion-modal-view>
+<ion-modal-view ng-controller="PostFilterCtrl">
   <ion-header-bar class="bar-positive">
     <div class="buttons">
       <button class="button button-clear" ng-click="modal.hide()"><i class="icon ion-ios7-close-empty"></i> Close</button>
@@ -6,14 +6,13 @@
     </div>
   </ion-header-bar>
   <ion-content class="padding">
-    <div class="item item-divider">
-      Order
-    </div>
-    <div class="item item-divider">
-      Tags
-    </div>
-    <div class="item item-divider">
-      Author
+    <div ng-repeat="cat in categories">
+      <div class="item item-divider">
+        {{cat[1]}}
+      </div>
+      <ion-list>
+        <ion-item ng-repeat="tag in data[cat[0]].items">{{tag.name}}</ion-item>
+      </ion-list>
     </div>
   </ion-content>
 </ion-modal-view>
