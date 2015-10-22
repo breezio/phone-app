@@ -15,6 +15,37 @@
   text-align: right;
 }
 
+.filter-list {
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: inherit;
+  min-height: 77px;
+}
+
+.filter-list div {
+  line-height: 57px;
+}
+
+.filter {
+  max-height: 47px;
+  margin: 5px;
+  flex: auto;
+  padding: 0px 5px;
+}
+
+.scroll-wrapper:before {
+  content: '';
+  float: left;
+  height: 100%;
+  padding: 20px 0px;
+}
+
+.scroll-wrapper {
+  height: 100%;
+}
+
 .messages {
 	margin:0;
 	padding:0;

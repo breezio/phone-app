@@ -5,14 +5,23 @@
       <h2 class="title">Filters</h2>
     </div>
   </ion-header-bar>
-  <ion-content class="padding">
-    <div ng-repeat="cat in categories">
-      <div class="item item-divider">
-        {{cat[1]}}
-      </div>
-      <ion-list>
-        <ion-item ng-repeat="tag in data[cat[0]].items">{{tag.name}}</ion-item>
-      </ion-list>
+  <ion-content scroll="false">
+    <div class="item card filter-list">
+      <a class="filter button button-assertive" ng-repeat="tag in list" ng-click="removeFilter(tag)">{{tag.name}}</a>
+      <div ng-show="list.length < 1">Click on a filter to add it.</div>
+    </div>
+
+    <div class="scroll-wrapper">
+      <ion-scroll style="height: inherit">
+        <div ng-repeat="cat in categories" class="padding">
+          <div class="item item-divider">
+            {{cat[1]}}
+          </div>
+          <ion-list>
+            <ion-item ng-repeat="tag in data[cat[0]].items" ng-click="addFilter(tag)">{{tag.name}}</ion-item>
+          </ion-list>
+        </div>
+      </ion-scroll>
     </div>
   </ion-content>
 </ion-modal-view>

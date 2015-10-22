@@ -63,6 +63,18 @@ angular.module('neo.post.services', [])
         ['knownfor', 'Known For'],
       ];
 
+      $scope.addFilter = function(tag) {
+        if ($scope.list.indexOf(tag) == -1) {
+          $scope.list.push(tag);
+        }
+      };
+
+      $scope.removeFilter = function(tag) {
+        $scope.list.splice($scope.list.indexOf(tag), 1);
+      };
+
+      $scope.list = $rootScope.postFilterList = [];
+      console.log($scope.list);
       $scope.data = {};
       $rootScope.postTagFilters = {};
       $scope.$on('modal.shown', function(e, m) {
