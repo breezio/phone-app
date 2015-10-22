@@ -27,7 +27,11 @@ angular.module('neo.people.controllers', [])
 
       $scope.refresh = function() {
         $scope.start = undefined;
-        User.queryFresh({query: $scope.searchKey, limit: $scope.limit}, function(data) {
+        var tags = '';
+        $rootScope.userFilterList.forEach(function(val) {
+          tags += val.id + ',';
+        });
+        User.queryFresh({query: $scope.searchKey, limit: $scope.limit, tags: tags}, function(data) {
           $scope.items = data;
 
           for (var i = 0; i < $scope.items.length; i++) {
@@ -38,6 +42,10 @@ angular.module('neo.people.controllers', [])
           $scope.$broadcast('scroll.refreshComplete');
         });
       };
+
+      $rootScope.$watch('userFilterList.length', function(val) {
+        $scope.refresh();
+      });
 
       $scope.followUser = function(item) {
         console.log(item);
