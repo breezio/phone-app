@@ -74,9 +74,7 @@ angular.module('neo.post.services', [])
       };
 
       $scope.list = $rootScope.postFilterList = [];
-      console.log($scope.list);
       $scope.data = {};
-      $rootScope.postTagFilters = {};
       $scope.$on('modal.shown', function(e, m) {
         if (m.id == 'postfilter') {
           categories.forEach(function(cat) {

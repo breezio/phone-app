@@ -37,6 +37,38 @@ angular.module('neo.people.services', [])
         $rootScope.userFilterModal.show();
       };
     })
+    .controller('UserFilterCtrl', function($scope, $rootScope, Tags) {
+      var categories = $scope.categories = [
+        ['project', 'Project'],
+        ['subject', 'Subject'],
+        ['work', 'Work'],
+        ['education', 'Education'],
+        ['skill', 'Skill'],
+        ['knownfor', 'Known For'],
+      ];
+
+      $scope.addFilter = function(tag) {
+        if ($scope.list.indexOf(tag) == -1) {
+          $scope.list.push(tag);
+        }
+      };
+
+      $scope.removeFilter = function(tag) {
+        $scope.list.splice($scope.list.indexOf(tag), 1);
+      };
+
+      $scope.list = $rootScope.userFilterList = [];
+      $scope.data = {};
+      $scope.$on('modal.shown', function(e, m) {
+        if (m.id == 'userfilter') {
+          categories.forEach(function(cat) {
+            Tags.get({tagType: cat[0]}, function(tags) {
+              $scope.data[cat[0]] = tags;
+            });
+          });
+        }
+      });
+    })
     .controller('PeopleShowCtrl', function($scope, $rootScope, User, UserTags) {
       $scope.showTag = $rootScope.showUserTag;
 
