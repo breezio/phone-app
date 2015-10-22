@@ -20,12 +20,20 @@ angular.module('neo.post.controllers', [])
       };
 
       $scope.refresh = function() {
-        	$scope.start = undefined;
-        Posts.queryFresh({limit: $scope.limit}, function(data) {
+        $scope.start = undefined;
+        var tags = '';
+        $rootScope.postFilterList.forEach(function(val) {
+          tags += val.id + ',';
+        });
+        Posts.queryFresh({limit: $scope.limit, tags: tags}, function(data) {
           $scope.items = data;
           $scope.$broadcast('scroll.refreshComplete');
         });
       };
+
+      $rootScope.$watch('postFilterList.length', function(val) {
+        $scope.refresh();
+      });
 
       $scope.logout = function() {
         Auth.logout();
