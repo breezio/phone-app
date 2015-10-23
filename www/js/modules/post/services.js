@@ -16,7 +16,7 @@ angular.module('neo.post.services', [])
       $rootScope.currentPost = {
         post: null,
         notes: null,
-        experts: null
+        experts: null,
       };
 
       $ionicModal.fromTemplateUrl('js/modules/post/templates/comments.html', {
@@ -140,7 +140,7 @@ angular.module('neo.post.services', [])
           $scope.posts = Posts.query({
             start: $scope.start,
             limit: $scope.limit,
-            tags: $scope.tag.id
+            tags: $scope.tag.id,
           });
         }
       });
@@ -172,12 +172,12 @@ angular.module('neo.post.services', [])
       var actions = {
         subscribe: {
           method: 'POST',
-          url: '/subscription/post/:postId'
+          url: '/subscription/post/:postId',
         },
         unsubscribe: {
           method: 'DELETE',
-          url: '/subscription/post/:postId'
-        }
+          url: '/subscription/post/:postId',
+        },
       };
 
       return Resource('/posts/:postId/:data', {fields: 'isFollowing'}, actions);
@@ -199,11 +199,11 @@ angular.module('neo.post.services', [])
       var actions = {
         endorse: {
           method: 'PUT',
-          url: '/posts/:postId/tags/:tagId/endorsements'
+          url: '/posts/:postId/tags/:tagId/endorsements',
         },
         unendorse: {
           method: 'DELETE',
-          url: '/posts/:postId/tags/:tagId/endorsements'
+          url: '/posts/:postId/tags/:tagId/endorsements',
         },
       };
 

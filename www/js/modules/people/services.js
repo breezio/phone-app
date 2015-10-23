@@ -97,7 +97,7 @@ angular.module('neo.people.services', [])
           UserTags.endorse({userId: $rootScope.userId, tagId: item.id}, {
             id: item.id,
             tagId: item.id,
-            resourceId: $rootScope.userId
+            resourceId: $rootScope.userId,
           }, function(ret) {
             item.score = ret.score;
             if (ret.approved) {
@@ -138,11 +138,11 @@ angular.module('neo.people.services', [])
       var actions = {
         endorse: {
           method: 'PUT',
-          url: '/users/:userId/tags/:tagId/endorsements'
+          url: '/users/:userId/tags/:tagId/endorsements',
         },
         unendorse: {
           method: 'DELETE',
-          url: '/users/:userId/tags/:tagId/endorsements'
+          url: '/users/:userId/tags/:tagId/endorsements',
         },
       };
 

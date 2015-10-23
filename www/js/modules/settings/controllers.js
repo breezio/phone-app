@@ -19,8 +19,8 @@ angular.module('neo.settings.controllers', [])
                 default: {
                   digest: true,
                   group: false,
-                  time: "+1 second"
-                }
+                  time: '+1 second',
+                },
               },
               intro: {
                 interventions: {
@@ -28,11 +28,11 @@ angular.module('neo.settings.controllers', [])
                   content: 0,
                   invite: 0,
                   profile: 0,
-                  share: 0
+                  share: 0,
                 },
-                startup: 0
-              }
-            }
+                startup: 0,
+              },
+            },
           };
 
           $scope.data = angular.extend(user, config);

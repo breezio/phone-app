@@ -14,7 +14,7 @@ angular.module('neo.settings.services', [])
     })
     .controller('RegistrationCtrl', function($scope, $rootScope, Config, $http, $localStorage) {
       $scope.register = function(val) {
-        val.submit = "";
+        val.submit = '';
         $http.post(Config.baseUrl + '/user/register', val).success(function(res) {
           console.log(res);
           $scope.modal.hide();

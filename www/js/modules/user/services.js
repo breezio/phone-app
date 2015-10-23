@@ -1,23 +1,23 @@
 angular.module('neo.user.services', ['http-auth-interceptor'])
 
 	.factory('User', function(Resource) {
-    var actions = {
+  var actions = {
       subscribe: {
         method: 'POST',
-        url: '/subscription/user/:userId'
+        url: '/subscription/user/:userId',
       },
       unsubscribe: {
         method: 'DELETE',
-        url: '/subscription/user/:userId'
+        url: '/subscription/user/:userId',
       },
       update: {
         method: 'PUT',
         url: '/users/:userId',
-        cache: false
-      }
+        cache: false,
+      },
     };
 
-    return Resource('/users/:userId/:data', {fields: 'isFollowing'}, actions);
+  return Resource('/users/:userId/:data', {fields: 'isFollowing'}, actions);
 	})
 
 	.service('Auth', function($http, Config, $localStorage, $rootScope, $location, $ionicLoading, $ionicModal, authService) {

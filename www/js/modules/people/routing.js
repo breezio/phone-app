@@ -1,6 +1,6 @@
 angular.module('neo.people',['neo.people.controllers','neo.people.services'])
     .config(function($stateProvider) {
-      
+
       $stateProvider
             .state('tab.peopleList', {
               url: '/people',

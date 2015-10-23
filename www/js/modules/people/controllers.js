@@ -68,7 +68,7 @@ angular.module('neo.people.controllers', [])
         $scope.start = $scope.start || 0;
         $scope.start = $scope.start + $scope.limit;
         User.query({start: $scope.start, limit: $scope.limit}, function(data) {
-          if(data.length == 0) $scope.doneLoading = true;
+          if (data.length == 0) $scope.doneLoading = true;
           $scope.items = $scope.items.concat(data);
           $scope.$broadcast('scroll.infiniteScrollComplete');
         });

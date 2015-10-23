@@ -52,7 +52,7 @@ angular.module('neo.post.controllers', [])
         	$scope.start = $scope.start || 0;
         	$scope.start = $scope.start + $scope.limit;
         Posts.query({start: $scope.start, limit: $scope.limit}, function(data) {
-          if(data.length == 0) $scope.doneLoading = true;
+          if (data.length == 0) $scope.doneLoading = true;
           $scope.items = $scope.items.concat(data);
           $scope.$broadcast('scroll.infiniteScrollComplete');
         });
@@ -138,7 +138,7 @@ angular.module('neo.post.controllers', [])
           PostTags.endorse({postId: $stateParams.postId, tagId: item.id}, {
             id: item.id,
             tagId: item.id,
-            resourceId: $rootScope.userId
+            resourceId: $rootScope.userId,
           }, function(ret) {
             item.score = ret.score;
             if (ret.approved) {
