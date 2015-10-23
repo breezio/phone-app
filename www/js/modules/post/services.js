@@ -1,6 +1,6 @@
 angular.module('neo.post.services', [])
 
-    .run(function($rootScope, $ionicModal, Posts) {
+    .run(function($rootScope, Posts, ModalViews) {
       $rootScope.followPost = function(id, cb) {
         Posts.subscribe({postId: id}, {type: 'notify,feed'}, function(ret) {
           cb(ret);
@@ -19,39 +19,18 @@ angular.module('neo.post.services', [])
         experts: null,
       };
 
-      $ionicModal.fromTemplateUrl('js/modules/post/templates/comments.html', {
-        animation: 'slide-in-up',
-      }).then(function(modal) {
-        modal.scope.postComment = function() {
-          modal.scope.$$childHead.text = '';
-        };
+      ModalViews.register('postcomments', 'js/modules/post/templates/comments.html')
+        .then(function(modal) {
+          modal.scope.postComment = function() {
+            modal.scope.$$childHead.text = '';
+          };
+        });
 
-        $rootScope.currentPost.commentModal = modal;
-      });
+      ModalViews.register('posttag', 'js/modules/post/templates/tag.html');
 
-      $ionicModal.fromTemplateUrl('js/modules/post/templates/tag.html', {
-        animation: 'slide-in-up',
-        id: 'posttag',
-      }).then(function(modal) {
-        $rootScope.postTagModal = modal;
-      });
-
-      $rootScope.showPostTag = function(id, name) {
-        $rootScope.tag = {id: id, name: name};
-        $rootScope.postTagModal.show();
-      };
-
-      $ionicModal.fromTemplateUrl('js/modules/post/templates/filter.html', {
-        animation: 'slide-in-up',
-        id: 'postfilter',
-      }).then(function(modal) {
-        $rootScope.postFilterModal = modal;
-      });
 
       $rootScope.postFilters = {};
-      $rootScope.showPostFilter = function() {
-        $rootScope.postFilterModal.show();
-      };
+      ModalViews.register('postfilter', 'js/modules/post/templates/filter.html');
     })
     .controller('PostFilterCtrl', function($scope, $rootScope, Tags) {
       var categories = $scope.categories = [
@@ -90,7 +69,11 @@ angular.module('neo.post.services', [])
         $scope.loggedIn = val;
       });
 
-      $scope.showUser = $rootScope.showUser;
+      $scope.showUser = function(id) {
+        $rootScope.userId = id;
+        ModalViews.get('user').show();
+      };
+
       $scope.currentPost = $rootScope.currentPost;
       $scope.notes = [];
       $scope.$watch('currentPost.notes', function(val) {

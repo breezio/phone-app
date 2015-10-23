@@ -1,13 +1,18 @@
 angular.module('neo.people.controllers', [])
 
-    .controller('PeopleListCtrl', function($scope, $rootScope, User) {
-      $scope.showFilter = $rootScope.showUserFilter;
+    .controller('PeopleListCtrl', function($scope, $rootScope, User, ModalViews) {
+      $scope.showFilter = function() {
+        ModalViews.get('userfilter').show();
+      };
 
       $rootScope.$watch('loggedIn', function(val) {
         $scope.loggedIn = val;
       });
 
-      $scope.showUser = $rootScope.showUser;
+      $scope.showUser = function(id) {
+        $rootScope.userId = id;
+        ModalViews.get('user').show();
+      };
 
       $scope.searchKey = '';
       $scope.start = undefined;

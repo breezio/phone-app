@@ -1,7 +1,9 @@
 angular.module('neo.post.controllers', [])
 
-    .controller('PostListCtrl', function($scope, $rootScope, Posts, Auth) {
-      $scope.showFilter = $rootScope.showPostFilter;
+    .controller('PostListCtrl', function($scope, $rootScope, Posts, Auth, ModalViews) {
+      $scope.showFilter = function() {
+        ModalViews.get('postfilter').show();
+      };
 
       $scope.searchKey = '';
       $scope.start = undefined;
@@ -61,11 +63,24 @@ angular.module('neo.post.controllers', [])
 
       $scope.items = Posts.query({start: $scope.start, limit: $scope.limit});
     })
-    .controller('PostShowCtrl', function($scope, $rootScope, $stateParams, Posts, Experts, Notes, PostTags) {
-      $scope.showUser = $rootScope.showUser;
-      $scope.showTag = $rootScope.showPostTag;
+    .controller('PostShowCtrl', function($scope, $rootScope, $stateParams, Posts, Experts, Notes, PostTags, ModalViews) {
+
+      $scope.showUser = function(id) {
+        $rootScope.userId = id;
+        ModalViews.get('user').show();
+      };
+
+      $scope.showTag = function(id, name) {
+        $rootScope.tag = {id: id, name: name};
+        ModalViews.get('posttag').show();
+      };
+
       $scope.currentPost = $rootScope.currentPost;
       $scope.loggedIn = $rootScope.loggedIn;
+
+      $scope.showComments = function() {
+        ModalViews.get('postcomments').show();
+      };
 
       $scope.followPost = function() {
         if ($scope.item.isFollowing) {
@@ -148,10 +163,18 @@ angular.module('neo.post.controllers', [])
         }
       };
     })
-    .controller('UserExpertsCtrl', function($scope, $rootScope, $stateParams, Experts) {
+    .controller('UserExpertsCtrl', function($scope, $rootScope, $stateParams, Experts, ModalViews) {
       $scope.currentPost = $rootScope.currentPost;
       $scope.loggedIn = $rootScope.loggedIn;
-      $scope.showUser = $rootScope.showUser;
+
+      $scope.showComments = function() {
+        ModalViews.get('postcomments').show();
+      };
+
+      $scope.showUser = function(id) {
+        $rootScope.userId = id;
+        ModalViews.get('user').show();
+      };
     })
     .controller('CommentModalCtrl', function($scope, $rootScope, Notes, $ionicScrollDelegate) {
       $scope.currentPost = $rootScope.currentPost;

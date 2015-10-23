@@ -1,6 +1,6 @@
 <ion-view title="{{item.title}}">
   <ion-nav-buttons side="right">
-    <button class="button button-clear" ng-click="currentPost.commentModal.show()">
+    <button class="button button-clear" ng-click="showComments()">
       Comments
     </button>
   </ion-nav-buttons>
@@ -23,7 +23,7 @@
         <button class="button button-light col col-50" ng-click="followPost()">
           <span ng-bind-html="(item.isFollowing == true ? 'Following' : 'Follow')"></span>
         </button>
-        <button class="button button-light col col-50" ng-click="currentPost.commentModal.show()">
+        <button class="button button-light col col-50" ng-click="showComments()">
           Message
         </button>
       </div>

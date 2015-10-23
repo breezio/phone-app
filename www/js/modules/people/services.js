@@ -1,41 +1,10 @@
 angular.module('neo.people.services', [])
 
-    .run(function($rootScope, $ionicModal) {
-      $ionicModal.fromTemplateUrl('js/modules/people/templates/show.html', {
-        animation: 'slide-in-up',
-        id: 'user',
-      }).then(function(modal) {
-        $rootScope.userModal = modal;
-      });
-
-      $rootScope.showUser = function(id) {
-        $rootScope.userId = id;
-        $rootScope.userModal.show();
-      };
-
-      $ionicModal.fromTemplateUrl('js/modules/people/templates/tag.html', {
-        animation: 'slide-in-up',
-        id: 'usertag',
-      }).then(function(modal) {
-        $rootScope.userTagModal = modal;
-      });
-
-      $rootScope.showUserTag = function(id, name) {
-        $rootScope.tag = {id, name};
-        $rootScope.userTagModal.show();
-      };
-
-      $ionicModal.fromTemplateUrl('js/modules/people/templates/filter.html', {
-        animation: 'slide-in-up',
-        id: 'userfilter',
-      }).then(function(modal) {
-        $rootScope.userFilterModal = modal;
-      });
-
-      $rootScope.userFilters = {};
-      $rootScope.showUserFilter = function() {
-        $rootScope.userFilterModal.show();
-      };
+    .run(function($rootScope, ModalViews) {
+      $rootScope.userFilterList = [];
+      ModalViews.register('user', 'js/modules/people/templates/show.html');
+      ModalViews.register('usertag', 'js/modules/people/templates/tag.html');
+      ModalViews.register('userfilter', 'js/modules/people/templates/filter.html');
     })
     .controller('UserFilterCtrl', function($scope, $rootScope, Tags) {
       var categories = $scope.categories = [
@@ -69,8 +38,11 @@ angular.module('neo.people.services', [])
         }
       });
     })
-    .controller('PeopleShowCtrl', function($scope, $rootScope, User, UserTags) {
-      $scope.showTag = $rootScope.showUserTag;
+    .controller('PeopleShowCtrl', function($scope, $rootScope, User, UserTags, ModalViews) {
+      $scope.showTag = function(id, name) {
+        $rootScope.tag = {id, name};
+        ModalViews.get('usertag').show();
+      };
 
       $rootScope.$watch('loggedIn', function(val) {
         $scope.loggedIn = val;

@@ -1,6 +1,7 @@
 angular.module('neo', ['ionic', 'ngStorage', 'ngCordova.plugins', 'neo.base', 'neo.user', 'neo.settings', 'neo.post', 'neo.conversation', 'neo.question', 'neo.people', 'neo.tags'])
 
 .run(function($ionicPlatform, $state, $rootScope, $location, $ionicSideMenuDelegate, $http, $cordovaPush, $cordovaDevice, $cordovaGeolocation, Auth, Config) {
+
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -83,6 +84,36 @@ angular.module('neo', ['ionic', 'ngStorage', 'ngCordova.plugins', 'neo.base', 'n
 
   $urlRouterProvider.otherwise('/tab/posts');
 
+})
+
+.factory('ModalViews', function($ionicModal) {
+  var modalViews = {};
+  var funcs = {};
+  funcs.register = function(id, path) {
+    var callback = null;
+    $ionicModal.fromTemplateUrl(path, {
+      animation: 'slide-in-up',
+      id: id,
+    }).then(function(modal) {
+      modalViews[id] = modal;
+      if (callback != null) {
+        callback(modal);
+      }
+    });
+
+    var after = {
+      then: function(cb) {
+        callback = cb;
+      },
+    };
+    return after;
+  };
+
+  funcs.get = function(id) {
+    return modalViews[id];
+  };
+
+  return funcs;
 })
 
 .controller('TabCtrl', function($scope, $rootScope, $ionicTabsDelegate) {

@@ -1,12 +1,19 @@
 angular.module('neo.settings.controllers', [])
 
-    .controller('SettingsCtrl', function($scope, $rootScope, Auth) {
+    .controller('SettingsCtrl', function($scope, $rootScope, Auth, ModalViews) {
       $scope.loggedIn = $rootScope.loggedIn;
       $scope.currentUser = $rootScope.currentUser;
-      $scope.showUser = $rootScope.showUser;
       $scope.showLogin = Auth.showLogin;
       $scope.logout = Auth.logout;
-      $scope.showRegistration = $rootScope.showRegistration;
+
+      $scope.showRegistration = function() {
+        ModalViews.get('registration').show();
+      };
+
+      $scope.showUser = function(id) {
+        $rootScope.userId = id;
+        ModalViews.get('user').show();
+      };
     })
     .controller('ProfileCtrl', function($scope, $rootScope, User) {
       $scope.refresh = function() {

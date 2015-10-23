@@ -1,17 +1,7 @@
 angular.module('neo.conversation.services', [])
 
-    .run(function($rootScope, $ionicModal) {
-      $ionicModal.fromTemplateUrl('js/modules/conversation/templates/chat.html', {
-        animation: 'slide-in-up',
-        id: 'chat',
-      }).then(function(modal) {
-        $rootScope.chatModal = modal;
-      });
-
-      $rootScope.showChat = function(id) {
-        $rootScope.chatId = id;
-        $rootScope.chatModal.show();
-      };
+    .run(function($rootScope, ModalViews) {
+      ModalViews.register('chat', 'js/modules/conversation/templates/chat.html');
     })
     .factory('Conversations', function(Resource) {
       return Resource('/conversations/:conversationId');
@@ -19,8 +9,12 @@ angular.module('neo.conversation.services', [])
     .factory('Chats', function(Resource) {
       return Resource('/conversations/:conversationId/messages/:messageLimit');
     })
-    .controller('ChatShowCtrl', function($scope, $rootScope, Chats, $ionicScrollDelegate) {
-      $scope.showUser = $rootScope.showUser;
+    .controller('ChatShowCtrl', function($scope, $rootScope, Chats, $ionicScrollDelegate, ModalViews) {
+      $scope.showUser = function(id) {
+        $rootScope.userId = id;
+        ModalViews.get('user').show();
+      };
+
       $scope.$on('modal.shown', function(e, m) {
         if (m.id == 'chat') {
           $scope.refresh();
