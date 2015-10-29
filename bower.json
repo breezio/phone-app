@@ -6,6 +6,7 @@
     "angular-resource": "latest",
     "ngstorage": "latest",
     "angular-http-auth": "latest",
-    "ngCordova": "0.1.6-alpha"
+    "ngCordova": "0.1.6-alpha",
+    "strophejs": "latest"
   }
 }
