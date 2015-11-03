@@ -6,6 +6,19 @@ angular.module('neo.settings.controllers', [])
       $scope.showLogin = Auth.showLogin;
       $scope.logout = Auth.logout;
 
+      $scope.chat = false;
+      $rootScope.$watch('chatConnection.connected', function(val) {
+        switch (val) {
+          case true:
+            $scope.chat = $rootScope.chatConnection;
+            break;
+          case false:
+          default:
+            $scope.chat = false;
+            break;
+        }
+      });
+
       $scope.showRegistration = function() {
         ModalViews.get('registration').show();
       };

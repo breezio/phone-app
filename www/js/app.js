@@ -121,6 +121,20 @@ angular.module('neo', ['ionic', 'ngStorage', 'ngCordova.plugins', 'neo.base', 'n
     $scope.loggedIn = val;
   });
 
+  $scope.newChats = undefined;
+  $rootScope.$watch('newChat', function(val) {
+    if (val != undefined && val.text != undefined) {
+      var num = 0;
+      if ($scope.newChats) {
+        num = $scope.newChats;
+      }
+
+      num += 1;
+
+      $scope.newChats = num;
+    }
+  });
+
   $scope.selectTab = function(href) {
     for (var i = 0; i < $scope.tabs.length; i++) {
       if ($scope.tabs[i].href == href) {

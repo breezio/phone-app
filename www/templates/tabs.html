@@ -10,7 +10,7 @@
     <ion-nav-view name="tab-people"></ion-nav-view>
   </ion-tab>
 
-  <ion-tab hidden="{{!loggedIn}}" ng-click="selectTab(href)" title="Conversations" icon="icon ion-heart" href="#/tab/conversations">
+  <ion-tab badge="newChats" badge-style="badge-assertive" hidden="{{!loggedIn}}" ng-click="selectTab(href)" title="Conversations" icon="icon ion-chatbubble" href="#/tab/conversations">
     <ion-nav-view name="tab-conversations"></ion-nav-view>
   </ion-tab>
 

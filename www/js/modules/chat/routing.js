@@ -43,7 +43,21 @@ angular.module('neo.chat', [])
               case Strophe.Status.CONNECTED:
                 console.log('Connected');
                 chat.addHandler(function(msg) {
-                  console.log(msg);
+                  var m = {};
+                  m.to = msg.getAttribute('to');
+                  m.from = msg.getAttribute('from');
+                  m.type = msg.getAttribute('type');
+                  m.elems = msg.getElementsByTagName('body');
+
+                  if (m.type == 'chat' && m.elems.length > 0) {
+                    var body = m.elems[0];
+                    m.text = Strophe.getText(body);
+                  } else {
+                    m.text = undefined;
+                  }
+
+                  $rootScope.newChat = m;
+                  $rootScope.$digest();
                   return true;
                 }, null, 'message', null, null, null);
                 chat.send($pres({type: 'available'}));
