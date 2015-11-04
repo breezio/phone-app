@@ -116,7 +116,10 @@ angular.module('neo', ['ionic', 'ngStorage', 'ngCordova.plugins', 'neo.base', 'n
   return funcs;
 })
 
-.controller('TabCtrl', function($scope, $rootScope, $ionicTabsDelegate) {
+.controller('TabCtrl', function($scope, $rootScope, $localStorage, $ionicTabsDelegate) {
+  if ($localStorage.user != undefined) {
+    $rootScope.loggedIn = true;
+  }
   $rootScope.$watch('loggedIn', function(val) {
     $scope.loggedIn = val;
   });

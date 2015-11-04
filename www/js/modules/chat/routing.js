@@ -27,18 +27,23 @@ angular.module('neo.chat', [])
             switch(s) {
               case Strophe.Status.CONNECTING:
                 console.log('Connecting');
+                $rootScope.$digest();
                 break;
               case Strophe.Status.CONNFAIL:
                 console.log('Connection failed');
+                $rootScope.$digest();
                 break;
               case Strophe.Status.DISCONNECTING:
                 console.log('Disconnecting');
+                $rootScope.$digest();
                 break;
               case Strophe.Status.DISCONNECTED:
                 console.log('Disconnected');
+                $rootScope.$digest();
                 break;
               case Strophe.Status.AUTHFAIL:
                 console.log('Authorization failed');
+                $rootScope.$digest();
                 break;
               case Strophe.Status.CONNECTED:
                 console.log('Connected');
@@ -61,9 +66,11 @@ angular.module('neo.chat', [])
                   return true;
                 }, null, 'message', null, null, null);
                 chat.send($pres({type: 'available'}));
+                $rootScope.$digest();
                 break;
               default:
                 console.log(s);
+                $rootScope.$digest();
                 break;
             }
           });

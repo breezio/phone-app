@@ -10,10 +10,12 @@ angular.module('neo.settings.controllers', [])
       $rootScope.$watch('chatConnection.connected', function(val) {
         switch (val) {
           case true:
+            $scope.connected = true;
             $scope.chat = $rootScope.chatConnection;
             break;
           case false:
           default:
+            $scope.connected = false;
             $scope.chat = false;
             break;
         }

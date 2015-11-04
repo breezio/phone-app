@@ -4,7 +4,7 @@ angular.module('neo.base', ['ngResource'])
     })
     .factory('Config', function() {
       var config = {
-          baseUrl: 'https://health.breezio.com',
+          baseUrl: 'http://breezio',
           version: '1.0.0',
         };
 
