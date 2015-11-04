@@ -1,30 +1,21 @@
 angular.module('neo.conversation.controllers', [])
 
     .controller('ConversationListCtrl', function($scope, $rootScope, Conversations, User) {
+      $scope.chats = {};
 
-      $scope.doneLoading = false;
-
-      $scope.refresh = function() {
-        $rootScope.cacheFactory.removeAll();
-        $scope.start = undefined;
-        Conversations.query(function(data) {
-          $scope.items = data;
-
-          for (var i = 0; i < $scope.items.length; i++) {
-            $scope.items[i].users = JSON.parse($scope.items[i].users);
-            for (var j in $scope.items[i].users) {
-              if ($scope.items[i].users[j] != $rootScope.currentUser.id) {
-                $scope.items[i].users[j] = User.get({userId: $scope.items[i].users[j]}, function(data) {});
-                $scope.items[i].recipient = $scope.items[i].users[j];
-              } else {
-                $scope.items[i].users[j] = $rootScope.currentUser;
-              }
-            }
+      $rootScope.$watch('newChat', function(val) {
+        if (val != undefined && val.text != undefined) {
+          if ($scope.chats[val.from] == undefined) {
+            var id = val.from.split($rootScope.chatToken.user_prefix)[1].split('@')[0];
+            User.get({userId: id}, function(user) {
+              $scope.chats[val.from] = {chats: [val]};
+              $scope.chats[val.from].user = user;
+            });
+          } else {
+            $scope.chats[val.from].chats.push(val);
           }
 
-          $scope.$broadcast('scroll.refreshComplete');
-        });
-      };
-
-      $scope.refresh();
+          $rootScope.chats = $scope.chats;
+        }
+      });
     });
