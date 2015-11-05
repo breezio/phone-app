@@ -3,6 +3,14 @@ angular.module('neo.conversation.controllers', [])
     .controller('ConversationListCtrl', function($scope, $rootScope, Conversations, User) {
       $scope.chats = {};
 
+      $scope.firstThree = function(chat) {
+        return chat.chats.slice(chat.chats.length-3, chat.chats.length);
+      };
+
+      $scope.clearNewChats = function(chat) {
+        $rootScope.newChats -= chat.chats.length;
+      };
+
       $rootScope.$watch('newChat', function(val) {
         if (val != undefined && val.text != undefined) {
           if ($scope.chats[val.from] == undefined) {

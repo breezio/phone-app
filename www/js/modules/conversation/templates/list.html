@@ -6,9 +6,8 @@
           {{chat.user.firstName}} {{chat.user.lastName}}
         </div>
         <div class="chat item">
-          <a ng-click="showChat(item.id)" class="button button-borderless button-outline button-light">
-            <p ng-repeat="line in chat.chats">
-              {{line.text}}
+          <a ng-click="clearNewChats(chat)" class="button button-borderless button-outline button-light">
+            <p ng-repeat="line in firstThree(chat) track by $index" ng-bind-html="line.text">
             </p>
           </a>
         </div>
