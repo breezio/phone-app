@@ -135,7 +135,12 @@ angular.module('neo', ['ionic', 'ngStorage', 'ngCordova.plugins', 'neo.base', 'n
       num += 1;
 
       $scope.newChats = num;
+      $rootScope.newChats = num;
     }
+  });
+
+  $rootScope.$watch('newChats', function(val) {
+    $scope.newChats = val;
   });
 
   $scope.selectTab = function(href) {
