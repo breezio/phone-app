@@ -11,14 +11,19 @@ angular.module('neo.conversation.controllers', [])
         $rootScope.newChats -= chat.chats.length;
       };
 
+      $scope.formatLine = function(line) {
+        if (line.fromUser == undefined) {
+          return "";
+        } else {
+          return "<strong>" + line.fromUser.username + "</strong> " + line.text;
+        }
+      };
+
       $rootScope.$watch('newChat', function(val) {
         if (val != undefined && val.text != undefined) {
           if ($scope.chats[val.from] == undefined) {
-            var id = val.from.split($rootScope.chatToken.user_prefix)[1].split('@')[0];
-            User.get({userId: id}, function(user) {
-              $scope.chats[val.from] = {chats: [val]};
-              $scope.chats[val.from].user = user;
-            });
+            $scope.chats[val.from] = {chats: [val]};
+            $scope.chats[val.from].user = val.fromUser;
           } else {
             $scope.chats[val.from].chats.push(val);
           }

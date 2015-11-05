@@ -3,7 +3,7 @@ angular.module('neo.chat', [])
   .factory('ChatToken', function(Resource) {
     return Resource('/chat/token', {}, {});
   })
-  .run(function($rootScope, ChatToken) {
+  .run(function($rootScope, ChatToken, User) {
     $rootScope.chatToken == null;
     $rootScope.$watch('loggedIn', function(val) {
       if (val) {
@@ -13,6 +13,7 @@ angular.module('neo.chat', [])
 
           $rootScope.chatConnection = new Strophe.Connection(token.ws_address);
           chat = $rootScope.chatConnection;
+          $rootScope.chatUsers = {};
 
           if (debug) {
             chat.rawInput = function(data) {
@@ -53,12 +54,22 @@ angular.module('neo.chat', [])
                   m.from = msg.getAttribute('from');
                   m.type = msg.getAttribute('type');
                   m.elems = msg.getElementsByTagName('body');
+                  m.fromId = m.from.split($rootScope.chatToken.user_prefix)[1].split('@')[0];
+                  m.toId = m.to.split($rootScope.chatToken.user_prefix)[1].split('@')[0];
 
                   if (m.type == 'chat' && m.elems.length > 0) {
                     var body = m.elems[0];
                     m.text = Strophe.getText(body);
                   } else {
                     m.text = undefined;
+                  }
+
+                  if ($rootScope.chatUsers[m.fromId] == undefined) {
+                    User.get({userId: m.fromId}, function(data) {
+                      $rootScope.chatUsers[m.fromId] = m.fromUser = data;
+                    });
+                  } else {
+                    m.fromUser = $rootScope.chatUsers[m.fromId];
                   }
 
                   $rootScope.newChat = m;
