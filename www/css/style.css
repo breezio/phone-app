@@ -199,11 +199,9 @@
 }
 
 .chat {
-  padding: 0px;
-  margin: 0px 0px 0px -1px;
   text-align: left;
-  width: 926px;
-  height: 100%;
+  width: inherit;
+  height: inherit;
   overflow: visible;
   text-overflow: visible;
 }
