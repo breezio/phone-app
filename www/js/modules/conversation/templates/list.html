@@ -3,7 +3,7 @@
     <ion-list>
       <ion-item ng-repeat="chat in chats track by $index">
         <div class="item item-divider">
-          {{chat.user.firstName}} {{chat.user.lastName}}
+          {{chat.chats[0].fromUser.firstName}} {{chat.chats[0].fromUser.lastName}}
         </div>
         <div class="chat item">
           <a ng-click="clearNewChats(chat)" class="button button-borderless button-outline button-light">

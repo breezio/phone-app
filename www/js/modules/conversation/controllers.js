@@ -4,7 +4,7 @@ angular.module('neo.conversation.controllers', [])
       $scope.chats = {};
 
       $scope.firstThree = function(chat) {
-        return chat.chats.slice(chat.chats.length-3, chat.chats.length);
+        return [chat.chats[chat.chats.length-1], chat.chats[chat.chats.length-2], chat.chats[chat.chats.length-3]];
       };
 
       $scope.clearNewChats = function(chat) {
@@ -12,7 +12,7 @@ angular.module('neo.conversation.controllers', [])
       };
 
       $scope.formatLine = function(line) {
-        if (line.fromUser == undefined) {
+        if (line == undefined || line.fromUser == undefined) {
           return "";
         } else {
           return "<strong>" + line.fromUser.username + "</strong> " + line.text;
