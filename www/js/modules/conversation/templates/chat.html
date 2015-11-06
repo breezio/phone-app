@@ -1,23 +1,12 @@
-<ion-modal-view ng-controller="ChatShowCtrl">
+<ion-modal-view ng-controller="ChatCtrl">
   <ion-header-bar class="bar-positive">
     <div class="buttons">
       <button class="button button-clear" ng-click="modal.hide()"><i class="icon ion-ios7-close-empty"></i> Close</button>
-      <h2 class="title">Chat</h2>
+      <h2 class="title">{{chat.chats[0].fromUser.username}}</h2>
     </div>
   </ion-header-bar>
   <ion-content>
-    <ion-refresher
-      pulling-text="Pull to refresh..."
-      on-refresh="refresh()">
-    </ion-refresher>
-    <ion-list class="comments list">
-      <ul class="padding">
-        <li ng-repeat="chat in chatData.items">
-          <img ng-click="showUser(chat.sender)" ng-src="{{chatData.users[chat.sender].imagePath | staticurl}}" class="crop experts-crop">
-          <p ng-bind-html="chat.message"></p>
-        </li>
-      </ul>
-    </ion-list>
+            <p ng-repeat="line in firstThree(chat) track by $index" ng-bind-html="formatLine(line)">
   </ion-content>
   <ion-footer-bar class="bar-light item-input-inset" ng-show="(currentUser != false ? true : false)">
     <label class="item-input-wrapper">

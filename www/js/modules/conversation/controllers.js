@@ -1,6 +1,6 @@
 angular.module('neo.conversation.controllers', [])
 
-    .controller('ConversationListCtrl', function($scope, $rootScope, Conversations, User) {
+    .controller('ConversationListCtrl', function($scope, $rootScope, Conversations, User, ModalViews) {
       $scope.chats = {};
 
       $scope.firstThree = function(chat) {
@@ -9,6 +9,12 @@ angular.module('neo.conversation.controllers', [])
 
       $scope.clearNewChats = function(chat) {
         $rootScope.newChats -= chat.chats.length;
+      };
+
+      $scope.showChat = function(chat) {
+        $rootScope.chat = chat;
+        console.log(ModalViews.get('chat'));
+        ModalViews.get('chat').show();
       };
 
       $scope.formatLine = function(line) {
