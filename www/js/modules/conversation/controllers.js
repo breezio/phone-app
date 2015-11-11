@@ -13,7 +13,6 @@ angular.module('neo.conversation.controllers', [])
 
       $scope.showChat = function(chat) {
         $rootScope.chat = chat;
-        console.log(ModalViews.get('chat'));
         ModalViews.get('chat').show();
       };
 

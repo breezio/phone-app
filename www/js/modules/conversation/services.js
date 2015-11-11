@@ -33,7 +33,6 @@ angular.module('neo.conversation.services', [])
           .c('active', {xmlns: 'http://jabber.org/protocol/chatstates'});
 
           $rootScope.chatConnection.send(msg);
-          console.log($rootScope.chats);
 
           var m = {};
           m.to = $scope.chat.chats[0].from;
