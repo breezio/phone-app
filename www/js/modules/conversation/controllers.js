@@ -4,7 +4,7 @@ angular.module('neo.conversation.controllers', [])
       $scope.chats = {};
 
       $scope.firstThree = function(chat) {
-        return [chat.chats[chat.chats.length-1], chat.chats[chat.chats.length-2], chat.chats[chat.chats.length-3]];
+        return [chat.chats[chat.chats.length-3], chat.chats[chat.chats.length-2], chat.chats[chat.chats.length-1]];
       };
 
       $scope.clearNewChats = function(chat) {
