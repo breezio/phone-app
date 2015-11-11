@@ -6,13 +6,15 @@
     </div>
   </ion-header-bar>
   <ion-content>
-            <p ng-repeat="line in firstThree(chat) track by $index" ng-bind-html="formatLine(line)">
+    <div class="padding">
+      <p ng-repeat="line in chat.chats track by $index" ng-bind-html="formatLine(line)">
+    </div>
   </ion-content>
-  <ion-footer-bar class="bar-light item-input-inset" ng-show="(currentUser != false ? true : false)">
+  <ion-footer-bar class="bar-light item-input-inset">
     <label class="item-input-wrapper">
       <i class="icon ion-ios7-search placeholder-icon"></i>
       <input type="text" placeholder="Write a comment..." value="{{text}}" ng-model="text">
     </label>
-    <button class="button button-clear" ng-click="postComment()">Post</button>
+    <button class="button button-clear" ng-click="send()">Post</button>
   </ion-footer-bar>
 </ion-modal-view>
