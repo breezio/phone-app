@@ -36,6 +36,8 @@ angular.module('neo.chat', [])
               console.log('Connection failed');
               connecting = false;
               connected = false;
+              clearTimeout(reconnectTimeout);
+              reconnect();
               $rootScope.$digest();
               break;
             case Strophe.Status.DISCONNECTING:
@@ -46,18 +48,23 @@ angular.module('neo.chat', [])
               console.log('Disconnected');
               connecting = false;
               connected = false;
+              clearTimeout(reconnectTimeout);
+              reconnect();
               $rootScope.$digest();
               break;
             case Strophe.Status.AUTHFAIL:
               console.log('Authorization failed');
               connecting = false;
               connected = false;
+              clearTimeout(reconnectTimeout);
+              reconnect();
               $rootScope.$digest();
               break;
             case Strophe.Status.CONNECTED:
               console.log('Connected');
               connecting = false;
               connected = true;
+              clearTimeout(reconnectTimeout);
               chat.addHandler(function(msg) {
                 var m = {};
                 m.to = msg.getAttribute('to');
@@ -90,7 +97,6 @@ angular.module('neo.chat', [])
               $rootScope.$digest();
               break;
             default:
-              console.log(s);
               $rootScope.$digest();
               break;
           }
@@ -108,10 +114,26 @@ angular.module('neo.chat', [])
       }
     });
 
-    setInterval(function() {
-      if ($rootScope.chatToken != undefined && !connected && !connecting) {
-        console.log('Attempting to connect');
-        connect();
-      }
-    }, 2000);
+    var reconnectTimeout = null;
+    var reconnectTime = 2000;
+    var reconnect = function() {
+      reconnectTimeout = setTimeout(function() {
+        if ($rootScope.chatToken != undefined && !connected && !connecting) {
+          console.log('Attempting to connect ' + reconnectTime);
+          connect();
+
+          if (reconnectTime < 1000) {
+            reconnectTime = 2000;
+          }
+
+          if (reconnectTime < 64000) {
+            reconnectTime = reconnectTime * 2;
+          }
+
+          reconnect();
+        }
+      }, reconnectTime);
+    }
+
+    reconnect();
   });
