@@ -25,8 +25,9 @@ angular.module('neo.conversation.services', [])
 
       $scope.send = function() {
         if ($scope.text != undefined && $scope.text != '') {
+          var to = $rootScope.chatToken.user_prefix + $scope.chat.user.id + "@" + $rootScope.chatToken.xmpp_host;
           var msg = $msg({
-            to: $scope.chat.chats[0].from,
+            to: to,
             type: 'chat'
           })
           .cnode(Strophe.xmlElement('body', $scope.text)).up()
@@ -35,8 +36,8 @@ angular.module('neo.conversation.services', [])
           $rootScope.chatConnection.send(msg);
 
           var m = {};
-          m.to = $scope.chat.chats[0].from;
-          m.from = $scope.chat.chats[0].to;
+          m.to = to;
+          m.from = $rootScope.chatToken.username;
           m.type = 'chat';
           m.fromId = m.from.split($rootScope.chatToken.user_prefix)[1].split('@')[0];
           m.toId = m.to.split($rootScope.chatToken.user_prefix)[1].split('@')[0];
@@ -50,7 +51,7 @@ angular.module('neo.conversation.services', [])
             m.fromUser = $rootScope.chatUsers[m.fromId];
           }
 
-          $rootScope.chats[$scope.chat.chats[0].from].chats.push(m);
+          $rootScope.chats[$scope.chat.user.id].chats.push(m);
           $scope.text = '';
         }
       };

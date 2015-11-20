@@ -1,6 +1,18 @@
 angular.module('neo.people.controllers', [])
 
     .controller('PeopleListCtrl', function($scope, $rootScope, User, ModalViews) {
+
+      $scope.message = function(user) {
+        if ($rootScope.chats[user.id]) {
+          $rootScope.chat = $rootScope.chats[user.id];
+        } else {
+          var chat = {user: user, chats: []};
+          $rootScope.chats[user.id] = chat;
+          $rootScope.chat = chat;
+        }
+        ModalViews.get('chat').show();
+      };
+
       $scope.showFilter = function() {
         ModalViews.get('userfilter').show();
       };

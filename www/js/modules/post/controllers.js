@@ -65,6 +65,17 @@ angular.module('neo.post.controllers', [])
     })
     .controller('PostShowCtrl', function($scope, $rootScope, $stateParams, Posts, Experts, Notes, PostTags, ModalViews) {
 
+      $scope.message = function() {
+        if ($rootScope.chats[$rootScope.currentPost.post.user.id]) {
+          $rootScope.chat = $rootScope.chats[$rootScope.currentPost.post.user.id];
+        } else {
+          chat = {user: $rootScope.currentPost.post.user, chats: []};
+          $rootScope.chats[$rootScope.currentPost.post.user.id] = chat;
+          $rootScope.chat = chat;
+        }
+        ModalViews.get('chat').show();
+      };
+
       $scope.showUser = function(id) {
         $rootScope.userId = id;
         ModalViews.get('user').show();
@@ -167,9 +178,17 @@ angular.module('neo.post.controllers', [])
       $scope.currentPost = $rootScope.currentPost;
       $scope.loggedIn = $rootScope.loggedIn;
 
-      $scope.showComments = function() {
-        ModalViews.get('postcomments').show();
+      $scope.message = function(user) {
+        if ($rootScope.chats[user.id]) {
+          $rootScope.chat = $rootScope.chats[user.id];
+        } else {
+          var chat = {user: user, chats: []};
+          $rootScope.chats[user.id] = chat;
+          $rootScope.chat = chat;
+        }
+        ModalViews.get('chat').show();
       };
+
 
       $scope.showUser = function(id) {
         $rootScope.userId = id;

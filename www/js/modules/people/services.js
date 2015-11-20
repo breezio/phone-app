@@ -39,6 +39,17 @@ angular.module('neo.people.services', [])
       });
     })
     .controller('PeopleShowCtrl', function($scope, $rootScope, User, UserTags, ModalViews) {
+      $scope.message = function(user) {
+        if ($rootScope.chats[user.id]) {
+          $rootScope.chat = $rootScope.chats[user.id];
+        } else {
+          var chat = {user: user, chats: []};
+          $rootScope.chats[user.id] = chat;
+          $rootScope.chat = chat;
+        }
+        ModalViews.get('chat').show();
+      };
+
       $scope.showTag = function(id, name) {
         $rootScope.tag = {id, name};
         ModalViews.get('usertag').show();

@@ -4,10 +4,8 @@ angular.module('neo.chat', [])
     return Resource('/chat/token', {}, {});
   })
   .run(function($rootScope, ChatToken, User) {
-    var connecting = false;
-    var connected = false;
-
-    $rootScope.chatToken == null;
+    $rootScope.chatToken = null;
+    $rootScope.chats = {};
     var connect = function() {
       ChatToken.get({}, function(token) {
         $rootScope.chatToken = token;
@@ -74,9 +72,18 @@ angular.module('neo.chat', [])
                   m.text = undefined;
                 }
 
+                if (m.text != undefined) {
+                  if ($rootScope.chats[m.fromId] == undefined) {
+                    $rootScope.chats[m.fromId] = {chats: []};
+                  } else {
+                    $rootScope.chats[m.fromId].chats.push(m);
+                  }
+                }
+
                 if ($rootScope.chatUsers[m.fromId] == undefined) {
                   User.get({userId: m.fromId}, function(data) {
                     $rootScope.chatUsers[m.fromId] = m.fromUser = data;
+                    $rootScope.chats[m.fromId].user = data;
                   });
                 } else {
                   m.fromUser = $rootScope.chatUsers[m.fromId];
