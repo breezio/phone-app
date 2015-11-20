@@ -3,6 +3,10 @@ angular.module('neo.conversation.controllers', [])
     .controller('ConversationListCtrl', function($scope, $rootScope, Conversations, User, ModalViews) {
       $scope.chats = {};
 
+      $rootScope.$on('chat:connected', function(event, chat) {
+        console.log(chat);
+      });
+
       $scope.firstThree = function(chat) {
         return [chat.chats[chat.chats.length-3], chat.chats[chat.chats.length-2], chat.chats[chat.chats.length-1]];
       };
@@ -24,7 +28,8 @@ angular.module('neo.conversation.controllers', [])
         }
       };
 
-      $rootScope.$watch('newChat', function(val) {
+      $rootScope.$on('chat:new-chat', function(event, val) {
+        console.log(val);
         if (val != undefined && val.text != undefined) {
           if ($scope.chats[val.from] == undefined) {
             $scope.chats[val.from] = {chats: [val]};

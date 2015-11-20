@@ -36,7 +36,7 @@ angular.module('neo.user.services', ['http-auth-interceptor'])
     if ($localStorage.auth && $localStorage.auth.access_token && $localStorage.user) {
       $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.auth.access_token;
       $rootScope.currentUser = self.user = $localStorage.user;
-
+      $rootScope.$broadcast('event:logged-in');
     }
 
     var $loginScope = $rootScope.$new();
@@ -100,12 +100,13 @@ angular.module('neo.user.services', ['http-auth-interceptor'])
     };
 
     $rootScope.currentUser = self.user = $localStorage.user = response.user;
-    $rootScope.loggedIn = true;
     $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.auth.access_token;
     authService.loginConfirmed(response, function(config) {
       config.headers.Authorization = 'Bearer ' + $localStorage.auth.access_token
       return config;
     });
+    $rootScope.loggedIn = true;
+    $rootScope.$broadcast('event:logged-in');
   } else {
     self.reset();
     $rootScope.$broadcast('event:auth-login-failed', response, status);
@@ -122,12 +123,13 @@ angular.module('neo.user.services', ['http-auth-interceptor'])
   this.logout = function() {
     self.reset();
     $rootScope.$broadcast('event:auth-logout-complete');
+    $rootScope.loggedIn = false;
+    $rootScope.$broadcast('event:logged-out');
     $location.url('/');
   }
 
   this.reset = function() {
     $rootScope.currentUser = self.user = false;
-    $rootScope.loggedIn = false;
     delete $localStorage.user;
     delete $localStorage.auth;
     delete $http.defaults.headers.common.Authorization;

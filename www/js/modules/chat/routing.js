@@ -30,41 +30,34 @@ angular.module('neo.chat', [])
           switch(s) {
             case Strophe.Status.CONNECTING:
               console.log('Connecting');
+              $rootScope.$broadcast('chat:connecting', chat)
               $rootScope.$digest();
               break;
             case Strophe.Status.CONNFAIL:
               console.log('Connection failed');
-              connecting = false;
-              connected = false;
-              clearTimeout(reconnectTimeout);
-              reconnect();
+              $rootScope.$broadcast('chat:connection-failed', chat)
               $rootScope.$digest();
               break;
             case Strophe.Status.DISCONNECTING:
               console.log('Disconnecting');
+              $rootScope.$broadcast('chat:disconnecting', chat)
               $rootScope.$digest();
               break;
             case Strophe.Status.DISCONNECTED:
               console.log('Disconnected');
-              connecting = false;
-              connected = false;
-              clearTimeout(reconnectTimeout);
-              reconnect();
+              $rootScope.$broadcast('chat:disconnected', chat)
               $rootScope.$digest();
               break;
             case Strophe.Status.AUTHFAIL:
               console.log('Authorization failed');
-              connecting = false;
-              connected = false;
-              clearTimeout(reconnectTimeout);
-              reconnect();
+              $rootScope.$broadcast('chat:auth-failed', chat)
               $rootScope.$digest();
               break;
             case Strophe.Status.CONNECTED:
               console.log('Connected');
+              $rootScope.$broadcast('chat:connected', chat)
               connecting = false;
               connected = true;
-              clearTimeout(reconnectTimeout);
               chat.addHandler(function(msg) {
                 var m = {};
                 m.to = msg.getAttribute('to');
@@ -89,7 +82,7 @@ angular.module('neo.chat', [])
                   m.fromUser = $rootScope.chatUsers[m.fromId];
                 }
 
-                $rootScope.newChat = m;
+                $rootScope.$broadcast('chat:new-chat', m);
                 $rootScope.$digest();
                 return true;
               }, null, 'message', null, null, null);
@@ -104,36 +97,7 @@ angular.module('neo.chat', [])
       });
     }
 
-    $rootScope.$watch('loggedIn', function(val) {
-      if (val) {
-        if (!connecting && !connected) {
-          connect();
-        }
-      } else {
-        $rootScope.chatToken = null;
-      }
+    $rootScope.$on('event:logged-in', function() {
+      connect();
     });
-
-    var reconnectTimeout = null;
-    var reconnectTime = 2000;
-    var reconnect = function() {
-      reconnectTimeout = setTimeout(function() {
-        if ($rootScope.chatToken != undefined && !connected && !connecting) {
-          console.log('Attempting to connect ' + reconnectTime);
-          connect();
-
-          if (reconnectTime < 1000) {
-            reconnectTime = 2000;
-          }
-
-          if (reconnectTime < 64000) {
-            reconnectTime = reconnectTime * 2;
-          }
-
-          reconnect();
-        }
-      }, reconnectTime);
-    }
-
-    reconnect();
   });
