@@ -1,4 +1,3 @@
-var chat = null;
 angular.module('neo.chat', [])
   .factory('ChatToken', function(Resource) {
     return Resource('/chat/token', {}, {});
@@ -12,14 +11,13 @@ angular.module('neo.chat', [])
         var debug = false;
 
         $rootScope.chatConnection = new Strophe.Connection(token.ws_address);
-        chat = $rootScope.chatConnection;
         $rootScope.chatUsers = {};
 
         if (debug) {
-          chat.rawInput = function(data) {
+          $rootScope.chatConnection.rawInput = function(data) {
             console.log('RECV: ' + data);
           };
-          chat.rawOutput = function(data) {
+          $rootScope.chatConnection.rawOutput = function(data) {
             console.log('SENT: ' + data);
           };
         }
@@ -28,35 +26,34 @@ angular.module('neo.chat', [])
           switch(s) {
             case Strophe.Status.CONNECTING:
               console.log('Connecting');
-              $rootScope.$broadcast('chat:connecting', chat)
+              $rootScope.$broadcast('chat:connecting', $rootScope.chatConnection)
               $rootScope.$digest();
               break;
             case Strophe.Status.CONNFAIL:
               console.log('Connection failed');
-              $rootScope.$broadcast('chat:connection-failed', chat)
+              $rootScope.$broadcast('chat:connection-failed', $rootScope.chatConnection)
               $rootScope.$digest();
               break;
             case Strophe.Status.DISCONNECTING:
               console.log('Disconnecting');
-              $rootScope.$broadcast('chat:disconnecting', chat)
+              $rootScope.$broadcast('chat:disconnecting', $rootScope.chatConnection)
               $rootScope.$digest();
               break;
             case Strophe.Status.DISCONNECTED:
               console.log('Disconnected');
-              $rootScope.$broadcast('chat:disconnected', chat)
+              $rootScope.$broadcast('chat:disconnected', $rootScope.chatConnection)
               $rootScope.$digest();
               break;
             case Strophe.Status.AUTHFAIL:
               console.log('Authorization failed');
-              $rootScope.$broadcast('chat:auth-failed', chat)
+              $rootScope.$broadcast('chat:auth-failed', $rootScope.chatConnection)
               $rootScope.$digest();
               break;
             case Strophe.Status.CONNECTED:
               console.log('Connected');
-              $rootScope.$broadcast('chat:connected', chat)
-              connecting = false;
-              connected = true;
-              chat.addHandler(function(msg) {
+              $rootScope.$broadcast('chat:connected', $rootScope.chatConnection)
+              $rootScope.$digest();
+              $rootScope.chatConnection.addHandler(function(msg) {
                 var m = {};
                 m.to = msg.getAttribute('to');
                 m.from = msg.getAttribute('from');
@@ -93,8 +90,7 @@ angular.module('neo.chat', [])
                 $rootScope.$digest();
                 return true;
               }, null, 'message', null, null, null);
-              chat.send($pres({type: 'available'}));
-              $rootScope.$digest();
+              $rootScope.chatConnection.send($pres({type: 'available'}));
               break;
             default:
               $rootScope.$digest();
@@ -106,5 +102,37 @@ angular.module('neo.chat', [])
 
     $rootScope.$on('event:logged-in', function() {
       connect();
+    });
+
+    $rootScope.$on('event:logged-out', function() {
+      $rootScope.chatConnection.disconnect();
+    });
+
+    var wait = 1000;
+    var id = null;
+
+    $rootScope.$on('chat:connected', function() {
+      clearTimeout(id);
+      wait = 1000;
+    });
+
+    $rootScope.$on('chat:disconnected', function(event) {
+      if ($rootScope.loggedIn) {
+        if (wait < 2000) {
+          wait = 2000;
+        }
+
+        if (wait < 30000) {
+          wait = wait * 1.5;
+        }
+
+        console.log('Reconnecting in ' + wait);
+        id = setTimeout(function() {
+          delete $rootScope.chatConnection;
+          connect();
+        }, wait);
+      } else {
+        delete $rootScope.chatConnection;
+      }
     });
   });
