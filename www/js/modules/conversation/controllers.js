@@ -2,7 +2,6 @@ angular.module('neo.conversation.controllers', [])
 
     .controller('ConversationListCtrl', function($scope, $rootScope, Conversations, User, ModalViews) {
       $scope.chats = $rootScope.chats;
-      console.log($scope.chats);
 
       $scope.firstThree = function(chat) {
         return [chat.chats[chat.chats.length-3], chat.chats[chat.chats.length-2], chat.chats[chat.chats.length-1]];
