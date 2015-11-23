@@ -109,14 +109,23 @@ angular.module('neo.chat', [])
     });
 
     var wait = 1000;
-    var id = null;
+    var reconnector = null;
+    var pinger = null;
 
-    $rootScope.$on('chat:connected', function() {
-      clearTimeout(id);
+    $rootScope.$on('chat:connected', function(event, chat) {
+      clearTimeout(reconnector);
       wait = 1000;
+
+      pinger = setInterval(function() {
+        chat.ping.ping($rootScope.chatToken.username, null, function(val) {
+          clearInterval(pinger);
+          chat.disconnect();
+        }, 5000);
+      }, 5000);
     });
 
-    $rootScope.$on('chat:disconnected', function(event) {
+    $rootScope.$on('chat:disconnected', function() {
+      clearInterval(pinger);
       if ($rootScope.loggedIn) {
         if (wait < 2000) {
           wait = 2000;
@@ -126,8 +135,12 @@ angular.module('neo.chat', [])
           wait = wait * 1.5;
         }
 
+        if (wait > 30000) {
+          wait = 30000;
+        }
+
         console.log('Reconnecting in ' + wait);
-        id = setTimeout(function() {
+        reconnector = setTimeout(function() {
           delete $rootScope.chatConnection;
           connect();
         }, wait);
