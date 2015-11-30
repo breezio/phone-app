@@ -10,6 +10,7 @@ angular.module('neo.conversation.services', [])
       return Resource('/conversations/:conversationId/messages/:messageLimit');
     })
     .controller('ChatCtrl', function($scope, $rootScope, Chats, $ionicScrollDelegate, ModalViews, User) {
+
       $rootScope.chat = null;
       $scope.$on('modal.shown', function(e, m) {
         if (m.id == 'chat') {
@@ -54,6 +55,12 @@ angular.module('neo.conversation.services', [])
           $rootScope.chats[$scope.chat.user.id].chats.push(m);
           $scope.text = '';
         }
+
+        setTimeout(function() {
+          var chatInput = document.getElementById('chatInput');
+          console.log(chatInput);
+          chatInput.focus();
+        }, 50);
       };
 
       $scope.formatLine = function(line) {

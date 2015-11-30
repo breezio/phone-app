@@ -71,7 +71,7 @@ angular.module('neo.chat', [])
 
                 if (m.text != undefined) {
                   if ($rootScope.chats[m.fromId] == undefined) {
-                    $rootScope.chats[m.fromId] = {chats: []};
+                    $rootScope.chats[m.fromId] = {chats: [m]};
                   } else {
                     $rootScope.chats[m.fromId].chats.push(m);
                   }

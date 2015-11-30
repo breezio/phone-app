@@ -13,8 +13,8 @@
   <ion-footer-bar class="bar-light item-input-inset">
     <label class="item-input-wrapper">
       <i class="icon ion-ios7-search placeholder-icon"></i>
-      <input type="text" placeholder="Write a comment..." value="{{text}}" ng-model="text">
+      <input id="chatInput" type="text" placeholder="Write a comment..." value="{{text}}" ng-model="text">
     </label>
-    <button class="button button-clear" ng-click="send()">Post</button>
+    <button class="button button-clear" ng-click="send()">Send</button>
   </ion-footer-bar>
 </ion-modal-view>
