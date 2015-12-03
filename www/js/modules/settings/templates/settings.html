@@ -44,11 +44,20 @@
         </ion-item>
         <ion-list>
           <ion-item class="item item-icon-right">
-            Status
+            Connection Status
             <span class="item-note" ng-show="connected">
               <i style="color: green" class="icon ion-checkmark-circled"></i>
             </span>
             <span class="item-note" ng-hide="connected">
+              <i style="color: red" class="icon ion-close-circled"></i>
+            </span>
+          </ion-item>
+          <ion-item class="item item-icon-right">
+            Availability
+            <span class="item-note" ng-show="available">
+              <i style="color: green" class="icon ion-checkmark-circled"></i>
+            </span>
+            <span class="item-note" ng-hide="available">
               <i style="color: red" class="icon ion-close-circled"></i>
             </span>
           </ion-item>

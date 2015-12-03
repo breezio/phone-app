@@ -21,6 +21,16 @@ angular.module('neo.settings.controllers', [])
         }
       });
 
+      $scope.available = false;
+      $rootScope.$on('user:available', function() {
+        $scope.available = true;
+        $scope.$digest();
+      });
+      $rootScope.$on('user:away', function() {
+        $scope.available = false;
+        $scope.$digest();
+      });
+
       $scope.showRegistration = function() {
         ModalViews.get('registration').show();
       };

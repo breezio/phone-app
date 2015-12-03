@@ -111,6 +111,7 @@ angular.module('neo.chat', [])
     var wait = 1000;
     var reconnector = null;
     var pinger = null;
+    var awayTimer = null;
 
     $rootScope.$on('chat:connected', function(event, chat) {
       clearTimeout(reconnector);
@@ -122,9 +123,29 @@ angular.module('neo.chat', [])
           chat.disconnect();
         }, 5000);
       }, 5000);
+
+      var setAway = function() {
+        $rootScope.chatConnection.send($pres().c('show').t('away'));
+        $rootScope.$broadcast('user:away');
+      };
+
+      var resetAway = function() {
+        $rootScope.chatConnection.send($pres({type: 'available'}));
+        $rootScope.$broadcast('user:available');
+        clearTimeout(awayTimer);
+        awayTimer = setTimeout(setAway, 20000);
+      };
+
+      document.ontouchmove = resetAway;
+      document.ontouchstart = resetAway;
+      document.onmousedown = resetAway;
+      document.onkeydown = resetAway;
+
+      resetAway();
     });
 
     $rootScope.$on('chat:disconnected', function() {
+      clearTimeout(awayTimer);
       clearInterval(pinger);
       if ($rootScope.loggedIn) {
         if (wait < 2000) {
@@ -147,5 +168,10 @@ angular.module('neo.chat', [])
       } else {
         delete $rootScope.chatConnection;
       }
+
+      document.ontouchmove = null;
+      document.ontouchstart = null;
+      document.onmousedown = null;
     });
+
   });
