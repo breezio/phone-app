@@ -23,50 +23,63 @@ angular.module('neo.conversation.controllers', [])
       $rootScope.$on('chat:new-chat', function(event, val) {
       });
 
-      Chats.get({}, function(data) {
-        data.items.forEach(function(convo) {
-          if (!convo.deleted) {
-            var fromId;
-            var toId;
-            convo.users.forEach(function(user) {
-              if (user != $rootScope.currentUser.id) {
-                fromId = user;
-                if ($rootScope.chats[user] == undefined) {
-                  $rootScope.chats[user] = {chats: []};
-                }
-              } else {
-                toId = user;
-              }
+      var archived = [];
+      Chats.get({}, function(convos) {
+        convos.items.forEach(function(convo) {
+          convo.users.forEach(function(user) {
+            var otherId;
+            var userId;
+            if ($rootScope.chatUsers[user] == undefined) {
+              User.get({userId: user}, function(data) {
+                $rootScope.chatUsers[user] = data;
 
-              if ($rootScope.chatUsers[fromId] == undefined) {
-                User.get({userId: fromId}, function(data) {
-                  $rootScope.chatUsers[fromId] = data;
-                  $rootScope.chats[fromId].user = data;
-                });
-              }
-            });
-
-            Messages.get({conversationId: convo.id}, function(data) {
-              data.items.forEach(function(item) {
-                var m = {};
-
-                if (item.userId == fromId) {
-                  m.fromId = fromId;
-                  m.toId = toId;
+                if (user != $rootScope.currentUser.id) {
+                  otherId = user;
+                  if ($rootScope.chats[user] == undefined) {
+                    $rootScope.chats[user] = {user: data, chats: []};
+                  } else {
+                    $rootScope.chats[user].user = data;
+                  }
                 } else {
-                  m.fromId = toId;
-                  m.toId = fromId;
+                  userId = data.id;
                 }
-
-                m.text = item.body;
-                m.fromUser = $rootScope.chatUsers[m.fromId];
-
-                $rootScope.chats[fromId].chats.push(m);
               });
-            });
+            }
+          });
 
-            console.log($rootScope.chats);
-          }
+          Messages.get({conversationId: convo.id}, function(msgs) {
+            var otherId;
+            var userId;
+            if (convo.users[0] != $rootScope.currentUser.id) {
+              otherId = convo.users[0];
+              userId = convo.users[1];
+            } else {
+              otherId = convo.users[1];
+              userId = convo.users[0];
+            }
+
+            msgs.items.forEach(function(msg) {
+              var m = {};
+              m.text = msg.body;
+
+              if (msg.userId == otherId) {
+                m.fromId = otherId;
+                m.toId = userId;
+              } else {
+                m.fromId = userId;
+                m.toId = otherId;
+              }
+
+              m.fromUser = $rootScope.chatUsers[m.fromId];
+
+              if ($rootScope.chats[otherId] == undefined) {
+                $rootScope.chats[otherId] = {user: undefined, chats: []};
+              }
+
+              $rootScope.chats[otherId].chats.push(m);
+              console.log($rootScope.chats);
+            });
+          });
         });
       });
     });
