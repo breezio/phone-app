@@ -3,10 +3,10 @@ angular.module('neo.conversation.services', [])
     .run(function($rootScope, ModalViews) {
       ModalViews.register('chat', 'js/modules/conversation/templates/chat.html');
     })
-    .factory('Conversations', function(Resource) {
+    .factory('Chats', function(Resource) {
       return Resource('/conversations/:conversationId');
     })
-    .factory('Chats', function(Resource) {
+    .factory('Messages', function(Resource) {
       return Resource('/conversations/:conversationId/messages/:messageLimit');
     })
     .controller('ChatCtrl', function($scope, $rootScope, Chats, $ionicScrollDelegate, ModalViews, User) {
