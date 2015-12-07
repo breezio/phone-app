@@ -58,14 +58,13 @@ angular.module('neo.conversation.controllers', [])
                   m.toId = otherId;
                 }
 
-                m.fromUser = otherUser;
+                m.fromUser = $rootScope.chatUsers[m.fromId];
 
                 if ($rootScope.chats[otherId] == undefined) {
-                  $rootScope.chats[otherId] = {user: otherUser, chats: []};
+                  $rootScope.chats[otherId] = {id: convo.id, user: otherUser, chats: []};
                 }
 
                 $rootScope.chats[otherId].chats.push(m);
-                console.log($rootScope.chats);
               });
             });
           });

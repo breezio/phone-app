@@ -7,9 +7,16 @@ angular.module('neo.conversation.services', [])
       return Resource('/conversations/:conversationId');
     })
     .factory('Messages', function(Resource) {
-      return Resource('/conversations/:conversationId/messages/:messageLimit');
+      var actions = {
+        post: {
+          url: '/conversations/:conversationId/messages/:messageLimit',
+          method: 'POST',
+        },
+      };
+
+      return Resource('/conversations/:conversationId/messages/:messageLimit', {}, actions);
     })
-    .controller('ChatCtrl', function($scope, $rootScope, Chats, $ionicScrollDelegate, ModalViews, User) {
+    .controller('ChatCtrl', function($scope, $rootScope, Chats, Messages, $ionicScrollDelegate, ModalViews, User) {
 
       $rootScope.chat = null;
       $scope.$on('modal.shown', function(e, m) {
@@ -26,6 +33,7 @@ angular.module('neo.conversation.services', [])
 
       $scope.send = function() {
         if ($scope.text != undefined && $scope.text != '') {
+
           var to = $rootScope.chatToken.user_prefix + $scope.chat.user.id + "@" + $rootScope.chatToken.xmpp_host;
           var msg = $msg({
             to: to,
@@ -35,6 +43,13 @@ angular.module('neo.conversation.services', [])
           .c('active', {xmlns: 'http://jabber.org/protocol/chatstates'});
 
           $rootScope.chatConnection.send(msg);
+
+          Messages.post({conversationId: $scope.chat.id}, {
+            body: $scope.text,
+            users: [$scope.chat.user.id],
+          }, function(test) {
+            console.log(test);
+          });
 
           var m = {};
           m.to = to;
