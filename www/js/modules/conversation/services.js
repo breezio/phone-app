@@ -23,12 +23,18 @@ angular.module('neo.conversation.services', [])
         if (m.id == 'chat') {
           $scope.chat = $rootScope.chat;
         }
+
+        $ionicScrollDelegate.scrollBottom(true);
       });
 
       $scope.$on('modal.hidden', function(e, m) {
         if (m.id == 'chat') {
           $scope.chat = undefined;
         }
+      });
+
+      $scope.$watch('chat.chats.length', function(val) {
+        $ionicScrollDelegate.scrollBottom(true);
       });
 
       $scope.send = function() {
