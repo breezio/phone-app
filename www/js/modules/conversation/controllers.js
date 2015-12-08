@@ -9,6 +9,7 @@ angular.module('neo.conversation.controllers', [])
 
       $scope.showChat = function(chat) {
         $rootScope.chat = chat;
+        $rootScope.$broadcast('chat:clear-new-chats');
         ModalViews.get('chat').show();
       };
 

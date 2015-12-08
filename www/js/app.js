@@ -125,22 +125,18 @@ angular.module('neo', ['ionic', 'ngStorage', 'ngCordova.plugins', 'neo.base', 'n
   });
 
   $scope.newChats = undefined;
-  $rootScope.$watch('newChat', function(val) {
-    if (val != undefined && val.text != undefined) {
-      var num = 0;
-      if ($scope.newChats) {
-        num = $scope.newChats;
+  $rootScope.$on('chat:new-chat', function(e, c) {
+    if (c.text && !$rootScope.chat) {
+      if (!$scope.newChats) {
+        $scope.newChats = 0;
       }
 
-      num += 1;
-
-      $scope.newChats = num;
-      $rootScope.newChats = num;
+      $scope.newChats += 1;
     }
   });
 
-  $rootScope.$watch('newChats', function(val) {
-    $scope.newChats = val;
+  $rootScope.$on('chat:clear-new-chats', function() {
+    $scope.newChats = undefined;
   });
 
   $scope.selectTab = function(href) {

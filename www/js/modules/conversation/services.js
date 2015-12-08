@@ -30,6 +30,7 @@ angular.module('neo.conversation.services', [])
 
       $scope.$on('modal.hidden', function(e, m) {
         if (m.id == 'chat') {
+          $rootScope.chat = undefined;
           $scope.chat = undefined;
         }
       });
