@@ -6,6 +6,10 @@
     </div>
   </ion-header-bar>
   <ion-content>
+    <ion-refresher
+      pulling-text="Load more..."
+      on-refresh="loadMore()">
+    </ion-refresher>
     <div class="padding">
       <p ng-repeat="line in chat.chats track by $index" ng-bind-html="formatLine(line)">
     </div>

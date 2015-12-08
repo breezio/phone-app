@@ -9,12 +9,12 @@ angular.module('neo.conversation.services', [])
     .factory('Messages', function(Resource) {
       var actions = {
         post: {
-          url: '/conversations/:conversationId/messages/:messageLimit',
+          url: '/conversations/:conversationId/messages/',
           method: 'POST',
         },
       };
 
-      return Resource('/conversations/:conversationId/messages/:messageLimit', {}, actions);
+      return Resource('/conversations/:conversationId/messages/', {}, actions);
     })
     .controller('ChatCtrl', function($scope, $rootScope, Chats, Messages, $ionicScrollDelegate, ModalViews, User) {
 
@@ -22,6 +22,7 @@ angular.module('neo.conversation.services', [])
       $scope.$on('modal.shown', function(e, m) {
         if (m.id == 'chat') {
           $scope.chat = $rootScope.chat;
+          console.log($scope.chat);
         }
 
         $ionicScrollDelegate.scrollBottom(true);
@@ -33,9 +34,48 @@ angular.module('neo.conversation.services', [])
         }
       });
 
+      var oldVal = null;
       $scope.$watch('chat.chats.length', function(val) {
-        $ionicScrollDelegate.scrollBottom(true);
+        if (oldVal == null || oldVal + 1 == val) {
+          $ionicScrollDelegate.scrollBottom(true);
+        } else if (val > oldVal + 1)  {
+          $ionicScrollDelegate.scrollTop(true);
+        }
+        oldVal = val;
       });
+
+      $scope.loadMore = function() {
+        Messages.get({
+          conversationId: $scope.chat.id,
+          limit: 20,
+          lastId: $scope.chat.lastId,
+        }, function(data) {
+          var newData = [];
+          data.items.forEach(function(msg) {
+            var m = {};
+            m.text = msg.body;
+
+            if (msg.userId == $scope.chat.otherId) {
+              m.fromId = $scope.chat.otherId;
+              m.toId = $scope.chat.userId;
+            } else {
+              m.fromId = $scope.chat.userId;
+              m.toId = $scope.chat.otherId;
+            }
+
+            m.fromUser = $rootScope.chatUsers[m.fromId];
+
+            newData.push(m);
+          });
+
+          $scope.chat.chats = newData.concat($scope.chat.chats);
+          $scope.chat.lastId = data.items[0].id;
+
+          $scope.$broadcast('scroll.refreshComplete');
+        }, function() {
+          $scope.$broadcast('scroll.refreshComplete');
+        });
+      };
 
       $scope.send = function() {
         if ($scope.text != undefined && $scope.text != '') {
@@ -54,7 +94,6 @@ angular.module('neo.conversation.services', [])
             body: $scope.text,
             users: [$scope.chat.user.id],
           }, function(test) {
-            console.log(test);
           });
 
           var m = {};
@@ -79,7 +118,6 @@ angular.module('neo.conversation.services', [])
 
         setTimeout(function() {
           var chatInput = document.getElementById('chatInput');
-          console.log(chatInput);
           chatInput.focus();
         }, 50);
       };

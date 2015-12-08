@@ -45,7 +45,11 @@ angular.module('neo.conversation.controllers', [])
           otherUser.$promise.then(function() {
             $rootScope.chatUsers[otherId] = otherUser;
 
-            Messages.get({conversationId: convo.id}, function(msgs) {
+            Messages.get({
+              conversationId: convo.id,
+              limit: 20,
+            }, function(msgs) {
+              var lastId = msgs.items[0].id;
               msgs.items.forEach(function(msg) {
                 var m = {};
                 m.text = msg.body;
@@ -61,7 +65,14 @@ angular.module('neo.conversation.controllers', [])
                 m.fromUser = $rootScope.chatUsers[m.fromId];
 
                 if ($rootScope.chats[otherId] == undefined) {
-                  $rootScope.chats[otherId] = {id: convo.id, user: otherUser, chats: []};
+                  $rootScope.chats[otherId] = {
+                    id: convo.id,
+                    lastId: lastId,
+                    user: otherUser,
+                    chats: [],
+                    otherId: otherId,
+                    userId: userId,
+                  };
                 }
 
                 $rootScope.chats[otherId].chats.push(m);
