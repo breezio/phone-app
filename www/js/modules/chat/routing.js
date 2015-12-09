@@ -87,6 +87,7 @@ angular.module('neo.chat', [])
                 }
 
                 $rootScope.$broadcast('chat:new-chat', m);
+                $rootScope.$broadcast('chat:new-chat:' + m.fromId, m);
                 $rootScope.$digest();
                 return true;
               }, null, 'message', null, null, null);

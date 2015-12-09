@@ -75,31 +75,59 @@ angular.module('neo.conversation.services', [])
     })
     .controller('ChatCtrl', function($scope, $rootScope, Chats, Messages, $ionicScrollDelegate, ModalViews, User) {
 
+
+      $scope.scroller = $ionicScrollDelegate.$getByHandle('chat-scroll');
       $rootScope.chat = null;
+
+      $scope.newChats = 0;
+      $scope.showScroll = false;
+      $scope.scrollDown = function() {
+        $scope.scroller.scrollBottom(true);
+        $scope.showScroll = false;
+        $scope.newChats = 0;
+      }
+
+      var cleanNewChat = null;
       $scope.$on('modal.shown', function(e, m) {
         if (m.id == 'chat') {
           $scope.chat = $rootScope.chat;
-          console.log($scope.chat);
-        }
 
-        $ionicScrollDelegate.scrollBottom(true);
+          if (!$scope.chat.scrollPos) {
+            $scope.scroller.scrollBottom(true);
+          } else {
+            $scope.scroller.scrollTo(0, $scope.chat.scrollPos, false);
+          }
+
+          cleanNewChat = $rootScope.$on('chat:new-chat:' + $scope.chat.otherId, function(e, m) {
+            if (m.text) {
+              $scope.scroller.resize();
+              $scope.chat.scrollPos = $scope.scroller.getScrollPosition().top;
+              $scope.chat.bottom = $scope.scroller.getScrollView().__maxScrollTop;
+
+              if ($scope.chat.bottom - 50 <= $scope.chat.scrollPos) {
+                $scope.scroller.scrollBottom(true);
+              } else {
+                $scope.showScroll = true;
+                $scope.newChats += 1;
+              }
+            }
+          });
+        }
       });
+
+      $scope.onScroll = function() {
+        $scope.chat.scrollPos = $scope.scroller.getScrollPosition().top;
+        $scope.chat.bottom = $scope.scroller.getScrollView().__maxScrollTop;
+      };
 
       $scope.$on('modal.hidden', function(e, m) {
         if (m.id == 'chat') {
           $rootScope.chat = undefined;
           $scope.chat = undefined;
-        }
-      });
 
-      var oldVal = null;
-      $scope.$watch('chat.chats.length', function(val) {
-        if (oldVal == null || oldVal + 1 == val) {
-          $ionicScrollDelegate.scrollBottom(true);
-        } else if (val > oldVal + 1)  {
-          $ionicScrollDelegate.scrollTop(true);
+          cleanNewChat();
+          cleanNewChat = null;
         }
-        oldVal = val;
       });
 
       $scope.loadMore = function() {
@@ -172,6 +200,8 @@ angular.module('neo.conversation.services', [])
 
           $rootScope.chats[$scope.chat.user.id].chats.push(m);
           $scope.text = '';
+          $scope.scroller.resize();
+          $scope.scroller.scrollBottom(true);
         }
 
         setTimeout(function() {

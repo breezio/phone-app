@@ -330,3 +330,21 @@
   overflow: hidden;
   float: right;
 }
+
+.scroll-down {
+  position: fixed;
+  z-index: 1000;
+  background-color: black;
+  width: 50px;
+  height: 50px;
+  border-radius: 50px;
+  right: 25px;
+  bottom: 75px;
+  color: white;
+  line-height: 50px;
+  text-align: center;
+}
+
+.scroll-down .badge {
+  margin-bottom: 5;
+}

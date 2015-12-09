@@ -5,7 +5,7 @@
       <h2 class="title">{{chat.user.username}}</h2>
     </div>
   </ion-header-bar>
-  <ion-content>
+  <ion-content delegate-handle="chat-scroll" on-scroll="onScroll()">
     <ion-refresher
       pulling-text="Load more..."
       on-refresh="loadMore()">
@@ -21,4 +21,7 @@
     </label>
     <button class="button button-clear" ng-click="send()">Send</button>
   </ion-footer-bar>
+  <div class="scroll-down" ng-show="showScroll" ng-click="scrollDown()">
+    <span class="badge badge-assertive">{{newChats}}</span>
+  </div>
 </ion-modal-view>
