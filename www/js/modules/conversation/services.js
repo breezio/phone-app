@@ -1,6 +1,6 @@
 angular.module('neo.conversation.services', [])
 
-    .run(function($rootScope, ModalViews, Chats, Messages, User) {
+    .run(function($rootScope, ModalViews, Chats, Messages, User, ConversationHash) {
       ModalViews.register('chat', 'js/modules/conversation/templates/chat.html');
 
       $rootScope.$on('chat:connected', function() {
@@ -39,11 +39,13 @@ angular.module('neo.conversation.services', [])
                     m.toId = otherId;
                   }
 
+                  m.hash = convo.hash;
                   m.fromUser = $rootScope.chatUsers[m.fromId];
 
-                  if ($rootScope.chats[otherId] == undefined) {
-                    $rootScope.chats[otherId] = {
+                  if ($rootScope.chats[m.hash] == undefined) {
+                    $rootScope.chats[m.hash] = {
                       id: convo.id,
+                      hash: convo.hash,
                       lastId: lastId,
                       user: otherUser,
                       chats: [],
@@ -52,7 +54,7 @@ angular.module('neo.conversation.services', [])
                     };
                   }
 
-                  $rootScope.chats[otherId].chats.push(m);
+                  $rootScope.chats[m.hash].chats.push(m);
                 });
               });
             });
@@ -98,7 +100,7 @@ angular.module('neo.conversation.services', [])
             $scope.scroller.scrollTo(0, $scope.chat.scrollPos, false);
           }
 
-          cleanNewChat = $rootScope.$on('chat:new-chat:' + $scope.chat.otherId, function(e, m) {
+          cleanNewChat = $rootScope.$on('chat:new-chat:' + $scope.chat.hash, function(e, m) {
             if (m.text) {
               $scope.scroller.resize();
               $scope.chat.scrollPos = $scope.scroller.getScrollPosition().top;
@@ -198,7 +200,7 @@ angular.module('neo.conversation.services', [])
             m.fromUser = $rootScope.chatUsers[m.fromId];
           }
 
-          $rootScope.chats[$scope.chat.user.id].chats.push(m);
+          $rootScope.chats[$scope.chat.hash].chats.push(m);
           $scope.text = '';
           $scope.scroller.resize();
           $scope.scroller.scrollBottom(true);

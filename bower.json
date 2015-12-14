@@ -8,6 +8,7 @@
     "angular-http-auth": "latest",
     "ngCordova": "0.1.6-alpha",
     "strophejs": "latest",
-    "strophejs-plugins": "latest"
+    "strophejs-plugins": "latest",
+    "angular-md5": "latest"
   }
 }

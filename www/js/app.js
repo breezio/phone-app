@@ -1,4 +1,4 @@
-angular.module('neo', ['ionic', 'ngStorage', 'ngCordova.plugins', 'neo.base', 'neo.user', 'neo.settings', 'neo.post', 'neo.conversation', 'neo.question', 'neo.people', 'neo.tags', 'neo.chat'])
+angular.module('neo', ['ionic', 'ngStorage', 'ngCordova.plugins', 'angular-md5', 'neo.base', 'neo.user', 'neo.settings', 'neo.post', 'neo.conversation', 'neo.question', 'neo.people', 'neo.tags', 'neo.chat'])
 
 .run(function($ionicPlatform, $state, $rootScope, $location, $ionicSideMenuDelegate, $http, $cordovaPush, $cordovaDevice, $cordovaGeolocation, Auth, Config) {
 

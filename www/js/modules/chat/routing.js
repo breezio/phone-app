@@ -2,7 +2,29 @@ angular.module('neo.chat', [])
   .factory('ChatToken', function(Resource) {
     return Resource('/chat/token', {}, {});
   })
-  .run(function($rootScope, ChatToken, User) {
+  .factory('ConversationHash', function($rootScope, md5) {
+    return {
+      generateHash: function(users, topic) {
+        var currentUserId = $rootScope.currentUser.id;
+        if (users.indexOf(currentUserId) == -1) {
+          users.push(currentUserId);
+        }
+
+        var uniqueKey = users.sort().join(',');
+        if (topic && topic.id) {
+          uniqueKey = topic.id + ',' + uniqueKey;
+        } else if (typeof topic == 'string') {
+          uniqueKey = topic + ',' + uniqueKey;
+        }
+
+        return md5.createHash(uniqueKey);
+      },
+      jidToId: function(jid) {
+        return jid.split($rootScope.chatToken.user_prefix)[1].split('@')[0];
+      }
+    }
+  })
+  .run(function($rootScope, ChatToken, User, ConversationHash) {
     $rootScope.chatToken = null;
     $rootScope.chats = {};
     var connect = function() {
@@ -59,8 +81,9 @@ angular.module('neo.chat', [])
                 m.from = msg.getAttribute('from');
                 m.type = msg.getAttribute('type');
                 m.elems = msg.getElementsByTagName('body');
-                m.fromId = m.from.split($rootScope.chatToken.user_prefix)[1].split('@')[0];
-                m.toId = m.to.split($rootScope.chatToken.user_prefix)[1].split('@')[0];
+                m.fromId = ConversationHash.jidToId(m.from);
+                m.toId = ConversationHash.jidToId(m.to);
+                m.hash = ConversationHash.generateHash([m.fromId, m.toId]);
 
                 if (m.type == 'chat' && m.elems.length > 0) {
                   var body = m.elems[0];
@@ -70,24 +93,24 @@ angular.module('neo.chat', [])
                 }
 
                 if (m.text != undefined) {
-                  if ($rootScope.chats[m.fromId] == undefined) {
-                    $rootScope.chats[m.fromId] = {chats: [m]};
+                  if ($rootScope.chats[m.hash] == undefined) {
+                    $rootScope.chats[m.hash] = {chats: [m]};
                   } else {
-                    $rootScope.chats[m.fromId].chats.push(m);
+                    $rootScope.chats[m.hash].chats.push(m);
                   }
                 }
 
                 if ($rootScope.chatUsers[m.fromId] == undefined) {
                   User.get({userId: m.fromId}, function(data) {
                     $rootScope.chatUsers[m.fromId] = m.fromUser = data;
-                    $rootScope.chats[m.fromId].user = data;
+                    $rootScope.chats[m.hash].user = data;
                   });
                 } else {
                   m.fromUser = $rootScope.chatUsers[m.fromId];
                 }
 
                 $rootScope.$broadcast('chat:new-chat', m);
-                $rootScope.$broadcast('chat:new-chat:' + m.fromId, m);
+                $rootScope.$broadcast('chat:new-chat:' + m.hash, m);
                 $rootScope.$digest();
                 return true;
               }, null, 'message', null, null, null);
