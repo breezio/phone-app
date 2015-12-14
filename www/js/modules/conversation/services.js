@@ -75,18 +75,18 @@ angular.module('neo.conversation.services', [])
 
       return Resource('/conversations/:conversationId/messages/', {}, actions);
     })
-    .controller('ChatCtrl', function($scope, $rootScope, Chats, Messages, $ionicScrollDelegate, ModalViews, User) {
+    .controller('ChatCtrl', function($scope, $rootScope, Chats, Messages, $ionicScrollDelegate, ModalViews, User, ConversationHash) {
 
 
       $scope.scroller = $ionicScrollDelegate.$getByHandle('chat-scroll');
       $rootScope.chat = null;
 
-      $scope.newChats = 0;
-      $scope.showScroll = false;
+      $scope.newChats = {};
+      $scope.showScroll = {};
       $scope.scrollDown = function() {
         $scope.scroller.scrollBottom(true);
-        $scope.showScroll = false;
-        $scope.newChats = 0;
+        $scope.showScroll[$rootScope.chat.hash] = false;
+        $scope.newChats[$rootScope.chat.hash] = 0;
       }
 
       var cleanNewChat = null;
@@ -109,8 +109,8 @@ angular.module('neo.conversation.services', [])
               if ($scope.chat.bottom - 50 <= $scope.chat.scrollPos) {
                 $scope.scroller.scrollBottom(true);
               } else {
-                $scope.showScroll = true;
-                $scope.newChats += 1;
+                $scope.showScroll[$scope.chat.hash] = true;
+                $scope.newChats[$scope.chat.hash] += 1;
               }
             }
           });
@@ -178,19 +178,20 @@ angular.module('neo.conversation.services', [])
 
           $rootScope.chatConnection.send(msg);
 
-          Messages.post({conversationId: $scope.chat.id}, {
-            body: $scope.text,
-            users: [$scope.chat.user.id],
-          }, function(test) {
-          });
-
           var m = {};
           m.to = to;
           m.from = $rootScope.chatToken.username;
           m.type = 'chat';
-          m.fromId = m.from.split($rootScope.chatToken.user_prefix)[1].split('@')[0];
-          m.toId = m.to.split($rootScope.chatToken.user_prefix)[1].split('@')[0];
+          m.fromId = ConversationHash.jidToId(m.from);
+          m.toId = ConversationHash.jidToId(m.to);
           m.text = $scope.text;
+          m.hash = ConversationHash.generateHash([m.fromId, m.toId]);
+
+          Messages.post({conversationId: m.hash}, {
+            body: $scope.text,
+            users: [$scope.chat.user.id, $rootScope.currentUser.id],
+          }, function(test) {
+          });
 
           if ($rootScope.chatUsers[m.fromId] == undefined) {
             User.get({userId: m.fromId}, function(data) {
@@ -200,7 +201,7 @@ angular.module('neo.conversation.services', [])
             m.fromUser = $rootScope.chatUsers[m.fromId];
           }
 
-          $rootScope.chats[$scope.chat.hash].chats.push(m);
+          $rootScope.chats[m.hash].chats.push(m);
           $scope.text = '';
           $scope.scroller.resize();
           $scope.scroller.scrollBottom(true);
