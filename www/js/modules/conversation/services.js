@@ -45,7 +45,7 @@ angular.module('neo.conversation.services', [])
                   if ($rootScope.chats[m.hash] == undefined) {
                     $rootScope.chats[m.hash] = {
                       id: convo.id,
-                      hash: convo.hash,
+                      hash: m.hash,
                       lastId: lastId,
                       user: otherUser,
                       chats: [],
@@ -81,14 +81,6 @@ angular.module('neo.conversation.services', [])
       $scope.scroller = $ionicScrollDelegate.$getByHandle('chat-scroll');
       $rootScope.chat = null;
 
-      $scope.newChats = {};
-      $scope.showScroll = {};
-      $scope.scrollDown = function() {
-        $scope.scroller.scrollBottom(true);
-        $scope.showScroll[$rootScope.chat.hash] = false;
-        $scope.newChats[$rootScope.chat.hash] = 0;
-      }
-
       var cleanNewChat = null;
       $scope.$on('modal.shown', function(e, m) {
         if (m.id == 'chat') {
@@ -100,6 +92,15 @@ angular.module('neo.conversation.services', [])
             $scope.scroller.scrollTo(0, $scope.chat.scrollPos, false);
           }
 
+          $scope.chat.newChats = $scope.chat.newChats || 0;
+          $scope.chat.showScroll = $scope.chat.showScroll || false;
+
+          $scope.scrollDown = function() {
+            $scope.scroller.scrollBottom(true);
+            $scope.chat.showScroll = false;
+            $scope.chat.newChats = 0;
+          }
+
           cleanNewChat = $rootScope.$on('chat:new-chat:' + $scope.chat.hash, function(e, m) {
             if (m.text) {
               $scope.scroller.resize();
@@ -109,8 +110,8 @@ angular.module('neo.conversation.services', [])
               if ($scope.chat.bottom - 50 <= $scope.chat.scrollPos) {
                 $scope.scroller.scrollBottom(true);
               } else {
-                $scope.showScroll[$scope.chat.hash] = true;
-                $scope.newChats[$scope.chat.hash] += 1;
+                $scope.chat.showScroll = true;
+                $scope.chat.newChats += 1;
               }
             }
           });

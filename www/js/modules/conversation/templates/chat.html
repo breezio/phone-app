@@ -21,8 +21,8 @@
     </label>
     <button class="button button-clear" ng-click="send()">Send</button>
   </ion-footer-bar>
-  <div class="scroll-down" ng-show="showScroll[chat.hash]" ng-click="scrollDown()">
+  <div class="scroll-down" ng-show="chat.showScroll" ng-click="scrollDown()">
     <i class="icon ion-chevron-down"></i>
-    <span class="badge badge-assertive">{{newChats[chat.hash]}}</span>
+    <span class="badge badge-assertive">{{chat.newChats}}</span>
   </div>
 </ion-modal-view>
