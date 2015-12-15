@@ -61,7 +61,18 @@
               <i style="color: red" class="icon ion-close-circled"></i>
             </span>
           </ion-item>
-        </div>
-      </ion-list>
+        </ion-list>
+        <ion-item class="item item-divider">
+          Roster
+        </ion-item>
+        <ion-list>
+          <ion-item ng-repeat="entry in roster" class="item item-icon-right">
+          {{entry.user.firstName}} {{entry.user.lastName}}
+            <span class="item-note">
+              <i style="color: green" class="icon ion-checkmark-circled"></i>
+            </span>
+          </ion-item>
+        </ion-list>
+      </div>
   </ion-content>
 </ion-view>

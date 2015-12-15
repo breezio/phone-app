@@ -63,14 +63,14 @@ angular.module('neo.post.controllers', [])
 
       $scope.items = Posts.query({start: $scope.start, limit: $scope.limit});
     })
-    .controller('PostShowCtrl', function($scope, $rootScope, $stateParams, Posts, Experts, Notes, PostTags, ModalViews) {
+    .controller('PostShowCtrl', function($scope, $rootScope, $stateParams, Posts, Experts, Notes, PostTags, ModalViews, ConversationHash) {
 
       $scope.message = function() {
-        if ($rootScope.chats[$rootScope.currentPost.post.user.id]) {
-          $rootScope.chat = $rootScope.chats[$rootScope.currentPost.post.user.id];
+        if ($rootScope.chats[$scope.hash]) {
+          $rootScope.chat = $rootScope.chats[$scope.hash];
         } else {
           chat = {user: $rootScope.currentPost.post.user, chats: []};
-          $rootScope.chats[$rootScope.currentPost.post.user.id] = chat;
+          $rootScope.chats[$scope.hash] = chat;
           $rootScope.chat = chat;
         }
         ModalViews.get('chat').show();
@@ -109,6 +109,7 @@ angular.module('neo.post.controllers', [])
       $scope.item = Posts.get({postId: $stateParams.postId}, function() {
         $scope.item.isFollowing = $scope.item.isFollowing != false ? true : false;
         $scope.currentPost.post = $scope.item;
+        $scope.hash = ConversationHash.generateHash([$rootScope.currentPost.post.user.id, $rootScope.currentUser.id]);
 
         var html = '';
         for (var i in $scope.item.content) {

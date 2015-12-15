@@ -141,6 +141,16 @@ angular.module('neo.chat', [])
       clearTimeout(reconnector);
       wait = 1000;
 
+      $rootScope.chatConnection.roster.get(function(roster) {
+        $rootScope.$broadcast('chat:on-roster', roster);
+      });
+
+      $rootScope.$on('chat:get-roster', function(e) {
+        $rootScope.chatConnection.roster.get(function(roster) {
+          $rootScope.$broadcast('chat:on-roster', roster);
+        });
+      });
+
       pinger = setInterval(function() {
         chat.ping.ping($rootScope.chatToken.username, null, function(val) {
           clearInterval(pinger);

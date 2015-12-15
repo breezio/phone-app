@@ -1,6 +1,6 @@
 angular.module('neo.settings.controllers', [])
 
-    .controller('SettingsCtrl', function($scope, $rootScope, Auth, ModalViews) {
+    .controller('SettingsCtrl', function($scope, $rootScope, $q, Auth, ModalViews, User, ConversationHash) {
       $scope.loggedIn = $rootScope.loggedIn;
       $scope.currentUser = $rootScope.currentUser;
       $scope.showLogin = Auth.showLogin;
@@ -19,6 +19,25 @@ angular.module('neo.settings.controllers', [])
             $scope.chat = false;
             break;
         }
+      });
+
+      $scope.roster = [];
+      $rootScope.$broadcast('chat:get-roster');
+      $rootScope.$on('chat:on-roster', function(e, r) {
+        var promises = [];
+        angular.forEach(r, function(entry) {
+          var promise = User.get({userId: ConversationHash.jidToId(entry.jid)});
+          promises.push(promise);
+        });
+
+        $q.all(promises).then(function(data) {
+          for (var i = 0; i < r.length; i++) {
+            r[i].user = data[i];
+          }
+
+          $scope.roster = r;
+          console.log(r);
+        });
       });
 
       $scope.available = false;
