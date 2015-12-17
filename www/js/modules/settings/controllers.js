@@ -36,7 +36,6 @@ angular.module('neo.settings.controllers', [])
           }
 
           $scope.roster = r;
-          console.log(r);
         });
       });
 
