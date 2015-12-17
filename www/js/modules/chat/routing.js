@@ -114,6 +114,21 @@ angular.module('neo.chat', [])
                 $rootScope.$digest();
                 return true;
               }, null, 'message', null, null, null);
+
+              $rootScope.chatConnection.addHandler(function(msg) {
+                var type = msg.getAttribute('type');
+                var from = msg.getAttribute('from');
+
+                if (type && type == 'unavailable') {
+                  var status = 'offline';
+                } else {
+                  var status = 'online';
+                }
+
+                $rootScope.$broadcast('chat:presence', from, status, msg);
+                return true;
+              }, null, 'presence');
+
               $rootScope.chatConnection.send($pres({type: 'available'}));
               break;
             default:
@@ -140,6 +155,7 @@ angular.module('neo.chat', [])
     $rootScope.$on('chat:connected', function(event, chat) {
       clearTimeout(reconnector);
       wait = 1000;
+
 
       $rootScope.chatConnection.roster.get(function(roster) {
         $rootScope.$broadcast('chat:on-roster', roster);
@@ -206,6 +222,7 @@ angular.module('neo.chat', [])
       document.ontouchmove = null;
       document.ontouchstart = null;
       document.onmousedown = null;
+      document.onkeydown = null;
     });
 
   });
