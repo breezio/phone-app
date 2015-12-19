@@ -69,8 +69,11 @@
           <ion-item ng-repeat="entry in roster" class="item item-avatar item-icon-right">
             <img class="" ng-src="{{entry.user.imagePath}}">
             <div style="line-height: 38px">{{entry.user.firstName}} {{entry.user.lastName}}</div>
-            <span class="item-note">
+            <span class="item-note" ng-show="entry.online">
               <i style="color: green" class="icon ion-checkmark-circled"></i>
+            </span>
+            <span class="item-note" ng-hide="entry.online">
+              <i style="color: red" class="icon ion-close-circled"></i>
             </span>
           </ion-item>
         </ion-list>

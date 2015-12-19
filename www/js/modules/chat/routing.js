@@ -115,9 +115,11 @@ angular.module('neo.chat', [])
                 return true;
               }, null, 'message', null, null, null);
 
+              $rootScope.presence = {};
               $rootScope.chatConnection.addHandler(function(msg) {
                 var type = msg.getAttribute('type');
                 var from = msg.getAttribute('from');
+                var fromId = ConversationHash.jidToId(from);
 
                 if (type && type == 'unavailable') {
                   var status = 'offline';
@@ -125,7 +127,17 @@ angular.module('neo.chat', [])
                   var status = 'online';
                 }
 
-                $rootScope.$broadcast('chat:presence', from, status, msg);
+                $rootScope.presence[from] = status;
+
+                var online = false;
+                for (var index in $rootScope.presence) {
+                  var entryId = ConversationHash.jidToId(index);
+                  if (entryId == fromId && $rootScope.presence[index] == 'online') {
+                    online = true;
+                  }
+                }
+
+                $rootScope.$broadcast('chat:presence', fromId, online);
                 return true;
               }, null, 'presence');
 

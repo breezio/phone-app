@@ -39,6 +39,14 @@ angular.module('neo.settings.controllers', [])
         });
       });
 
+      $rootScope.$on('chat:presence', function(e, id, online) {
+        for (var index in $scope.roster) {
+          if ($scope.roster[index].user.id == id) {
+            $scope.roster[index].online = online;
+          }
+        }
+      });
+
       $scope.available = false;
       $rootScope.$on('user:available', function() {
         $scope.available = true;
