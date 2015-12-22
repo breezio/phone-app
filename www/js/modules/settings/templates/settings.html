@@ -62,11 +62,12 @@
             </span>
           </ion-item>
         </ion-list>
+
         <ion-item class="item item-divider">
           Roster
         </ion-item>
         <ion-list>
-          <ion-item ng-repeat="entry in roster" class="item item-avatar item-icon-right">
+          <ion-item ng-click="showUser(entry.user.id)" ng-repeat="entry in roster" class="item item-avatar item-icon-right">
             <img class="" ng-src="{{entry.user.imagePath}}">
             <div style="line-height: 38px">{{entry.user.firstName}} {{entry.user.lastName}}</div>
             <span class="item-note" ng-show="entry.online">
