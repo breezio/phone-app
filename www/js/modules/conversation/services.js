@@ -30,6 +30,7 @@ angular.module('neo.conversation.services', [])
                 msgs.items.forEach(function(msg) {
                   var m = {};
                   m.text = msg.body;
+                  m.time = new Date(msg.creationDate).toTimeString();
 
                   if (msg.userId == otherId) {
                     m.fromId = otherId;
@@ -217,8 +218,10 @@ angular.module('neo.conversation.services', [])
       $scope.formatLine = function(line) {
         if (line == undefined || line.fromUser == undefined) {
           return "";
-        } else {
+        } else if (line.time == undefined) {
           return "<strong>" + line.fromUser.username + "</strong> " + line.text;
+        } else {
+          return "<strong>" + line.time + " " + line.fromUser.username + "</strong> " + line.text;
         }
       };
     });
