@@ -2,6 +2,22 @@ angular.module('neo.chat', [])
   .factory('ChatToken', function(Resource) {
     return Resource('/chat/token', {}, {});
   })
+  .factory('Roster', function($http, $q, $rootScope, User, Config) {
+    return {
+      addToChat: function(id) {
+        var addUser = $http({
+          url: Config.apiUrl + '/chat/users/' + id,
+          method: 'POST',
+        })
+
+        var getUser = User.get({userId: id}, function(data) {
+          $rootScope.chatUsers[id] = data;
+        });
+
+        return $q.all([addUser, getUser]);
+      }
+    }
+  })
   .factory('ConversationHash', function($rootScope, md5) {
     return {
       generateHash: function(users, topic) {
@@ -168,13 +184,22 @@ angular.module('neo.chat', [])
       clearTimeout(reconnector);
       wait = 1000;
 
+      $rootScope.roster = {};
 
       $rootScope.chatConnection.roster.get(function(roster) {
+        for (var index in roster) {
+          var entry = roster[index];
+          $rootScope.roster[ConversationHash.jidToId(entry.jid)] = roster[index];
+        }
         $rootScope.$broadcast('chat:on-roster', roster);
       });
 
       $rootScope.$on('chat:get-roster', function(e) {
         $rootScope.chatConnection.roster.get(function(roster) {
+          for (var index in roster) {
+            var entry = roster[index];
+            $rootScope.roster[ConversationHash.jidToId(entry.jid)] = roster[index];
+          }
           $rootScope.$broadcast('chat:on-roster', roster);
         });
       });

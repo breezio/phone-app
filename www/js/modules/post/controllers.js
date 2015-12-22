@@ -175,9 +175,17 @@ angular.module('neo.post.controllers', [])
         }
       };
     })
-    .controller('UserExpertsCtrl', function($scope, $rootScope, $stateParams, Experts, ModalViews) {
+    .controller('UserExpertsCtrl', function($scope, $rootScope, Experts, Roster, ModalViews, ConversationHash) {
       $scope.currentPost = $rootScope.currentPost;
       $scope.loggedIn = $rootScope.loggedIn;
+
+      $scope.inRoster = function(id) {
+        if ($rootScope.roster[id]) {
+          return true;
+        } else {
+          return false;
+        }
+      };
 
       $scope.message = function(user) {
         if ($rootScope.chats[user.id]) {
@@ -194,6 +202,10 @@ angular.module('neo.post.controllers', [])
       $scope.showUser = function(id) {
         $rootScope.userId = id;
         ModalViews.get('user').show();
+      };
+
+      $scope.addToChat = function(id) {
+        return Roster.addToChat(id);
       };
     })
     .controller('CommentModalCtrl', function($scope, $rootScope, Notes, $ionicScrollDelegate) {

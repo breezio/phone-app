@@ -1,6 +1,21 @@
 angular.module('neo.people.controllers', [])
 
-    .controller('PeopleListCtrl', function($scope, $rootScope, User, ModalViews) {
+    .controller('PeopleListCtrl', function($scope, $rootScope, User, ModalViews, Roster) {
+
+      $rootScope.roster = {};
+      $scope.inRoster = function(id) {
+        if ($rootScope.roster[id]) {
+          return true;
+        } else {
+          return false;
+        }
+      };
+
+      $scope.addToChat = function(id) {
+        Roster.addToChat(id).then(function() {
+          $rootScope.$broadcast('chat:get-roster');
+        });
+      };
 
       $scope.message = function(user) {
         if ($rootScope.chats[user.id]) {
