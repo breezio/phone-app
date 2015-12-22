@@ -116,8 +116,8 @@ angular.module('neo.post.controllers', [])
       promises.push(Notes.get({postId: $stateParams.postId}).$promise);
       promises.push(PostTags.get({postId: $stateParams.postId}).$promise);
 
-      $q.all(promises).then(function(asdf) {
-        debugger;
+      var all = $q.all(promises);
+      all.then(function(promises) {
         $scope.currentPost = {
           post: promises[0],
           experts: promises[1],
@@ -128,8 +128,9 @@ angular.module('neo.post.controllers', [])
 
         // post rendering
         $scope.item = $scope.currentPost.post;
+        console.log($scope.item);
         $scope.item.isFollowing = $scope.item.isFollowing != false ? true : false;
-        //$scope.hash = ConversationHash.generateHash([$rootScope.currentPost.post.user.id, $rootScope.currentUser.id]);
+        $scope.hash = ConversationHash.generateHash([$scope.item.user.id, $rootScope.currentUser.id]);
 
         var html = '';
         for (var i in $scope.item.content) {
@@ -158,54 +159,10 @@ angular.module('neo.post.controllers', [])
         }
 
         $scope.renderedHtml = html;
+      }).catch(function(a) {
+        console.log('catch');
+        console.log(a);
       });
-
-      //$scope.item = Posts.get({postId: $stateParams.postId}, function() {
-      //  $scope.item.isFollowing = $scope.item.isFollowing != false ? true : false;
-      //  $scope.currentPost.post = $scope.item;
-      //  $scope.hash = ConversationHash.generateHash([$rootScope.currentPost.post.user.id, $rootScope.currentUser.id]);
-
-      //  var html = '';
-      //  for (var i in $scope.item.content) {
-      //    var blurb = $scope.item.content[i];
-
-      //    if (blurb.type == 'paragraph') {
-      //      var p = '<p>%a</p>'.replace('%a', blurb.content);
-      //      html += p;
-      //    } else if (blurb.type == 'heading') {
-      //      var h = '<%a>%b</%a>'.replace('%a', blurb.headingType)
-      //                           .replace('%b', blurb.content)
-      //                           .replace('%a', blurb.headingType);
-      //      html += h;
-      //    } else if (blurb.type == 'list') {
-      //      var u = '<ol>';
-      //      for (var i in blurb.items) {
-      //        var item = blurb.items[i];
-      //        u += '<li>' + item + '</li>';
-      //      }
-      //      u += '</ol>';
-      //      html += u;
-      //    } else if (blurb.type == 'code') {
-      //      var c = '<pre>' + blurb.content + '</pre>';
-      //      html += c;
-      //    }
-      //  }
-
-      //  $scope.renderedHtml = html;
-      //});
-
-      //$scope.currentPost.experts = {items: {length: 0}};
-      //Experts.get({postId: $stateParams.postId}, function(experts) {
-      //  $scope.currentPost.experts = experts;
-      //});
-
-      //Notes.get({postId: $stateParams.postId}, function(notes) {
-      //  $scope.currentPost.notes = notes;
-      //});
-
-      //PostTags.get({postId: $stateParams.postId}, function(tags) {
-      //  $scope.tags = tags;
-      //});
 
       $scope.endorse = function(item) {
         if (item.endorsed) {
