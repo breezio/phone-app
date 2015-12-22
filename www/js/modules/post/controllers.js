@@ -69,7 +69,7 @@ angular.module('neo.post.controllers', [])
         if ($rootScope.chats[$scope.hash]) {
           $rootScope.chat = $rootScope.chats[$scope.hash];
         } else {
-          chat = {user: $rootScope.currentPost.post.user, chats: []};
+          var chat = {user: $scope.currentPost.post.user, chats: []};
           $rootScope.chats[$scope.hash] = chat;
           $rootScope.chat = chat;
         }
@@ -124,13 +124,16 @@ angular.module('neo.post.controllers', [])
           notes: promises[2]
         };
 
+        $rootScope.currentPost = $scope.currentPost;
+
         $scope.tags = promises[3];
 
         // post rendering
         $scope.item = $scope.currentPost.post;
-        console.log($scope.item);
         $scope.item.isFollowing = $scope.item.isFollowing != false ? true : false;
         $scope.hash = ConversationHash.generateHash([$scope.item.user.id, $rootScope.currentUser.id]);
+
+        $rootScope.currentPost.hash = $scope.hash;
 
         var html = '';
         for (var i in $scope.item.content) {
@@ -159,9 +162,6 @@ angular.module('neo.post.controllers', [])
         }
 
         $scope.renderedHtml = html;
-      }).catch(function(a) {
-        console.log('catch');
-        console.log(a);
       });
 
       $scope.endorse = function(item) {
@@ -199,11 +199,12 @@ angular.module('neo.post.controllers', [])
       };
 
       $scope.message = function(user) {
-        if ($rootScope.chats[user.id]) {
-          $rootScope.chat = $rootScope.chats[user.id];
+        var hash = ConversationHash.generateHash([user.id, $rootScope.currentUser.id]);
+        if ($rootScope.chats[hash]) {
+          $rootScope.chat = $rootScope.chats[hash];
         } else {
           var chat = {user: user, chats: []};
-          $rootScope.chats[user.id] = chat;
+          $rootScope.chats[hash] = chat;
           $rootScope.chat = chat;
         }
         ModalViews.get('chat').show();

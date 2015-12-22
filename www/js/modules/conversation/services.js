@@ -87,7 +87,7 @@ angular.module('neo.conversation.services', [])
         if (m.id == 'chat') {
           $scope.chat = $rootScope.chat;
 
-          if (!$scope.chat.scrollPos) {
+          if (!$scope.chat || !$scope.chat.scrollPos) {
             $scope.scroller.scrollBottom(true);
           } else {
             $scope.scroller.scrollTo(0, $scope.chat.scrollPos, false);
