@@ -181,6 +181,7 @@ angular.module('neo.conversation.services', [])
           $rootScope.chatConnection.send(msg);
 
           var m = {};
+          m.time = new Date().toTimeString();
           m.to = to;
           m.from = $rootScope.chatToken.username;
           m.type = 'chat';
