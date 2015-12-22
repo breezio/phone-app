@@ -63,7 +63,7 @@ angular.module('neo.post.controllers', [])
 
       $scope.items = Posts.query({start: $scope.start, limit: $scope.limit});
     })
-    .controller('PostShowCtrl', function($scope, $rootScope, $stateParams, Posts, Experts, Notes, PostTags, ModalViews, ConversationHash) {
+    .controller('PostShowCtrl', function($scope, $rootScope, $q, $stateParams, Posts, Experts, Notes, PostTags, ModalViews, ConversationHash) {
 
       $scope.message = function() {
         if ($rootScope.chats[$scope.hash]) {
@@ -105,11 +105,31 @@ angular.module('neo.post.controllers', [])
         }
       };
 
+      // object initialization before fetching content
       $scope.renderedHtml = '';
-      $scope.item = Posts.get({postId: $stateParams.postId}, function() {
+      $scope.currentPost.experts = {items: {length: 0}};
+
+      var promises = [];
+
+      promises.push(Posts.get({postId: $stateParams.postId}).$promise);
+      promises.push(Experts.get({postId: $stateParams.postId}).$promise);
+      promises.push(Notes.get({postId: $stateParams.postId}).$promise);
+      promises.push(PostTags.get({postId: $stateParams.postId}).$promise);
+
+      $q.all(promises).then(function(asdf) {
+        debugger;
+        $scope.currentPost = {
+          post: promises[0],
+          experts: promises[1],
+          notes: promises[2]
+        };
+
+        $scope.tags = promises[3];
+
+        // post rendering
+        $scope.item = $scope.currentPost.post;
         $scope.item.isFollowing = $scope.item.isFollowing != false ? true : false;
-        $scope.currentPost.post = $scope.item;
-        $scope.hash = ConversationHash.generateHash([$rootScope.currentPost.post.user.id, $rootScope.currentUser.id]);
+        //$scope.hash = ConversationHash.generateHash([$rootScope.currentPost.post.user.id, $rootScope.currentUser.id]);
 
         var html = '';
         for (var i in $scope.item.content) {
@@ -140,18 +160,52 @@ angular.module('neo.post.controllers', [])
         $scope.renderedHtml = html;
       });
 
-      $scope.currentPost.experts = {items: {length: 0}};
-      Experts.get({postId: $stateParams.postId}, function(experts) {
-        $scope.currentPost.experts = experts;
-      });
+      //$scope.item = Posts.get({postId: $stateParams.postId}, function() {
+      //  $scope.item.isFollowing = $scope.item.isFollowing != false ? true : false;
+      //  $scope.currentPost.post = $scope.item;
+      //  $scope.hash = ConversationHash.generateHash([$rootScope.currentPost.post.user.id, $rootScope.currentUser.id]);
 
-      Notes.get({postId: $stateParams.postId}, function(notes) {
-        $scope.currentPost.notes = notes;
-      });
+      //  var html = '';
+      //  for (var i in $scope.item.content) {
+      //    var blurb = $scope.item.content[i];
 
-      PostTags.get({postId: $stateParams.postId}, function(tags) {
-        $scope.tags = tags;
-      });
+      //    if (blurb.type == 'paragraph') {
+      //      var p = '<p>%a</p>'.replace('%a', blurb.content);
+      //      html += p;
+      //    } else if (blurb.type == 'heading') {
+      //      var h = '<%a>%b</%a>'.replace('%a', blurb.headingType)
+      //                           .replace('%b', blurb.content)
+      //                           .replace('%a', blurb.headingType);
+      //      html += h;
+      //    } else if (blurb.type == 'list') {
+      //      var u = '<ol>';
+      //      for (var i in blurb.items) {
+      //        var item = blurb.items[i];
+      //        u += '<li>' + item + '</li>';
+      //      }
+      //      u += '</ol>';
+      //      html += u;
+      //    } else if (blurb.type == 'code') {
+      //      var c = '<pre>' + blurb.content + '</pre>';
+      //      html += c;
+      //    }
+      //  }
+
+      //  $scope.renderedHtml = html;
+      //});
+
+      //$scope.currentPost.experts = {items: {length: 0}};
+      //Experts.get({postId: $stateParams.postId}, function(experts) {
+      //  $scope.currentPost.experts = experts;
+      //});
+
+      //Notes.get({postId: $stateParams.postId}, function(notes) {
+      //  $scope.currentPost.notes = notes;
+      //});
+
+      //PostTags.get({postId: $stateParams.postId}, function(tags) {
+      //  $scope.tags = tags;
+      //});
 
       $scope.endorse = function(item) {
         if (item.endorsed) {
