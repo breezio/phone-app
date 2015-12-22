@@ -1,6 +1,6 @@
 angular.module('neo.people.controllers', [])
 
-    .controller('PeopleListCtrl', function($scope, $rootScope, User, ModalViews, Roster) {
+    .controller('PeopleListCtrl', function($scope, $rootScope, User, ModalViews, Roster, ConversationHash) {
 
       $rootScope.roster = {};
       $scope.inRoster = function(id) {
@@ -18,11 +18,17 @@ angular.module('neo.people.controllers', [])
       };
 
       $scope.message = function(user) {
-        if ($rootScope.chats[user.id]) {
-          $rootScope.chat = $rootScope.chats[user.id];
+        var hash = ConversationHash.generateHash([user.id, $rootScope.currentUser.id]);
+        if ($rootScope.chats[hash]) {
+          $rootScope.chat = $rootScope.chats[hash];
         } else {
-          var chat = {user: user, chats: []};
-          $rootScope.chats[user.id] = chat;
+          var chat = {
+            title: user.firstName + ' ' + user.lastName,
+            user: user,
+            chats: []
+          };
+
+          $rootScope.chats[hash] = chat;
           $rootScope.chat = chat;
         }
         ModalViews.get('chat').show();

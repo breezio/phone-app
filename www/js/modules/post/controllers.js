@@ -69,7 +69,12 @@ angular.module('neo.post.controllers', [])
         if ($rootScope.chats[$scope.hash]) {
           $rootScope.chat = $rootScope.chats[$scope.hash];
         } else {
-          var chat = {user: $scope.currentPost.post.user, chats: []};
+          var chat = {
+            title: $scope.currentPost.post.title,
+            user: $scope.currentPost.post.user,
+            chats: []
+          };
+
           $rootScope.chats[$scope.hash] = chat;
           $rootScope.chat = chat;
         }
@@ -203,7 +208,12 @@ angular.module('neo.post.controllers', [])
         if ($rootScope.chats[hash]) {
           $rootScope.chat = $rootScope.chats[hash];
         } else {
-          var chat = {user: user, chats: []};
+          var chat = {
+            title: $scope.currentPost.post.title,
+            user: user,
+            chats: []
+          };
+
           $rootScope.chats[hash] = chat;
           $rootScope.chat = chat;
         }
