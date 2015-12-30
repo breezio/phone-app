@@ -139,22 +139,14 @@ angular.module('neo.chat', [])
                 var fromId = ConversationHash.jidToId(from);
 
                 if (type && type == 'unavailable') {
-                  var status = 'offline';
+                  var online = false;
                 } else {
-                  var status = 'online';
+                  var online = true;
                 }
 
-                $rootScope.presence[from] = status;
+                $rootScope.presence[fromId] = online;
 
-                var online = false;
-                for (var index in $rootScope.presence) {
-                  var entryId = ConversationHash.jidToId(index);
-                  if (entryId == fromId && $rootScope.presence[index] == 'online') {
-                    online = true;
-                  }
-                }
-
-                $rootScope.$broadcast('chat:presence', fromId, online);
+                $rootScope.$broadcast('chat:presence', from, status);
                 return true;
               }, null, 'presence');
 
@@ -190,18 +182,20 @@ angular.module('neo.chat', [])
       $rootScope.chatConnection.roster.get(function(roster) {
         for (var index in roster) {
           var entry = roster[index];
-          $rootScope.roster[ConversationHash.jidToId(entry.jid)] = roster[index];
+          entry.id = ConversationHash.jidToId(entry.jid);
+          $rootScope.roster[entry.id] = entry;
         }
-        $rootScope.$broadcast('chat:on-roster', roster);
+        $rootScope.$broadcast('chat:on-roster', $rootScope.roster);
       });
 
       $rootScope.$on('chat:get-roster', function(e) {
         $rootScope.chatConnection.roster.get(function(roster) {
           for (var index in roster) {
             var entry = roster[index];
-            $rootScope.roster[ConversationHash.jidToId(entry.jid)] = roster[index];
+            entry.id = ConversationHash.jidToId(entry.jid);
+            $rootScope.roster[entry.id] = entry;
           }
-          $rootScope.$broadcast('chat:on-roster', roster);
+          $rootScope.$broadcast('chat:on-roster', $rootScope.roster);
         });
       });
 

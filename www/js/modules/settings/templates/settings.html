@@ -70,10 +70,10 @@
           <ion-item ng-click="showUser(entry.user.id)" ng-repeat="entry in roster" class="item item-avatar item-icon-right">
             <img class="" ng-src="{{entry.user.imagePath}}">
             <div style="line-height: 38px">{{entry.user.firstName}} {{entry.user.lastName}}</div>
-            <span class="item-note" ng-show="entry.online">
+            <span class="item-note" ng-show="presence[entry.id]">
               <i style="color: green" class="icon ion-checkmark-circled"></i>
             </span>
-            <span class="item-note" ng-hide="entry.online">
+            <span class="item-note" ng-hide="presence[entry.id]">
               <i style="color: red" class="icon ion-close-circled"></i>
             </span>
           </ion-item>

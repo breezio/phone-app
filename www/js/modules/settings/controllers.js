@@ -26,25 +26,21 @@ angular.module('neo.settings.controllers', [])
       $rootScope.$on('chat:on-roster', function(e, r) {
         var promises = [];
         angular.forEach(r, function(entry) {
-          var promise = User.get({userId: ConversationHash.jidToId(entry.jid)});
-          promises.push(promise);
+          var promise = User.get({userId: entry.id});
+          promises.push(promise.$promise);
         });
 
         $q.all(promises).then(function(data) {
-          for (var i = 0; i < r.length; i++) {
-            r[i].user = data[i];
-          }
+          data.map(function(u) {
+            r[u.id].user = u;
+          });
 
           $scope.roster = r;
         });
       });
 
-      $rootScope.$on('chat:presence', function(e, id, online) {
-        for (var index in $scope.roster) {
-          if ($scope.roster[index].user.id == id) {
-            $scope.roster[index].online = online;
-          }
-        }
+      $rootScope.$on('chat:presence', function(e, jid, status) {
+        $scope.presence = $rootScope.presence;
       });
 
       $scope.available = false;
