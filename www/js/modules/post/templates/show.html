@@ -28,29 +28,33 @@
         </button>
       </div>
 
-      <div class="item item-divider">
-        Experts
-      </div>
-      <div class="experts item">
-        <a href="#/tab/posts/{{item.id}}/experts" class="button button-outline button-light button-borderless">
-          <div>
-            <img class="crop experts-crop" ng-repeat="expert in currentPost.experts.items" ng-src="{{expert.user.imagePath | staticurl}}">
-          </div>
-        </a>
+      <div ng-hide="(!currentPost.experts.items || currentPost.experts.items.length == 0)">
+        <div class="item item-divider">
+          Experts
+        </div>
+        <div class="experts item">
+          <a href="#/tab/posts/{{item.id}}/experts" class="button button-outline button-light button-borderless">
+            <div>
+              <img class="crop experts-crop" ng-repeat="expert in currentPost.experts.items" ng-src="{{expert.user.imagePath | staticurl}}">
+            </div>
+          </a>
+        </div>
       </div>
 
-      <div class="item item-divider">
-        Tags
-      </div>
-      <div class="tags content item">
-        <div>
-          <div class="tag button-bar" ng-repeat="skill in tags.items.topic">
-            <a class="button" ng-class="{'button-royal': !skill.endorsed, 'button-assertive': skill.endorsed}" ng-click="endorse(skill)">{{skill.score}}</a>
-            <a class="button button-stable" ng-click="showTag(skill.id, skill.name)">{{skill.name}}</a>
-          </div>
-          <div class="tag button-bar" ng-repeat="skill in tags.items.skill">
-            <a class="button" ng-class="{'button-royal': !skill.endorsed, 'button-assertive': skill.endorsed}" ng-click="endorse(skill)">{{skill.score}}</a>
-            <a class="button button-stable" ng-click="showTag(skill.id, skill.name)">{{skill.name}}</a>
+      <div ng-hide="(!tags.items || tags.items.length == 0)">
+        <div class="item item-divider">
+          Tags
+        </div>
+        <div class="tags content item">
+          <div>
+            <div class="tag button-bar" ng-repeat="skill in tags.items.topic">
+              <a class="button" ng-class="{'button-royal': !skill.endorsed, 'button-assertive': skill.endorsed}" ng-click="endorse(skill)">{{skill.score}}</a>
+              <a class="button button-stable" ng-click="showTag(skill.id, skill.name)">{{skill.name}}</a>
+            </div>
+            <div class="tag button-bar" ng-repeat="skill in tags.items.skill">
+              <a class="button" ng-class="{'button-royal': !skill.endorsed, 'button-assertive': skill.endorsed}" ng-click="endorse(skill)">{{skill.score}}</a>
+              <a class="button button-stable" ng-click="showTag(skill.id, skill.name)">{{skill.name}}</a>
+            </div>
           </div>
         </div>
       </div>
