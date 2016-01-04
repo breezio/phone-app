@@ -140,33 +140,37 @@ angular.module('neo.post.controllers', [])
 
         $rootScope.currentPost.hash = $scope.hash;
 
-        var html = '';
-        for (var i in $scope.item.content) {
-          var blurb = $scope.item.content[i];
+        if (typeof $scope.item.content == 'string') {
+          $scope.renderedHtml = $scope.item.content;
+        } else {
+          var html = '';
+          for (var i in $scope.item.content) {
+            var blurb = $scope.item.content[i];
 
-          if (blurb.type == 'paragraph') {
-            var p = '<p>%a</p>'.replace('%a', blurb.content);
-            html += p;
-          } else if (blurb.type == 'heading') {
-            var h = '<%a>%b</%a>'.replace('%a', blurb.headingType)
-                                 .replace('%b', blurb.content)
-                                 .replace('%a', blurb.headingType);
-            html += h;
-          } else if (blurb.type == 'list') {
-            var u = '<ol>';
-            for (var i in blurb.items) {
-              var item = blurb.items[i];
-              u += '<li>' + item + '</li>';
+            if (blurb.type == 'paragraph') {
+              var p = '<p>%a</p>'.replace('%a', blurb.content);
+              html += p;
+            } else if (blurb.type == 'heading') {
+              var h = '<%a>%b</%a>'.replace('%a', blurb.headingType)
+                                  .replace('%b', blurb.content)
+                                  .replace('%a', blurb.headingType);
+              html += h;
+            } else if (blurb.type == 'list') {
+              var u = '<ol>';
+              for (var i in blurb.items) {
+                var item = blurb.items[i];
+                u += '<li>' + item + '</li>';
+              }
+              u += '</ol>';
+              html += u;
+            } else if (blurb.type == 'code') {
+              var c = '<pre>' + blurb.content + '</pre>';
+              html += c;
             }
-            u += '</ol>';
-            html += u;
-          } else if (blurb.type == 'code') {
-            var c = '<pre>' + blurb.content + '</pre>';
-            html += c;
-          }
-        }
 
-        $scope.renderedHtml = html;
+          }
+          $scope.renderedHtml = html;
+        }
       });
 
       $scope.endorse = function(item) {
