@@ -173,6 +173,17 @@ angular.module('neo.post.controllers', [])
         }
       });
 
+      $scope.postContent = document.getElementById('post-content');
+      $scope.$watch('postContent.children.length', function(val) {
+        if (val > 0) {
+          for (var i = 0; i < val; i++) {
+            $scope.postContent.children[i].onclick = function(e) {
+              console.log(e.target);
+            }
+          }
+        }
+      });
+
       $scope.endorse = function(item) {
         if (item.endorsed) {
           PostTags.unendorse({postId: $stateParams.postId, tagId: item.id}, {}, function(ret) {
