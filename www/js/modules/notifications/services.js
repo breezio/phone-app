@@ -5,15 +5,20 @@ angular.module('neo.notifications', [])
   })
   .controller('NoteCtrl', function($scope, $rootScope) {
     $scope.show = false;
+    var auto;
 
     $scope.open = $rootScope.pushNote = function(data) {
-      $scope.show = true;
       $scope.title = data.title;
       $scope.body = data.body;
       $scope.imagePath = data.imagePath;
-      console.log(data);
 
-      var auto = setTimeout(function() {
+      if ($scope.show == true) {
+        clearTimeout(auto);
+      } else {
+        $scope.show = true;
+      }
+
+      auto = setTimeout(function() {
         $scope.close();
       }, 3000);
     };
