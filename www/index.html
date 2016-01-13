@@ -82,8 +82,8 @@
         <div class="note-inner">
           <img class="crop experts-crop" ng-src="{{(imagePath | staticurl)}}" >
           <div class="note-data">
-            <p class="note-title">{{title}}</p>
-            <p class="note-body">{{body}}</p>
+            <p class="note-title">{{title | sanitize}}</p>
+            <p class="note-body">{{body | sanitize}}</p>
           </div>
         </div>
     </div>

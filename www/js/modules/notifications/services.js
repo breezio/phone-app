@@ -1,7 +1,14 @@
 var open;
 var close;
 angular.module('neo.notifications', [])
-  .run(function($rootScope, $ionicPopover) {
+  .filter('sanitize', function($sanitize) {
+    return function(input) {
+      if (typeof input == 'string') {
+        return $sanitize(input);
+      } else {
+        return input;
+      }
+    };
   })
   .controller('NoteCtrl', function($scope, $rootScope) {
     $scope.show = false;
