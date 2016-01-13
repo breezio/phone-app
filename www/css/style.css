@@ -457,17 +457,17 @@
 
 .inline-comments {
   position: relative;
-  margin: 0px 0px 15px 0px;
+  margin: -8px 0px 0px 0px;
 }
 
 .inline-comments.active {
   animation-name: comment-grow;
   animation-duration: 0.25s;
-  animation-timing-function: linear;
+  animation-timing-function: ease;
 }
 
 .inline-comments.inactive {
   animation-name: comment-shrink;
   animation-duration: 0.25s;
-  animation-timing-function: linear;
+  animation-timing-function: ease;
 }
