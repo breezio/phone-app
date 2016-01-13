@@ -182,9 +182,28 @@ angular.module('neo.post.controllers', [])
       $scope.$watch('postContent.children.length', function(val) {
         if (val > 0) {
           for (var i = 0; i < val; i++) {
+            var old;
             $scope.postContent.children[i].onclick = function(e) {
-              console.log(e.target);
+              var c = document.getElementById('inline-comments');
+              if (c != null) {
+                c.classList.remove('active');
+                c.classList.add('inactive');
+                setTimeout(function() {
+                  c.remove();
+                }, 250);
+
+                if (old == e.target) {
+                  return;
+                }
+              }
+              var comments = document.createElement('div');
+              comments.classList.add('inline-comments', 'bar', 'bar-dark', 'active');
+              comments.id = 'inline-comments';
+              e.target.insertAdjacentHTML('afterend', comments.outerHTML);
+              old = e.target;
             }
+
+            $scope.postContent.children[i].classList.add('element');
           }
         }
       });
