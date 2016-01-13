@@ -149,6 +149,9 @@ angular.module('neo', ['ionic', 'ngAnimate', 'ngStorage', 'ngCordova.plugins', '
   $scope.selectTab = function(href) {
     for (var i = 0; i < $scope.tabs.length; i++) {
       if ($scope.tabs[i].href == href) {
+        if (href == '#/tab/conversations') {
+          $scope.newChats = undefined;
+        }
         if ($ionicTabsDelegate.selectedIndex() == i) {
           window.location = href;
         } else {
