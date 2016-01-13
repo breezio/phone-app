@@ -24,13 +24,18 @@ angular.module('neo.post.controllers', [])
       $scope.refresh = function() {
         $scope.start = undefined;
         var tags = '';
-        $rootScope.postFilterList.forEach(function(val) {
-          tags += val.id + ',';
-        });
-        Posts.queryFresh({limit: $scope.limit, tags: tags}, function(data) {
-          $scope.items = data;
+        //TODO: postFilterList should never be undefined
+        if ($rootScope.postFilterList) {
+          $rootScope.postFilterList.forEach(function(val) {
+            tags += val.id + ',';
+          });
+          Posts.queryFresh({limit: $scope.limit, tags: tags}, function(data) {
+            $scope.items = data;
+            $scope.$broadcast('scroll.refreshComplete');
+          });
+        } else {
           $scope.$broadcast('scroll.refreshComplete');
-        });
+        }
       };
 
       $rootScope.$watch('postFilterList.length', function(val) {

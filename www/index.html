@@ -20,6 +20,9 @@
     <!-- angular-md5 library -->
     <script src="lib/angular-md5/angular-md5.min.js"></script>
 
+    <!-- angular-animate library -->
+    <script src="lib/angular-animate/angular-animate.min.js"></script>
+
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
     <!--<script src="lib/cordova/PushNotification.js"></script>-->
@@ -74,6 +77,17 @@
         Back
       </ion-nav-back-button>
     </ion-nav-bar>
+
+    <div ng-controller="NoteCtrl" ng-show="show" ng-class="{'active': show, 'inactive': !show}" class="note bar bar-dark">
+        <div class="note-inner">
+          <img class="crop experts-crop" ng-src="{{(imagePath | staticurl)}}" >
+          <div class="note-data">
+            <p class="note-title">{{title}}</p>
+            <p class="note-body">{{body}}</p>
+          </div>
+        </div>
+    </div>
+
     <!-- 
       The views will be rendered in the <ion-nav-view> directive below
       Templates are in the /templates folder (but you could also

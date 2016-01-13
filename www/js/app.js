@@ -1,4 +1,4 @@
-angular.module('neo', ['ionic', 'ngStorage', 'ngCordova.plugins', 'angular-md5', 'neo.base', 'neo.user', 'neo.settings', 'neo.post', 'neo.conversation', 'neo.question', 'neo.people', 'neo.tags', 'neo.chat', 'neo.notifications'])
+angular.module('neo', ['ionic', 'ngAnimate', 'ngStorage', 'ngCordova.plugins', 'angular-md5', 'neo.base', 'neo.user', 'neo.settings', 'neo.post', 'neo.conversation', 'neo.question', 'neo.people', 'neo.tags', 'neo.chat', 'neo.notifications'])
 
 .run(function($ionicPlatform, $state, $rootScope, $location, $ionicSideMenuDelegate, $http, $cordovaPush, $cordovaDevice, $cordovaGeolocation, Auth, Config) {
 
@@ -132,6 +132,13 @@ angular.module('neo', ['ionic', 'ngStorage', 'ngCordova.plugins', 'angular-md5',
       }
 
       $scope.newChats += 1;
+
+      var data =  {
+        imagePath:  c.fromUser.imagePath,
+        title: c.fromUser.username,
+        body: c.text,
+      };
+      $rootScope.pushNote(data);
     }
   });
 

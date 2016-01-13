@@ -351,3 +351,78 @@
   top: -5px;
   right: -5px;
 }
+
+@keyframes note-enter {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes note-exit {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+.note {
+  min-height: 44px;
+  max-height: 88px;
+  height: 88px;
+  z-index: 11;
+  opacity: 1;
+}
+
+.note h2 {
+  color: white;
+}
+
+.note.active {
+  animation-name: note-enter;
+  animation-duration: 0.25s;
+  animation-timing-function: linear;
+}
+
+.note.inactive {
+  animation-name: note-exit;
+  animation-duration: 0.25s;
+  animation-timing-function: linear;
+}
+
+.note-inner {
+  width: auto;
+  height: 100%;
+  margin: 0px auto;
+  padding: 0px;
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  text-align: left;
+
+  font-size: 1.25em;
+}
+
+.note-inner > * {
+  margin: 0px 10px;
+}
+
+.note-data p {
+  margin: 5px 0px;
+}
+
+.note-data p.note-title {
+  font-size: 1.4em;
+  color: #BFBFBF;
+}
+
+.note-data p.note-body {
+  color: white;
+}

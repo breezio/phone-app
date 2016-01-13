@@ -9,6 +9,7 @@
     "ngCordova": "0.1.6-alpha",
     "strophejs": "latest",
     "strophejs-plugins": "latest",
-    "angular-md5": "latest"
+    "angular-md5": "latest",
+    "angular-animate": "~1.4.8"
   }
 }
