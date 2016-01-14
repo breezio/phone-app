@@ -1,5 +1,3 @@
-var open;
-var close;
 angular.module('neo.notifications', [])
   .filter('sanitize', function($sanitize) {
     return function(input) {
@@ -14,11 +12,11 @@ angular.module('neo.notifications', [])
     $scope.show = false;
     var auto;
 
-
-    $scope.open = $rootScope.pushNote = function(data) {
+    $scope.open = $rootScope.pushNote = function(data, holdAction) {
       $scope.title = data.title;
       $scope.body = data.body;
       $scope.imagePath = data.imagePath;
+      $scope.data = data;
 
       if ($scope.show == true) {
         clearTimeout(auto);
@@ -27,26 +25,23 @@ angular.module('neo.notifications', [])
       }
 
       var note = document.getElementById('note');
-      note.ondrag = function(e) {
-        var left = e.gesture.deltaX.toString() + "px";
-        note.style.left = left;
+      $scope.onClick = function() {
+        $scope.close();
+      };
+
+      $scope.onHold = function(data) {
+        if (typeof holdAction == 'function') {
+          holdAction(data);
+        }
         $scope.close();
       };
 
       auto = setTimeout(function() {
         $scope.close();
-      }, 3000);
+      }, 5000);
     };
 
     $scope.close = $rootScope.closeNote = function() {
       $scope.show = false;
-      $scope.$digest();
-
-      setTimeout(function() {
-        var note = document.getElementById('note');
-        if (note) {
-          note.style.left = 0;
-        }
-      }, 250);
     };
   });

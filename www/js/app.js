@@ -116,7 +116,7 @@ angular.module('neo', ['ionic', 'ngAnimate', 'ngStorage', 'ngCordova.plugins', '
   return funcs;
 })
 
-.controller('TabCtrl', function($scope, $rootScope, $localStorage, $ionicTabsDelegate) {
+.controller('TabCtrl', function($scope, $rootScope, $localStorage, $ionicTabsDelegate, ModalViews, ConversationHash) {
   if ($localStorage.user != undefined) {
     $rootScope.loggedIn = true;
   }
@@ -137,8 +137,13 @@ angular.module('neo', ['ionic', 'ngAnimate', 'ngStorage', 'ngCordova.plugins', '
         imagePath:  c.fromUser.imagePath,
         title: c.fromUser.username,
         body: c.text,
+        fromUser: c.fromUser,
       };
-      $rootScope.pushNote(data);
+      $rootScope.pushNote(data, function(chat) {
+        var hash = ConversationHash.generateHash([data.fromUser.id, $rootScope.currentUser.id]);
+        $rootScope.chat = $rootScope.chats[hash];
+        ModalViews.get('chat').show();
+      });
     }
   });
 

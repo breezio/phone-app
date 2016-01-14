@@ -86,6 +86,10 @@ angular.module('neo.conversation.services', [])
       $scope.$on('modal.shown', function(e, m) {
         if (m.id == 'chat') {
           $scope.chat = $rootScope.chat;
+          if (!$scope.chat) {
+            console.error('$scope.chat could not be populated');
+            return;
+          }
 
           if (!$scope.chat || !$scope.chat.scrollPos) {
             $scope.scroller.scrollBottom(true);

@@ -78,7 +78,7 @@
       </ion-nav-back-button>
     </ion-nav-bar>
 
-    <div ng-controller="NoteCtrl" id="note" on-swipe="onSwipe()" ng-show="show" ng-class="{'active': show, 'inactive': !show}" class="note bar bar-dark">
+    <div ng-controller="NoteCtrl" id="note" ng-click="onClick()" on-hold="onHold(data)" ng-show="show" ng-class="{'active': show, 'inactive': !show}" class="note bar bar-dark">
         <div class="note-inner">
           <img class="crop experts-crop" ng-src="{{(imagePath | staticurl)}}" >
           <div class="note-data">
