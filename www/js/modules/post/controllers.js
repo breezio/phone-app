@@ -192,15 +192,16 @@ angular.module('neo.post.controllers', [])
                   c.remove();
                 }, 250);
 
-                if (old == e.target) {
+                if (old == e.currentTarget) {
                   return;
                 }
               }
               var comments = document.createElement('div');
               comments.classList.add('inline-comments', 'bar', 'bar-dark', 'active');
               comments.id = 'inline-comments';
-              e.target.insertAdjacentHTML('afterend', comments.outerHTML);
-              old = e.target;
+              comments.innerHTML = '<p>asdf</p><p>asdf</p><p>asdf</p><p>asdf</p><p>asdf</p><p>asdf</p><p>asdf</p><p>asdf</p><p>asdf</p>';
+              e.currentTarget.insertAdjacentHTML('afterend', comments.outerHTML);
+              old = e.currentTarget;
             }
 
             $scope.postContent.children[i].classList.add('element');

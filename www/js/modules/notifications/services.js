@@ -14,6 +14,7 @@ angular.module('neo.notifications', [])
     $scope.show = false;
     var auto;
 
+
     $scope.open = $rootScope.pushNote = function(data) {
       $scope.title = data.title;
       $scope.body = data.body;
@@ -25,6 +26,13 @@ angular.module('neo.notifications', [])
         $scope.show = true;
       }
 
+      var note = document.getElementById('note');
+      note.ondrag = function(e) {
+        var left = e.gesture.deltaX.toString() + "px";
+        note.style.left = left;
+        $scope.close();
+      };
+
       auto = setTimeout(function() {
         $scope.close();
       }, 3000);
@@ -33,5 +41,12 @@ angular.module('neo.notifications', [])
     $scope.close = $rootScope.closeNote = function() {
       $scope.show = false;
       $scope.$digest();
+
+      setTimeout(function() {
+        var note = document.getElementById('note');
+        if (note) {
+          note.style.left = 0;
+        }
+      }, 250);
     };
   });

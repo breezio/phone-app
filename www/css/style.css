@@ -113,11 +113,13 @@
 }
 
 .content p {
-  text-overflow: clip;
   white-space: normal;
-  margin-bottom: 15px;
   font-size: 16px;
   line-height: 1.5em;
+}
+
+.content.element p:last-child {
+  margin-bottom: 15px;
 }
 
 .content ul, .content ol {
@@ -431,8 +433,8 @@
   color: white;
 }
 
-.element, .item h3.element {
-  margin:  16px;
+.element, .item h3.element, ul.element {
+  margin: 16px;
 }
 
 @keyframes comment-grow {
@@ -458,6 +460,16 @@
 .inline-comments {
   position: relative;
   margin: -8px 0px 0px 0px;
+  display: block;
+  height: auto;
+  padding: 0px;
+  overflow: auto;
+}
+
+.inline-comments p {
+  margin: 5px;
+  padding: 0px;
+  position: relative;
 }
 
 .inline-comments.active {
