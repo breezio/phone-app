@@ -78,14 +78,15 @@
       </ion-nav-back-button>
     </ion-nav-bar>
 
-    <div ng-controller="NoteCtrl" id="note" ng-click="onClick()" on-hold="onHold(data)" ng-show="show" ng-class="{'active': show, 'inactive': !show}" class="note bar bar-dark">
-        <div class="note-inner">
-          <img class="crop experts-crop" ng-src="{{(imagePath | staticurl)}}" >
-          <div class="note-data">
-            <p class="note-title">{{title | sanitize}}</p>
-            <p class="note-body">{{body | sanitize}}</p>
-          </div>
+    <div ng-controller="NoteCtrl" id="note" ng-click="onClick(data)" ng-show="show" ng-class="{'active': show, 'inactive': !show}" class="note bar bar-dark">
+      <div ng-click="onClose()" class="note-close"><div class="button button-outline"><i class="icon ion-ios7-close-empty"></i> Close</div></div>
+      <div class="note-inner">
+        <img class="crop experts-crop" ng-src="{{(imagePath | staticurl)}}" >
+        <div class="note-data">
+          <p class="note-title">{{title | sanitize}}</p>
+          <p class="note-body">{{body | sanitize}}</p>
         </div>
+      </div>
     </div>
 
     <!-- 

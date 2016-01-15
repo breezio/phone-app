@@ -433,6 +433,19 @@
   color: white;
 }
 
+.note-close {
+  display: flex;
+  position: absolute;
+  left: 10px;
+  top: 0px;
+  bottom: 0px;
+  color: white;
+}
+
+.note-close .button {
+  margin: auto;
+}
+
 .element, .item h3.element, ul.element {
   margin: 16px;
 }

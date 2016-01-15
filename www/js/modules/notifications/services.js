@@ -24,20 +24,26 @@ angular.module('neo.notifications', [])
         $scope.show = true;
       }
 
-      var note = document.getElementById('note');
-      $scope.onClick = function() {
+      var closed = false;
+      $scope.onClose = function() {
+        closed = true;
         $scope.close();
       };
 
-      $scope.onHold = function(data) {
-        if (typeof holdAction == 'function') {
-          holdAction(data);
-        }
-        $scope.close();
+      $scope.onClick = function(data) {
+        setTimeout(function() {
+          if (!closed) {
+            if (typeof holdAction == 'function') {
+              holdAction(data);
+            }
+            closed = false;
+          }
+          $scope.close();
+        }, 100);
       };
 
       auto = setTimeout(function() {
-        $scope.close();
+        //$scope.close();
       }, 5000);
     };
 
