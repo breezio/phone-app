@@ -68,7 +68,7 @@ angular.module('neo.post.controllers', [])
 
       $scope.items = Posts.query({start: $scope.start, limit: $scope.limit});
     })
-    .controller('PostShowCtrl', function($scope, $rootScope, $q, $stateParams, $sce, Posts, Experts, Notes, PostTags, ModalViews, ConversationHash) {
+    .controller('PostShowCtrl', function($scope, $rootScope, $q, $stateParams, $sce, $ionicScrollDelegate, Posts, Experts, Notes, PostTags, ModalViews, ConversationHash) {
 
       $scope.trust = function(data) {
         return $sce.trustAsHtml(data);
@@ -210,6 +210,7 @@ angular.module('neo.post.controllers', [])
             }
 
             $scope.postContent.children[i].classList.add('element');
+            $ionicScrollDelegate.resize();
           }
         }
       });

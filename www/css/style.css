@@ -446,7 +446,7 @@
   margin: auto;
 }
 
-.element, .item h3.element, ul.element {
+.element, .item h3.element, ul.element, .item p.element:last-child {
   margin: 16px;
 }
 
@@ -472,7 +472,7 @@
 
 .inline-comments {
   position: relative;
-  margin: -8px 0px 0px 0px;
+  margin: 0px;
   display: block;
   height: auto;
   padding: 0px;
