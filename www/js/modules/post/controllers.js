@@ -68,7 +68,11 @@ angular.module('neo.post.controllers', [])
 
       $scope.items = Posts.query({start: $scope.start, limit: $scope.limit});
     })
-    .controller('PostShowCtrl', function($scope, $rootScope, $q, $stateParams, Posts, Experts, Notes, PostTags, ModalViews, ConversationHash) {
+    .controller('PostShowCtrl', function($scope, $rootScope, $q, $stateParams, $sce, Posts, Experts, Notes, PostTags, ModalViews, ConversationHash) {
+
+      $scope.trust = function(data) {
+        return $sce.trustAsHtml(data);
+      }
 
       $scope.message = function() {
         if ($rootScope.chats[$scope.hash]) {
@@ -153,15 +157,17 @@ angular.module('neo.post.controllers', [])
             var blurb = $scope.item.content[i];
 
             if (blurb.type == 'paragraph') {
-              var p = '<p>%a</p>'.replace('%a', blurb.content);
+              var p = '<p name="%a">%b</p>'.replace('%a', blurb.id)
+                                           .replace('%b', blurb.content);
               html += p;
             } else if (blurb.type == 'heading') {
-              var h = '<%a>%b</%a>'.replace('%a', blurb.headingType)
-                                  .replace('%b', blurb.content)
-                                  .replace('%a', blurb.headingType);
+              var h = '<%a name="%b">%c</%a>'.replace('%a', blurb.headingType)
+                                             .replace('%b', blurb.id)
+                                             .replace('%c', blurb.content)
+                                             .replace('%a', blurb.headingType);
               html += h;
             } else if (blurb.type == 'list') {
-              var u = '<ol>';
+              var u = '<ol name="' + blurb.id + '">';
               for (var i in blurb.items) {
                 var item = blurb.items[i];
                 u += '<li>' + item + '</li>';
@@ -169,10 +175,9 @@ angular.module('neo.post.controllers', [])
               u += '</ol>';
               html += u;
             } else if (blurb.type == 'code') {
-              var c = '<pre>' + blurb.content + '</pre>';
+              var c = '<pre name="' + blurb.id + '">' + blurb.content + '</pre>';
               html += c;
             }
-
           }
           $scope.renderedHtml = html;
         }
