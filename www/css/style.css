@@ -450,33 +450,16 @@
   margin: 16px;
 }
 
-@keyframes comment-grow {
-  0% {
-    height: 0px;
-  }
-
-  100% {
-    height: 44px;
-  }
-}
-
-@keyframes comment-shrink {
-  0% {
-    height: 44px;
-  }
-
-  100% {
-    height: 0px;
-  }
-}
-
 .inline-comments {
   position: relative;
   margin: 0px;
   display: block;
-  height: auto;
+  height: 0px;
+  max-height: 300px;
+  opacity: 0;
   padding: 0px;
   overflow: auto;
+  transition: height 0.5s, opacity 0.5s;
 }
 
 .inline-comments p {
@@ -486,13 +469,11 @@
 }
 
 .inline-comments.active {
-  animation-name: comment-grow;
-  animation-duration: 0.25s;
-  animation-timing-function: ease;
+  height: 500px;
+  opacity: 1;
 }
 
 .inline-comments.inactive {
-  animation-name: comment-shrink;
-  animation-duration: 0.25s;
-  animation-timing-function: ease;
+  height: 0px;
+  opacity: 0;
 }
