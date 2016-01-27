@@ -50,7 +50,7 @@ angular.module('neo.post.services', [])
       $scope.$on('modal.shown', function(e, m) {
         if (m.id == 'notes') {
           $scope.noteId = $rootScope.noteId;
-          $scope.notes = $rootScope.currentPost.filteredNotes[$scope.noteId];
+          $scope.notes = $rootScope.currentPost.filteredNotes[$scope.noteId] || [];
         }
       });
 
@@ -59,6 +59,29 @@ angular.module('neo.post.services', [])
           return "";
         } else {
           return "<strong>" + line.creationDate + " " + line.user.username + "</strong> " + line.content;
+        }
+      };
+
+      $scope.send = function() {
+        if ($scope.text.length > 0) {
+          Notes.post({
+            postId: $rootScope.currentPost.post.id,
+            noteId: $scope.noteId,
+          }, {
+            section: 'posts',
+            itemType: 'ARTICLE',
+            content: $scope.text,
+            itemId: $rootScope.currentPost.post.id,
+            elementId: $scope.noteId,
+            parentId: 0,
+          }, function(ret) {
+            $scope.notes.push(ret);
+            if ($rootScope.currentPost.filteredNotes[$scope.noteId] == undefined) {
+              $rootScope.currentPost.filteredNotes[$scope.noteId] = [];
+            }
+            $rootScope.currentPost.filteredNotes[$scope.noteId].push(ret);
+            $scope.text = '';
+          });
         }
       };
     })
