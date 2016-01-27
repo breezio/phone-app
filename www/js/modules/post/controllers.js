@@ -104,7 +104,8 @@ angular.module('neo.post.controllers', [])
       $scope.loggedIn = $rootScope.loggedIn;
 
       $scope.showComments = function() {
-        ModalViews.get('postcomments').show();
+        $rootScope.noteId = '0';
+        ModalViews.get('notes').show();
       };
 
       $scope.followPost = function() {
@@ -127,7 +128,7 @@ angular.module('neo.post.controllers', [])
 
       promises.push(Posts.get({postId: $stateParams.postId}).$promise);
       promises.push(Experts.get({postId: $stateParams.postId}).$promise);
-      promises.push(Notes.get({postId: $stateParams.postId}).$promise);
+      promises.push(Notes.all({postId: $stateParams.postId}).$promise);
       promises.push(PostTags.get({postId: $stateParams.postId}).$promise);
 
       var all = $q.all(promises);
@@ -137,6 +138,18 @@ angular.module('neo.post.controllers', [])
           experts: promises[1],
           notes: promises[2]
         };
+
+        var map = {};
+        for (var i = 0; i < promises[2].items.length; i++) {
+          var item = promises[2].items[i];
+          if (map[item.elementId] == undefined) {
+            map[item.elementId] = [];
+          }
+
+          map[item.elementId].push(item);
+        }
+
+        $scope.currentPost.filteredNotes = map;
 
         $rootScope.currentPost = $scope.currentPost;
 
@@ -184,7 +197,8 @@ angular.module('neo.post.controllers', [])
       });
 
       $scope.blurbClick = function(e) {
-        console.log(e);
+        $rootScope.noteId = e.target.getAttribute('name');
+        ModalViews.get('notes').show();
       };
 
       $scope.endorse = function(item) {
@@ -246,47 +260,5 @@ angular.module('neo.post.controllers', [])
 
       $scope.addToChat = function(id) {
         return Roster.addToChat(id);
-      };
-    })
-    .controller('CommentModalCtrl', function($scope, $rootScope, Notes, $ionicScrollDelegate) {
-      $scope.currentPost = $rootScope.currentPost;
-      $scope.notes = [];
-      $scope.$watch('currentPost.notes', function(val) {
-        if (val != undefined) {
-          $scope.notes = [];
-          for (var i in val.items) {
-            if (!val.items[i].deleted) {
-              $scope.notes = $scope.notes.concat(val.items[i]);
-            }
-          }
-
-        }
-      });
-
-      $scope.$parent.$$childHead.currentUser = $rootScope.currentUser;
-      $scope.postComment = function() {
-        Notes.post({postId: $scope.currentPost.item.id}, {
-          itemId: $scope.currentPost.item.id,
-          content: $scope.$parent.$$childHead.text,
-          section: 'posts',
-          itemType: 'ARTICLE',
-          elementId: '0',
-        }, function() {
-          $scope.$parent.$$childHead.text = '';
-          Notes.get({postId: $scope.currentPost.item.id}, function(notes) {
-            $ionicScrollDelegate.resize();
-            $ionicScrollDelegate.scrollBottom(true);
-            $scope.currentPost.notes = notes;
-          });
-        });
-      };
-
-      $scope.refreshComments = function() {
-        Notes.get({postId: $scope.currentPost.item.id}, function(notes) {
-          $scope.currentPost.notes = notes;
-          $scope.$broadcast('scroll.refreshComplete');
-          $ionicScrollDelegate.resize();
-          $ionicScrollDelegate.scrollBottom(true);
-        });
       };
     });

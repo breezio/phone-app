@@ -19,15 +19,8 @@ angular.module('neo.post.services', [])
         experts: null,
       };
 
-      ModalViews.register('postcomments', 'js/modules/post/templates/comments.html')
-        .then(function(modal) {
-          modal.scope.postComment = function() {
-            modal.scope.$$childHead.text = '';
-          };
-        });
-
       ModalViews.register('posttag', 'js/modules/post/templates/tag.html');
-
+      ModalViews.register('notes', 'js/modules/post/templates/notes.html');
 
       $rootScope.postFilters = {};
       ModalViews.register('postfilter', 'js/modules/post/templates/filter.html');
@@ -49,6 +42,23 @@ angular.module('neo.post.services', [])
               element.append(elmnt);
             }
           });
+        }
+      };
+    })
+    .controller('NoteModalCtrl', function($scope, $rootScope, Notes) {
+      $scope.noteId;
+      $scope.$on('modal.shown', function(e, m) {
+        if (m.id == 'notes') {
+          $scope.noteId = $rootScope.noteId;
+          $scope.notes = $rootScope.currentPost.filteredNotes[$scope.noteId];
+        }
+      });
+
+      $scope.formatLine = function(line) {
+        if (line == undefined) {
+          return "";
+        } else {
+          return "<strong>" + line.creationDate + " " + line.user.username + "</strong> " + line.content;
         }
       };
     })
@@ -83,57 +93,6 @@ angular.module('neo.post.services', [])
           });
         }
       });
-    })
-    .controller('CommentModalCtrl', function($scope, $rootScope, Notes, $ionicScrollDelegate) {
-      $rootScope.$watch('loggedIn', function(val) {
-        $scope.loggedIn = val;
-      });
-
-      $scope.showUser = function(id) {
-        $rootScope.userId = id;
-        ModalViews.get('user').show();
-      };
-
-      $scope.currentPost = $rootScope.currentPost;
-      $scope.notes = [];
-      $scope.$watch('currentPost.notes', function(val) {
-        if (val != undefined) {
-          $scope.notes = [];
-          for (var i in val.items) {
-            if (!val.items[i].deleted) {
-              $scope.notes = $scope.notes.concat(val.items[i]);
-            }
-          }
-
-        }
-      });
-
-      $scope.postComment = function() {
-        Notes.post({postId: $scope.currentPost.post.id}, {
-          itemId: $scope.currentPost.post.id,
-          content: $scope.$parent.$$childHead.text,
-          section: 'posts',
-          itemType: 'ARTICLE',
-          elementId: '0',
-        }, function() {
-          $scope.$parent.$$childHead.text = '';
-          Notes.get({postId: $scope.currentPost.post.id}, function(notes) {
-            $ionicScrollDelegate.resize();
-            $ionicScrollDelegate.scrollBottom(true);
-            $scope.currentPost.notes = notes;
-          });
-        });
-      };
-
-      $scope.refreshComments = function() {
-        $rootScope.cacheFactory.removeAll();
-        Notes.get({postId: $scope.currentPost.post.id}, function(notes) {
-          $scope.currentPost.notes = notes;
-          $scope.$broadcast('scroll.refreshComplete');
-          $ionicScrollDelegate.resize();
-          $ionicScrollDelegate.scrollBottom(true);
-        });
-      };
     })
     .controller('PostTagModalCtrl', function($scope, $rootScope, Posts) {
       $scope.$on('modal.shown', function(e, m) {
@@ -191,12 +150,16 @@ angular.module('neo.post.services', [])
     .factory('Notes', function(Resource) {
       var actions = {
         post: {
-          url: '/posts/:postId/0/notes',
+          url: '/posts/:postId/:noteId/notes',
           method: 'POST',
+        },
+        all: {
+          url: '/posts/:postId/notes',
+          method: 'GET',
         },
       };
 
-      return Resource('/posts/:postId/notes', {fields: 'isFollowing'}, actions);
+      return Resource('/posts/:postId/:noteId/notes', {fields: 'isFollowing'}, actions);
     })
     .factory('PostTags', function(Resource) {
       var actions = {

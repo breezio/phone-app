@@ -1,0 +1,20 @@
+<ion-modal-view ng-controller="NoteModalCtrl">
+  <ion-header-bar class="bar-positive">
+    <div class="buttons">
+      <button class="button button-clear" ng-click="modal.hide()"><i class="icon ion-ios7-close-empty"></i> Close</button>
+      <h2 class="title">Notes</h2>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+    <div class="padding">
+      <p ng-repeat="line in notes track by $index" ng-bind-html="formatLine(line)">
+    </div>
+  </ion-content>
+  <ion-footer-bar class="bar-light item-input-inset">
+    <label class="item-input-wrapper">
+      <i class="icon ion-ios7-search placeholder-icon"></i>
+      <input id="chatInput" type="text" placeholder="Write a comment..." value="{{text}}" ng-model="text">
+    </label>
+    <button class="button button-clear" ng-click="send()">Send</button>
+  </ion-footer-bar>
+</ion-modal-view>
