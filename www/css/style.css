@@ -449,31 +449,3 @@
 .element, .item h3.element, ul.element, .item p.element:last-child {
   margin: 16px;
 }
-
-.inline-comments {
-  position: relative;
-  margin: 0px;
-  display: block;
-  height: 0px;
-  max-height: 300px;
-  opacity: 0;
-  padding: 0px;
-  overflow: auto;
-  transition: height 0.5s, opacity 0.5s;
-}
-
-.inline-comments p {
-  margin: 5px;
-  padding: 0px;
-  position: relative;
-}
-
-.inline-comments.active {
-  height: 500px;
-  opacity: 1;
-}
-
-.inline-comments.inactive {
-  height: 0px;
-  opacity: 0;
-}

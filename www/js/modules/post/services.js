@@ -32,6 +32,26 @@ angular.module('neo.post.services', [])
       $rootScope.postFilters = {};
       ModalViews.register('postfilter', 'js/modules/post/templates/filter.html');
     })
+    .directive('compilePost', function($compile) {
+      return {
+        scope: true,
+        link: function(scope, element, attrs) {
+          var elmnt;
+          attrs.$observe('template', function(template) {
+            if (angular.isDefined(template)) {
+              elmnt = angular.element(template);
+              for (var i = 0; i < elmnt.length; i++) {
+                elmnt[i].classList.add('element');
+                elmnt[i].setAttribute('on-hold', 'blurbClick($event)');
+              }
+              elmnt = $compile(elmnt)(scope);
+              element.html('');
+              element.append(elmnt);
+            }
+          });
+        }
+      };
+    })
     .controller('PostFilterCtrl', function($scope, $rootScope, Tags) {
       var categories = $scope.categories = [
         ['project', 'Project'],

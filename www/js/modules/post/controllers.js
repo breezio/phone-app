@@ -120,7 +120,7 @@ angular.module('neo.post.controllers', [])
       };
 
       // object initialization before fetching content
-      $scope.renderedHtml = '';
+      $scope.renderedHtml = '<p></p>';
       $scope.currentPost.experts = {items: {length: 0}};
 
       var promises = [];
@@ -183,37 +183,9 @@ angular.module('neo.post.controllers', [])
         }
       });
 
-      $scope.postContent = document.getElementById('post-content');
-      $scope.$watch('postContent.children.length', function(val) {
-        if (val > 0) {
-          for (var i = 0; i < val; i++) {
-            var old;
-            $scope.postContent.children[i].onclick = function(e) {
-              var c = document.getElementById('inline-comments');
-              if (c != null) {
-                c.classList.remove('active');
-                c.classList.add('inactive');
-                setTimeout(function() {
-                  c.remove();
-                }, 250);
-
-                if (old == e.currentTarget) {
-                  return;
-                }
-              }
-              var comments = document.createElement('div');
-              comments.classList.add('inline-comments', 'bar', 'bar-dark', 'active');
-              comments.id = 'inline-comments';
-              comments.innerHTML = '<p>asdf</p><p>asdf</p><p>asdf</p><p>asdf</p><p>asdf</p><p>asdf</p><p>asdf</p><p>asdf</p><p>asdf</p>';
-              e.currentTarget.insertAdjacentHTML('afterend', comments.outerHTML);
-              old = e.currentTarget;
-            }
-
-            $scope.postContent.children[i].classList.add('element');
-            $ionicScrollDelegate.resize();
-          }
-        }
-      });
+      $scope.blurbClick = function(e) {
+        console.log(e);
+      };
 
       $scope.endorse = function(item) {
         if (item.endorsed) {
