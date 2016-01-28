@@ -81,7 +81,8 @@ angular.module('neo.post.controllers', [])
           var chat = {
             title: $scope.currentPost.post.title,
             user: $scope.currentPost.post.user,
-            chats: []
+            chats: [],
+            context: $scope.item,
           };
 
           $rootScope.chats[$scope.hash] = chat;
