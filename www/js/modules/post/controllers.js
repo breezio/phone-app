@@ -158,7 +158,7 @@ angular.module('neo.post.controllers', [])
         // post rendering
         $scope.item = $scope.currentPost.post;
         $scope.item.isFollowing = $scope.item.isFollowing != false ? true : false;
-        $scope.hash = ConversationHash.generateHash([$scope.item.user.id, $rootScope.currentUser.id]);
+        $scope.hash = ConversationHash.generateHash([$scope.item.user.id, $rootScope.currentUser.id], $scope.item.id);
 
         $rootScope.currentPost.hash = $scope.hash;
 
@@ -236,7 +236,7 @@ angular.module('neo.post.controllers', [])
       };
 
       $scope.message = function(user) {
-        var hash = ConversationHash.generateHash([user.id, $rootScope.currentUser.id]);
+        var hash = ConversationHash.generateHash([user.id, $rootScope.currentUser.id], $scope.item.id);
         if ($rootScope.chats[hash]) {
           $rootScope.chat = $rootScope.chats[hash];
         } else {

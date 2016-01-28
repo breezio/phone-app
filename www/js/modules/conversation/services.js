@@ -7,6 +7,8 @@ angular.module('neo.conversation.services', [])
         Chats.get({}, function(convos) {
           $rootScope.chatUsers[$rootScope.currentUser.id] = $rootScope.currentUser;
           convos.items.forEach(function(convo) {
+            console.log($rootScope.chats);
+            //console.log(convo);
             var otherId;
             var userId;
             if (convo.users[0] != $rootScope.currentUser.id) {
@@ -44,14 +46,20 @@ angular.module('neo.conversation.services', [])
                   m.fromUser = $rootScope.chatUsers[m.fromId];
 
                   if ($rootScope.chats[m.hash] == undefined) {
+                    if (convo.title == null) {
+                      convo.title = otherUser.firstName + ' ' + otherUser.lastName + ' (' + otherUser.username + ')';
+                    }
+
                     $rootScope.chats[m.hash] = {
                       id: convo.id,
                       hash: m.hash,
+                      title: convo.title,
                       lastId: lastId,
                       user: otherUser,
                       chats: [],
                       otherId: otherId,
                       userId: userId,
+                      context: convo.context,
                     };
                   }
 
@@ -192,7 +200,7 @@ angular.module('neo.conversation.services', [])
           m.fromId = ConversationHash.jidToId(m.from);
           m.toId = ConversationHash.jidToId(m.to);
           m.text = $scope.text;
-          m.hash = ConversationHash.generateHash([m.fromId, m.toId]);
+          m.hash = ConversationHash.generateHash([m.fromId, m.toId], $scope.chat.context);
 
           Messages.post({conversationId: m.hash}, {
             body: $scope.text,
