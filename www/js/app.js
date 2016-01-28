@@ -135,12 +135,12 @@ angular.module('neo', ['ionic', 'ngAnimate', 'ngStorage', 'ngCordova.plugins', '
 
       var data =  {
         imagePath:  c.fromUser.imagePath,
-        title: c.fromUser.username,
+        title: c.topic.title,
         body: c.text,
         fromUser: c.fromUser,
       };
       $rootScope.pushNote(data, function(chat) {
-        var hash = ConversationHash.generateHash([data.fromUser.id, $rootScope.currentUser.id]);
+        var hash = ConversationHash.generateHash([data.fromUser.id, $rootScope.currentUser.id], c.topic);
         $rootScope.chat = $rootScope.chats[hash];
         ModalViews.get('chat').show();
       });
