@@ -93,6 +93,7 @@ angular.module('neo.chat', [])
               $rootScope.$digest();
               $rootScope.chatConnection.addHandler(function(msg) {
                 var m = {};
+                console.log(msg.getElementsByTagName('topic'));
                 m.time = (new Date).toTimeString();
                 m.to = msg.getAttribute('to');
                 m.from = msg.getAttribute('from');
@@ -100,7 +101,19 @@ angular.module('neo.chat', [])
                 m.elems = msg.getElementsByTagName('body');
                 m.fromId = ConversationHash.jidToId(m.from);
                 m.toId = ConversationHash.jidToId(m.to);
-                m.hash = ConversationHash.generateHash([m.fromId, m.toId]);
+
+                var topic = msg.getElementsByTagName('topic')[0];
+                if (topic) {
+                  m.topic = {
+                    id: topic.getAttribute('id'),
+                    title: topic.getAttribute('title'),
+                    slug: topic.getAttribute('slug'),
+                    postType: topic.getAttribute('posttype'),
+                    type: topic.getAttribute('type'),
+                  };
+                }
+
+                m.hash = ConversationHash.generateHash([m.fromId, m.toId], m.topic);
 
                 if (m.type == 'chat' && m.elems.length > 0) {
                   var body = m.elems[0];
