@@ -7,8 +7,6 @@ angular.module('neo.conversation.services', [])
         Chats.get({}, function(convos) {
           $rootScope.chatUsers[$rootScope.currentUser.id] = $rootScope.currentUser;
           convos.items.forEach(function(convo) {
-            console.log($rootScope.chats);
-            //console.log(convo);
             var otherId;
             var userId;
             if (convo.users[0] != $rootScope.currentUser.id) {
@@ -189,6 +187,18 @@ angular.module('neo.conversation.services', [])
           })
           .cnode(Strophe.xmlElement('body', $scope.text)).up()
           .c('active', {xmlns: 'http://jabber.org/protocol/chatstates'});
+
+					if ($scope.chat.context && $scope.chat.context.id) {
+            var topic = {
+              id: $scope.chat.context.id,
+              title: $scope.chat.context.title,
+              slug: $scope.chat.context.slug,
+              postType: $scope.chat.context.postType,
+              type: $scope.chat.context.type,
+            };
+
+						msg.up().cnode(Strophe.xmlElement('topic', topic)).up()
+					}
 
           $rootScope.chatConnection.send(msg);
 

@@ -43,8 +43,9 @@ angular.module('neo.notifications', [])
       };
 
       auto = setTimeout(function() {
-        //$scope.close();
-      }, 5000);
+        closed = true;
+        $scope.close();
+      }, 3000);
     };
 
     $scope.close = $rootScope.closeNote = function() {
