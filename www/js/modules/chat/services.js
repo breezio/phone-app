@@ -140,6 +140,7 @@ angular.module('neo.chat', [])
 
                 $rootScope.$broadcast('chat:new-chat', m);
                 $rootScope.$broadcast('chat:new-chat:' + m.hash, m);
+                $rootScope.chats[m.hash].modifiedDate = new Date();
                 $rootScope.$digest();
                 return true;
               }, null, 'message', null, null, null);

@@ -58,6 +58,8 @@ angular.module('neo.conversation.services', [])
                       otherId: otherId,
                       userId: userId,
                       context: convo.context,
+                      creationDate: new Date(convo.creationDate),
+                      modifiedDate: new Date(convo.modifiedDate),
                     };
                   }
 
