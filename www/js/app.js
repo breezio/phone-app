@@ -133,6 +133,12 @@ angular.module('neo', ['ionic', 'ngAnimate', 'ngStorage', 'ngCordova.plugins', '
 
       $scope.newChats += 1;
 
+      if (!c.topic) {
+        c.topic = {
+          title: c.fromUser.firstName + ' ' + c.fromUser.lastName + ' (' + c.fromUser.username + ')',
+        };
+      }
+
       var data =  {
         imagePath:  c.fromUser.imagePath,
         title: c.topic.title,
