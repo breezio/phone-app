@@ -7,7 +7,7 @@
   </ion-header-bar>
   <ion-content>
     <div class="padding">
-      <p ng-repeat="line in notes track by $index" ng-bind-html="formatLine(line)">
+      <p ng-repeat="line in notes track by $index" ng-bind-html="formatLine(notes, $index)">
     </div>
   </ion-content>
   <ion-footer-bar class="bar-light item-input-inset">

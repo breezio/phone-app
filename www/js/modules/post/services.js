@@ -54,11 +54,21 @@ angular.module('neo.post.services', [])
         }
       });
 
-      $scope.formatLine = function(line) {
+      $scope.formatLine = function(notes, index) {
+        var line = notes[index];
+        line.time = new Date(line.creationDate);
         if (line == undefined) {
           return "";
         } else {
-          return "<strong>" + line.creationDate + " " + line.user.username + "</strong> " + line.content;
+          var text = '';
+          if (notes[index-1]) {
+            var diff = line.time.getTime()/1000 - notes[index-1].time.getTime()/1000;
+            if (diff > 300) {
+              text += '<p class="timestamp"><strong>' + line.time.toString() + '</strong></p>';
+            }
+          }
+          text += '<strong>' + line.user.username + '</strong> ' + line.content;
+          return text;
         }
       };
 

@@ -30,7 +30,7 @@ angular.module('neo.conversation.services', [])
                 msgs.items.forEach(function(msg) {
                   var m = {};
                   m.text = msg.body;
-                  m.time = new Date(msg.creationDate);
+                  m.time = new Date(msg.creationDate * 1000);
 
                   if (msg.userId == otherId) {
                     m.fromId = otherId;
@@ -58,8 +58,8 @@ angular.module('neo.conversation.services', [])
                       otherId: otherId,
                       userId: userId,
                       context: convo.context,
-                      creationDate: new Date(convo.creationDate),
-                      modifiedDate: new Date(convo.modifiedDate),
+                      creationDate: new Date(convo.creationDate * 1000),
+                      modifiedDate: new Date(convo.modifiedDate * 1000),
                     };
                   }
 
@@ -166,7 +166,7 @@ angular.module('neo.conversation.services', [])
             }
 
             m.fromUser = $rootScope.chatUsers[m.fromId];
-            m.time = new Date(msg.creationDate);
+            m.time = new Date(msg.creationDate * 1000);
 
             newData.push(m);
           });
@@ -249,7 +249,7 @@ angular.module('neo.conversation.services', [])
           var text = '';
           if (chats[index-1]) {
             var diff = line.time.getTime()/1000 - chats[index-1].time.getTime()/1000;
-            if (diff > 60) {
+            if (diff > 300) {
               text += '<p class="timestamp"><strong>' + line.time.toString() + '</strong></p>';
             }
           }
