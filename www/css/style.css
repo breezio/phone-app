@@ -449,3 +449,7 @@
 .element, .item h3.element, ul.element, .item p.element:last-child {
   margin: 16px;
 }
+
+.timestamp {
+  text-align: center;
+}

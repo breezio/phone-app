@@ -11,7 +11,7 @@
       on-refresh="loadMore()">
     </ion-refresher>
     <div class="padding">
-      <p ng-repeat="line in chat.chats track by $index" ng-bind-html="formatLine(line)">
+      <p ng-repeat="line in chat.chats track by $index" ng-bind-html="formatLine(chat.chats, $index)">
     </div>
   </ion-content>
   <ion-footer-bar class="bar-light item-input-inset">

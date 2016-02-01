@@ -30,7 +30,7 @@ angular.module('neo.conversation.services', [])
                 msgs.items.forEach(function(msg) {
                   var m = {};
                   m.text = msg.body;
-                  m.time = new Date(msg.creationDate).toTimeString();
+                  m.time = new Date(msg.creationDate);
 
                   if (msg.userId == otherId) {
                     m.fromId = otherId;
@@ -164,6 +164,7 @@ angular.module('neo.conversation.services', [])
             }
 
             m.fromUser = $rootScope.chatUsers[m.fromId];
+            m.time = new Date(msg.creationDate);
 
             newData.push(m);
           });
@@ -203,7 +204,7 @@ angular.module('neo.conversation.services', [])
           $rootScope.chatConnection.send(msg);
 
           var m = {};
-          m.time = new Date().toTimeString();
+          m.time = new Date();
           m.to = to;
           m.from = $rootScope.chatToken.username;
           m.type = 'chat';
@@ -238,13 +239,20 @@ angular.module('neo.conversation.services', [])
         }, 50);
       };
 
-      $scope.formatLine = function(line) {
+      $scope.formatLine = function(chats, index) {
+        var line = chats[index];
         if (line == undefined || line.fromUser == undefined) {
-          return "";
-        } else if (line.time == undefined) {
-          return "<strong>" + line.fromUser.username + "</strong> " + line.text;
+          return '';
         } else {
-          return "<strong>" + line.time + " " + line.fromUser.username + "</strong> " + line.text;
+          var text = '';
+          if (chats[index-1]) {
+            var diff = line.time.getTime()/1000 - chats[index-1].time.getTime()/1000;
+            if (diff > 60) {
+              text += '<p class="timestamp"><strong>' + line.time.toString() + '</strong></p>';
+            }
+          }
+          text += '<strong>' + line.fromUser.username + '</strong> ' + line.text;
+          return text;
         }
       };
     });

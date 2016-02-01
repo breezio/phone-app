@@ -93,7 +93,7 @@ angular.module('neo.chat', [])
               $rootScope.$digest();
               $rootScope.chatConnection.addHandler(function(msg) {
                 var m = {};
-                m.time = (new Date).toTimeString();
+                m.time = (new Date);
                 m.to = msg.getAttribute('to');
                 m.from = msg.getAttribute('from');
                 m.type = msg.getAttribute('type');
