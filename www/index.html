@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'unsafe-inline' 'unsafe-eval' *">
     <title></title>
 
 
@@ -68,7 +69,7 @@
     <script src="js/modules/tags/routing.js"></script>
 
   </head>
-  <body ng-app="neo" animation="slide-left-right-ios7">
+  <body ng-app="neo" ng-csp animation="slide-left-right-ios7">
     <!-- 
       The nav bar that will be updated as we navigate between views.
     -->
