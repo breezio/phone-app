@@ -1,0 +1,18 @@
+<ion-view view-title="Content">
+  <ion-content>
+    <ion-refresher
+      pulling-text="Pull to refresh..."
+      on-refresh="refreshPosts()">
+    </ion-refresher>
+    <ion-list>
+      <ion-item ng-repeat="post in posts">
+        {{post.title}}
+      </ion-item>
+    </ion-list>
+    <ion-infinite-scroll
+      on-infinite="loadMore()"
+      distance="1%"
+      ng-if="!exhausted">
+    </ion-infinite-scroll>
+  </ion-content>
+</ion-view>

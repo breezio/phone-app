@@ -1,12 +1,4 @@
 {
-  "name": "pictalk",
-  "app_id": "",
-  "gulpStartupTasks": [
-    "sass",
-    "watch"
-  ],
-  "watchPatterns": [
-    "www/**/*",
-    "!www/lib/**/*"
-  ]
+  "name": "Breezio",
+  "app_id": ""
 }

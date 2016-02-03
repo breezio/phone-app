@@ -6,95 +6,31 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'unsafe-inline' 'unsafe-eval' *">
     <title></title>
 
-
-    <!-- compiled css output -->
-    <link href="css/ionic.app.css" rel="stylesheet">
+    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 
     <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
-    <script src="lib/angular-resource/angular-resource.js"></script>
-    <script src="lib/ngstorage/ngStorage.js"></script>
-    <script src="lib/ngCordova/dist/ng-cordova.js"></script>
-    <script src="lib/angular-http-auth/src/http-auth-interceptor.js"></script>
-
-    <!-- angular-md5 library -->
-    <script src="lib/angular-md5/angular-md5.min.js"></script>
-
-    <!-- angular-animate library -->
-    <script src="lib/angular-animate/angular-animate.min.js"></script>
 
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
-    <!--<script src="lib/cordova/PushNotification.js"></script>-->
-
-    <!-- strophe xmpp library js -->
-    <script src="lib/strophejs/strophe.min.js"></script>
-    <script src="lib/strophejs-plugins/ping/strophe.ping.js"></script>
-    <script src="lib/strophejs-plugins/roster/strophe.roster.js"></script>
 
     <!-- your app's js -->
     <script src="js/app.js"></script>
 
-    <script src="js/common/base/services.js"></script>
+    <script src="js/content/index.js"></script>
+    <script src="js/content/posts.js"></script>
 
-    <script src="js/modules/chat/services.js"></script>
+    <script src="js/chats/index.js"></script>
 
-    <script src="js/modules/notifications/services.js"></script>
-
-    <script src="js/modules/settings/controllers.js"></script>
-    <script src="js/modules/settings/services.js"></script>
-    <script src="js/modules/settings/routing.js"></script>
-
-    <script src="js/modules/post/controllers.js"></script>
-    <script src="js/modules/post/services.js"></script>
-    <script src="js/modules/post/routing.js"></script>
-
-    <script src="js/modules/conversation/controllers.js"></script>
-    <script src="js/modules/conversation/services.js"></script>
-    <script src="js/modules/conversation/routing.js"></script>
-
-    <script src="js/modules/question/controllers.js"></script>
-    <script src="js/modules/question/services.js"></script>
-    <script src="js/modules/question/routing.js"></script>
-
-    <script src="js/modules/user/controllers.js"></script>
-    <script src="js/modules/user/services.js"></script>
-    <script src="js/modules/user/routing.js"></script>
-
-    <script src="js/modules/people/controllers.js"></script>
-    <script src="js/modules/people/services.js"></script>
-    <script src="js/modules/people/routing.js"></script>
-
-    <script src="js/modules/tags/routing.js"></script>
+    <script src="js/account/index.js"></script>
 
   </head>
-  <body ng-app="neo" ng-csp animation="slide-left-right-ios7">
-    <!-- 
-      The nav bar that will be updated as we navigate between views.
-    -->
-    <ion-nav-bar class="bar-positive nav-title-slide-ios7">
-      <ion-nav-back-button class="button-icon icon  ion-ios7-arrow-back">
-        Back
+  <body ng-app="breezio" ng-csp>
+    <ion-nav-bar class="bar-stable">
+      <ion-nav-back-button>
       </ion-nav-back-button>
     </ion-nav-bar>
-
-    <div ng-controller="NoteCtrl" id="note" ng-click="onClick(data)" ng-show="show" ng-class="{'active': show, 'inactive': !show}" class="note bar bar-dark">
-      <div ng-click="onClose()" class="note-close"><div class="button button-outline"><i class="icon ion-ios7-close-empty"></i> Close</div></div>
-      <div class="note-inner">
-        <img class="crop experts-crop" ng-src="{{(imagePath | staticurl)}}" >
-        <div class="note-data">
-          <p class="note-title">{{title | sanitize}}</p>
-          <p class="note-body">{{body | sanitize}}</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- 
-      The views will be rendered in the <ion-nav-view> directive below
-      Templates are in the /templates folder (but you could also
-      have templates inline in this html file if you'd like).
-    -->
     <ion-nav-view></ion-nav-view>
   </body>
 </html>
