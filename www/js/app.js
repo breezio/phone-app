@@ -38,7 +38,7 @@ angular.module('breezio', ['ionic', 'breezio.content', 'breezio.chats', 'breezio
     }
   })
   .state('tab.content-post', {
-    url: '/post',
+    url: '/post/:postId',
     views: {
       'tab-content': {
         templateUrl: 'templates/content-post.html',

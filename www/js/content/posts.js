@@ -13,19 +13,46 @@ angular.module('breezio.content.posts', [])
         method: 'GET',
         url: $rootScope.config.url + 'posts',
         params: params
-      })
+      });
+    }
+  };
+})
+
+.factory('Post', function($http, $rootScope) {
+  return {
+    get: function(postId, params) {
+      var params = angular.extend({}, params);
+
+      return $http({
+        method: 'GET',
+        url: $rootScope.config.url + 'posts/' + postId,
+        params: params
+      });
     }
   };
 })
 
 .directive('breezioPost', function() {
   return {
-    template: 'asdfasdfsadfdsafasdf'
+    templateUrl: 'templates/breezio-post.html'
   };
 })
 
-.controller('PostCtrl', function($scope, $rootScope) {
+.controller('PostCtrl', function($scope, $stateParams, Post) {
+  $scope.post = {};
+
   $scope.refreshPost = function() {
-    $scope.$broadcast('scroll.refreshComplete');
+    Post.get($stateParams.postId).then(function(res) {
+      $scope.post = res.data;
+    }).finally(function() {
+      $scope.$broadcast('scroll.refreshComplete');
+    });
   };
+
+  $scope.$on('$ionicView.loaded', function() {
+    $scope.refreshPost();
+  });
+
+  $scope.$on('$ionicView.beforeEnter', function() {
+  });
 });
