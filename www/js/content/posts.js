@@ -32,9 +32,42 @@ angular.module('breezio.content.posts', [])
   };
 })
 
-.directive('breezioPost', function() {
+.directive('breezioPost', function($compile) {
   return {
-    template: '<div class="item">{{post.content}}</div>'
+    link: function(scope, element, attrs) {
+      scope.$parent.$watch('post.content', function(val) {
+        if (typeof val == 'object') {
+          var item = angular.element('<div class="post item item-text-wrap"></div>');
+          for (var i = 0; i < val.length; i++) {
+            var blurb = val[i];
+
+            var e;
+            console.log(blurb);
+            switch (blurb.type) {
+
+            case 'paragraph':
+              e = angular.element(document.createElement('p'));
+              e.html(blurb.content);
+              break;
+
+            case 'separator':
+              e = angular.element(document.createElement('hr'));
+              break;
+
+            case 'heading':
+              e = angular.element(document.createElement(blurb.headingType));
+              e.html(blurb.content);
+              break;
+            }
+
+            e.attr('name', blurb.id);
+            item.append(e);
+          }
+          element.html('');
+          element.append($compile(angular.element(item))(scope));
+        }
+      });
+    }
   };
 })
 
@@ -46,7 +79,6 @@ angular.module('breezio.content.posts', [])
     Post.get($stateParams.postId).then(function(res) {
       $scope.post = res.data;
       $scope.post.dateString = (new Date($scope.post.creationDate)).toDateString();
-      console.log($scope.post);
     }).finally(function() {
       $scope.$broadcast('scroll.refreshComplete');
     });

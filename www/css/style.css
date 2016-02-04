@@ -37,3 +37,14 @@
   line-height: 50px;
   font-size: 25px;;
 }
+
+.post p, .post h3, .post h2, .post h1 {
+  margin-bottom: 20px;
+}
+
+.post hr {
+  margin: 20px 0px;
+  border-width: 1px 0px 0px;
+  border-style: solid none none;
+  border-color: #EEE;
+}
