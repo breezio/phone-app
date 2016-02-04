@@ -16,4 +16,16 @@ angular.module('breezio.content.posts', [])
       })
     }
   };
+})
+
+.directive('breezioPost', function() {
+  return {
+    template: 'asdfasdfsadfdsafasdf'
+  };
+})
+
+.controller('PostCtrl', function($scope, $rootScope) {
+  $scope.refreshPost = function() {
+    $scope.$broadcast('scroll.refreshComplete');
+  };
 });

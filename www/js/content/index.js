@@ -1,8 +1,9 @@
 angular.module('breezio.content', ['breezio.content.posts'])
 
-.controller('ContentCtrl', function($scope, $rootScope, Posts) {
+.controller('ContentCtrl', function($scope, $rootScope, $state, Posts) {
   $scope.start = 0;
   $scope.exhausted = false;
+  $scope.posts = [];
 
   $scope.refreshPosts = function() {
     $scope.start = 0;
@@ -25,6 +26,11 @@ angular.module('breezio.content', ['breezio.content.posts'])
     }).finally(function() {
       $scope.$broadcast('scroll.infiniteScrollComplete');
     });
+  };
+
+  $scope.openPost = function(post) {
+    $rootScope.post = post;
+    $state.go('tab.content-post');
   };
 
   $scope.refreshPosts();
