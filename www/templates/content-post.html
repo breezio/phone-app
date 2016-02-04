@@ -7,6 +7,32 @@
       pulling-text="Pull to refresh..."
       on-refresh="refreshPost()">
     </ion-refresher>
-    <breezio-post></breezio-post>
+
+    <div class="list">
+
+      <!-- header -->
+      <div class="header item" ng-click="expand()">
+        <span class="user-image"><img ng-src="{{post.imagePath}}"></span>
+        <div class="title">
+          <h1>{{post.title}}</h1>
+          <h2>{{post.subtitle}}</h2>
+        </div>
+        <span class="down"><i class="icon" ng-class="{'ion-ios-arrow-down': !expanded, 'ion-ios-arrow-up': expanded}"></i></span>
+      </div>
+
+      <!-- header info -->
+      <div ng-show="expanded">
+        <div class="header item" ng-click="">
+          <span class="user-image"><img ng-src="{{post.user.imagePath}}"></span>
+          <div class="title">
+            <h1>By {{post.user.firstName}} {{post.user.lastName}}</h1>
+            <h2>Created {{post.dateString}}</h2>
+          </div>
+        </div>
+      </div>
+
+      <breezio-post></breezio-post>
+
+    </div>
   </ion-content>
 </ion-view>

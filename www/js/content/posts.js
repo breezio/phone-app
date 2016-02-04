@@ -34,25 +34,29 @@ angular.module('breezio.content.posts', [])
 
 .directive('breezioPost', function() {
   return {
-    templateUrl: 'templates/breezio-post.html'
+    template: '<div class="item">{{post.content}}</div>'
   };
 })
 
 .controller('PostCtrl', function($scope, $stateParams, Post) {
   $scope.post = {};
+  $scope.expanded = false;
 
   $scope.refreshPost = function() {
     Post.get($stateParams.postId).then(function(res) {
       $scope.post = res.data;
+      $scope.post.dateString = (new Date($scope.post.creationDate)).toDateString();
+      console.log($scope.post);
     }).finally(function() {
       $scope.$broadcast('scroll.refreshComplete');
     });
   };
 
+  $scope.expand = function() {
+    $scope.expanded = !$scope.expanded;
+  };
+
   $scope.$on('$ionicView.loaded', function() {
     $scope.refreshPost();
-  });
-
-  $scope.$on('$ionicView.beforeEnter', function() {
   });
 });
