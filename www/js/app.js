@@ -2,9 +2,10 @@ angular.module('breezio', ['ionic', 'breezio.content', 'breezio.chats', 'breezio
 
 .run(function($ionicPlatform, $rootScope) {
 
-  $rootScope.config = {
-    url: 'https://health.breezio.com/api/1/'
-  };
+  $rootScope.config = {};
+  $rootScope.config.host = 'https://health.breezio.com';
+  $rootScope.config.api = '/api/1';
+  $rootScope.config.url = $rootScope.config.host + $rootScope.config.api;
 
   $ionicPlatform.ready(function() {
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
@@ -16,6 +17,16 @@ angular.module('breezio', ['ionic', 'breezio.content', 'breezio.chats', 'breezio
       StatusBar.styleDefault();
     }
   });
+})
+
+.filter('static', function($rootScope) {
+  return function(input) {
+    if (input) {
+      return $rootScope.config.host + input;
+    } else {
+      return input;
+    }
+  };
 })
 
 .config(function($stateProvider, $urlRouterProvider) {

@@ -11,7 +11,7 @@ angular.module('breezio.content.posts', [])
 
       return $http({
         method: 'GET',
-        url: $rootScope.config.url + 'posts',
+        url: $rootScope.config.url + '/posts',
         params: params
       });
     }
@@ -25,7 +25,7 @@ angular.module('breezio.content.posts', [])
 
       return $http({
         method: 'GET',
-        url: $rootScope.config.url + 'posts/' + postId,
+        url: $rootScope.config.url + '/posts/' + postId,
         params: params
       });
     }
@@ -42,7 +42,6 @@ angular.module('breezio.content.posts', [])
             var blurb = val[i];
 
             var e;
-            console.log(blurb);
             switch (blurb.type) {
 
             case 'paragraph':
@@ -57,6 +56,14 @@ angular.module('breezio.content.posts', [])
             case 'heading':
               e = angular.element(document.createElement(blurb.headingType));
               e.html(blurb.content);
+              break;
+
+            case 'list':
+              e = angular.element(document.createElement(blurb.listType));
+              break;
+
+            default:
+              e = angular.element(document.createElement('span'));
               break;
             }
 
@@ -74,6 +81,7 @@ angular.module('breezio.content.posts', [])
 .controller('PostCtrl', function($scope, $stateParams, Post) {
   $scope.post = {};
   $scope.expanded = false;
+  $scope.alone = false;
 
   $scope.refreshPost = function() {
     Post.get($stateParams.postId).then(function(res) {
@@ -82,6 +90,14 @@ angular.module('breezio.content.posts', [])
     }).finally(function() {
       $scope.$broadcast('scroll.refreshComplete');
     });
+  };
+
+  $scope.subtitleExists = function() {
+    if ($scope.post.subtitle && $scope.post.subtitle.length > 0) {
+      return true;
+    }
+
+    return false;
   };
 
   $scope.expand = function() {
