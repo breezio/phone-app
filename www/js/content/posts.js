@@ -60,6 +60,11 @@ angular.module('breezio.content.posts', [])
 
             case 'list':
               e = angular.element(document.createElement(blurb.listType));
+              blurb.items.forEach(function(item) {
+                var i = angular.element(document.createElement('li'));
+                i.html(item);
+                e.append(i);
+              });
               break;
 
             default:
@@ -72,6 +77,8 @@ angular.module('breezio.content.posts', [])
           }
           element.html('');
           element.append($compile(angular.element(item))(scope));
+        } else {
+          console.log('Post content format not handled');
         }
       });
     }
