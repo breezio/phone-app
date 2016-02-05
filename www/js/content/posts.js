@@ -19,17 +19,40 @@ angular.module('breezio.content.posts', [])
 })
 
 .factory('Post', function($http, $rootScope) {
-  return {
-    get: function(postId, params) {
-      var params = angular.extend({}, params);
+  var posts = {};
+  var funcs = {};
 
-      return $http({
-        method: 'GET',
-        url: $rootScope.config.url + '/posts/' + postId,
-        params: params
-      });
+  funcs.get = function(postId, params) {
+    var params = angular.extend({}, params);
+
+    var promise = $http({
+      method: 'GET',
+      url: $rootScope.config.url + '/posts/' + postId,
+      params: params
+    });
+
+    promise.success(function(val) {
+      posts[val.id] = val;
+    });
+
+    return promise;
+  };
+
+  funcs.getCached = function(postId, params) {
+    if (posts[postId]) {
+      return {
+        success: function(cb) {
+          if (cb) {
+            cb(posts[postId]);
+          }
+        }
+      };
+    } else {
+      return funcs.get(postId, params);
     }
   };
+
+  return funcs;
 })
 
 .directive('breezioPost', function($compile) {
@@ -95,6 +118,7 @@ angular.module('breezio.content.posts', [])
       $scope.post = res.data;
       $scope.post.dateString = (new Date($scope.post.creationDate)).toDateString();
     }).finally(function() {
+      $scope.loaded = true;
       $scope.$broadcast('scroll.refreshComplete');
     });
   };
@@ -116,6 +140,10 @@ angular.module('breezio.content.posts', [])
   };
 
   $scope.$on('$ionicView.loaded', function() {
-    $scope.refreshPost();
+    Post.getCached($stateParams.postId).success(function(val) {
+      $scope.post = val;
+      $scope.post.dateString = (new Date($scope.post.creationDate)).toDateString();
+      $scope.loaded = true;
+    });
   });
 });

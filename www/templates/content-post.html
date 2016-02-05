@@ -8,7 +8,7 @@
       on-refresh="refreshPost()">
     </ion-refresher>
 
-    <div class="list">
+    <div ng-show="loaded" class="list">
 
       <!-- header -->
       <div class="header item" ng-click="expand()" ng-class="{expanded: expanded}">
