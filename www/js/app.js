@@ -61,7 +61,8 @@ angular.module('breezio', ['ionic', 'breezio.content', 'breezio.chats', 'breezio
     url: '/user/:userId',
     views: {
       'tab-content': {
-        templateUrl: 'templates/content-user.html'
+        templateUrl: 'templates/content-user.html',
+        controller: 'UserCtrl'
       }
     }
   })
