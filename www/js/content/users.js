@@ -38,12 +38,6 @@ angular.module('breezio.content.users', [])
 })
 
 .directive('breezioUser', function(User, $rootScope, $stateParams) {
-  var user = User.getCached($stateParams.userId);
-
-  $rootScope.$on('userView.loaded', function() {
-    user = User.getCached($stateParams.userId);
-  });
-
   return {
     templateUrl: 'templates/breezio-user.html',
     link: function(scope, element, attrs) {
@@ -53,16 +47,25 @@ angular.module('breezio.content.users', [])
         }
       };
 
-      user.success(function(val) {
-        scope.user = val;
-        scope.loaded = true;
+      scope.$parent.$watch('user', function(user) {
+        user.success(function(val) {
+          scope.user = val;
+          scope.loaded = true;
+        });
       });
     }
   };
 })
 
-.controller('UserCtrl', function($scope, $rootScope) {
+.controller('UserCtrl', function($scope, $rootScope, User, $stateParams) {
+  $scope.refreshUser = function() {
+    $scope.user = User.get($stateParams.userId);
+    $scope.user.success(function() {
+      $scope.$broadcast('scroll.refreshComplete');
+    });
+  };
+
   $scope.$on('$ionicView.loaded', function() {
-    $rootScope.$broadcast('userView.loaded');
+    $scope.user = User.getCached($stateParams.userId);
   });
 });
