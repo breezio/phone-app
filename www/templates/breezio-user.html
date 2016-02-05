@@ -12,15 +12,15 @@
     <a class="button">Follow</a>
   </div>
 
-  <div class="item item-text-wrap">
+  <div ng-show="user.bio" class="item item-text-wrap">
     {{user.bio}}
   </div>
 
-  <div ng-click="openWebsite()" class="item">
+  <div ng-show="user.website" ng-click="openWebsite()" class="item">
     <i class="icon ion-ios-world-outline"></i> <span class="positive">{{user.website}}</span>
   </div>
 
-  <div class="item">
+  <div ng-show="user.title" class="item">
     <i class="icon ion-ios-briefcase-outline"></i> {{user.title}}
   </a>
 </div>
