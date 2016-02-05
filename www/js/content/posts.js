@@ -85,7 +85,7 @@ angular.module('breezio.content.posts', [])
   };
 })
 
-.controller('PostCtrl', function($scope, $stateParams, Post) {
+.controller('PostCtrl', function($scope, $state, $stateParams, Post) {
   $scope.post = {};
   $scope.expanded = false;
   $scope.alone = false;
@@ -109,6 +109,10 @@ angular.module('breezio.content.posts', [])
 
   $scope.expand = function() {
     $scope.expanded = !$scope.expanded;
+  };
+
+  $scope.openUser = function(user) {
+    $state.go('tab.content-user', {userId: user.id});
   };
 
   $scope.$on('$ionicView.loaded', function() {

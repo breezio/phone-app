@@ -1,0 +1,29 @@
+<ion-refresher
+  pulling-text="Pull to refresh..."
+  on-refresh="refreshUser()">
+</ion-refresher>
+
+<div class="header item">
+  <span class="user-image"><img ng-src="{{user.imagePath | static}}"></span>
+  <div class="title">
+    <h1>{{user.firstName}} {{user.lastName}}</h1>
+    <h2>{{user.username}}</h2>
+  </div>
+</div>
+
+<div class="button-bar">
+  <a class="button">Message</a>
+  <a class="button">Follow</a>
+</div>
+
+<div class="item item-text-wrap">
+  {{user.bio}}
+</div>
+
+<a ng-href="{{user.website}}" class="item">
+  <i class="icon ion-ios-world-outline"></i> <span class="positive">{{user.website}}</span>
+</a>
+
+<div class="item">
+  <i class="icon ion-ios-briefcase-outline"></i> {{user.title}}
+</a>

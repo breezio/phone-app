@@ -1,4 +1,4 @@
-angular.module('breezio.content', ['breezio.content.posts'])
+angular.module('breezio.content', ['breezio.content.posts', 'breezio.content.users'])
 
 .run(function($rootScope) {
   $rootScope.posts = {};

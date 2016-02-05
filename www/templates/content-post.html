@@ -22,7 +22,7 @@
 
       <!-- header info -->
       <div ng-show="expanded">
-        <div class="header item" ng-click="">
+        <div class="header item" ng-click="openUser(post.user)">
           <span class="user-image"><img ng-src="{{post.user.imagePath | static}}"></span>
           <div class="title">
             <h1>By {{post.user.firstName}} {{post.user.lastName}}</h1>
