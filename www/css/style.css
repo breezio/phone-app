@@ -2,6 +2,10 @@ i {
   margin-right: 5px;
 }
 
+.button {
+  line-height: 50px;
+}
+
 .header {
   display: flex;
   justify-content: flex-start;
