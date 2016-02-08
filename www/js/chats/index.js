@@ -17,5 +17,15 @@ angular.module('breezio.chats', [])
   return funcs;
 })
 
-.controller('ChatsCtrl', function($scope, $rootScope) {
+.controller('ChatsCtrl', function($scope, $rootScope, Auth) {
+  $scope.loaded = false;
+
+  $rootScope.$on('chat:token', function() {
+    $scope.user = Auth.user();
+    $scope.loaded = true;
+  });
+
+  $rootScope.$on('auth:logged-out', function() {
+    $scope.loaded = false;
+  });
 });

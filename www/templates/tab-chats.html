@@ -1,5 +1,13 @@
 <ion-view view-title="Chats">
-  <ion-content>
+  <ion-content ng-show="loaded">
+    <div class="header item">
+      <span class="user-image"><img ng-src="{{user.imagePath | static}}"></span>
+      <div class="title">
+        <h1>{{user.firstName}} {{user.lastName}}</h1>
+        <h2>{{user.username}}</h2>
+      </div>
+      <span class="down"><i class="balanced icon ion-ios-circle-filled"></i></span>
+    </div>
     <ion-list>
     </ion-list>
   </ion-content>
