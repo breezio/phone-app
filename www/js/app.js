@@ -39,6 +39,18 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
   };
 })
 
+.controller('TabCtrl', function($scope, $rootScope, Auth) {
+  $scope.loggedIn = Auth.loggedIn();
+
+  $rootScope.$on('event:logged-in', function() {
+    $scope.loggedIn = true;
+  });
+
+  $rootScope.$on('event:logged-out', function() {
+    $scope.loggedIn = false;
+  });
+})
+
 .config(function($stateProvider, $urlRouterProvider) {
 
   $stateProvider
@@ -46,7 +58,8 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
   .state('tab', {
     url: '/tab',
     abstract: true,
-    templateUrl: 'templates/tabs.html'
+    templateUrl: 'templates/tabs.html',
+    controller: 'TabCtrl'
   })
 
   .state('tab.content', {
