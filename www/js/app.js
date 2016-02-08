@@ -9,6 +9,24 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
   return true;
 })
 
+.run(function($rootScope) {
+  $rootScope.$on('auth:logged-in', function() {
+    console.log('Logged in');
+  });
+
+  $rootScope.$on('auth:logged-out', function() {
+    console.log('Logged out');
+  });
+
+  $rootScope.$on('auth:login-failed', function() {
+    console.log('Login failed');
+  });
+
+  $rootScope.$on('chat:token', function() {
+    console.log('Chat token fetched');
+  });
+})
+
 .run(function($ionicPlatform, $rootScope, Auth) {
 
   $rootScope.config = {};
@@ -42,11 +60,11 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
 .controller('TabCtrl', function($scope, $rootScope, Auth) {
   $scope.loggedIn = Auth.loggedIn();
 
-  $rootScope.$on('event:logged-in', function() {
+  $rootScope.$on('auth:logged-in', function() {
     $scope.loggedIn = true;
   });
 
-  $rootScope.$on('event:logged-out', function() {
+  $rootScope.$on('auth:logged-out', function() {
     $scope.loggedIn = false;
   });
 })

@@ -71,11 +71,11 @@ angular.module('breezio.content.users', [])
         }
       });
 
-      $rootScope.$on('event:logged-in', function() {
+      $rootScope.$on('auth:logged-in', function() {
         scope.loggedIn = true;
       });
 
-      $rootScope.$on('event:logged-out', function() {
+      $rootScope.$on('auth:logged-out', function() {
         scope.loggedIn = false;
       });
     }

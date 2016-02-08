@@ -1,6 +1,6 @@
 angular.module('breezio.account', ['http-auth-interceptor'])
 
-.factory('Auth', function($http, $rootScope, $localStorage, authService, Config) {
+.factory('Auth', function($http, $rootScope, $localStorage, authService, Config, ChatToken) {
   var self = this;
   this.oauthUrl = $rootScope.config.url + '/oauth2/token';
   this.user = null;
@@ -20,7 +20,12 @@ angular.module('breezio.account', ['http-auth-interceptor'])
       $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.auth.access_token;
       self.user = $localStorage.user;
       self.loggedIn = true;
-      $rootScope.$broadcast('event:logged-in');
+      $rootScope.$broadcast('auth:logged-in');
+
+      ChatToken.get().success(function(token) {
+        $rootScope.chatToken = token;
+        $rootScope.$broadcast('chat:token', token);
+      });
     }
   };
 
@@ -45,21 +50,26 @@ angular.module('breezio.account', ['http-auth-interceptor'])
         });
 
         self.loggedIn = true;
-        $rootScope.$broadcast('event:logged-in');
+        $rootScope.$broadcast('auth:logged-in');
+
+        ChatToken.get().success(function(token) {
+          $rootScope.chatToken = token;
+          $rootScope.$broadcast('chat:token', token);
+        });
       } else {
         self.funcs.reset();
-        $rootScope.$broadcast('event:login-failed', res, status);
+        $rootScope.$broadcast('auth:login-failed', res, status);
       }
     }).error(function(data, status, headers, config) {
       self.funcs.reset();
-      $rootScope.$broadcast('event:login-failed', data, status);
+      $rootScope.$broadcast('auth:login-failed', data, status);
     });
   };
 
   this.funcs.logout = function() {
     self.funcs.reset();
     self.loggedIn = false;
-    $rootScope.$broadcast('event:logged-out');
+    $rootScope.$broadcast('auth:logged-out');
   };
 
   this.funcs.reset = function() {
@@ -82,15 +92,14 @@ angular.module('breezio.account', ['http-auth-interceptor'])
 
   if ($scope.loggedIn) {
     $scope.user = Auth.user();
-    console.log('Logged in');
   }
 
   $scope.login = function() {
-    $rootScope.$on('event:logged-in', function() {
+    $rootScope.$on('auth:logged-in', function() {
       $ionicLoading.hide();
     });
 
-    $rootScope.$on('event:login-failed', function() {
+    $rootScope.$on('auth:login-failed', function() {
       $ionicLoading.hide();
       $ionicLoading.show({
         template: 'Login failed...',
@@ -109,15 +118,13 @@ angular.module('breezio.account', ['http-auth-interceptor'])
     Auth.logout();
   };
 
-  $rootScope.$on('event:logged-in', function() {
+  $rootScope.$on('auth:logged-in', function() {
     $scope.loggedIn = Auth.loggedIn();
     $scope.user = Auth.user();
-    console.log('Logged in');
   });
 
-  $rootScope.$on('event:logged-out', function() {
+  $rootScope.$on('auth:logged-out', function() {
     $scope.loggedIn = Auth.loggedIn();
     $scope.user = null;
-    console.log('Logged out');
   });
 });
