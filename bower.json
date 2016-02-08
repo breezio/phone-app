@@ -6,6 +6,6 @@
   },
   "dependencies": {
     "angular-http-auth": "^1.2.3",
-    "angular-local-storage": "^0.2.3"
+    "ngstorage": "^0.3.10"
   }
 }
