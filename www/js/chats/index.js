@@ -29,17 +29,34 @@ angular.module('breezio.chats', [])
   return funcs;
 })
 
-.controller('ChatsCtrl', function($scope, $rootScope, Auth, Chats) {
+.controller('ChatsCtrl', function($scope, $rootScope, $q, Auth, Chats, User) {
   $scope.loaded = false;
 
   $rootScope.$on('chat:token', function() {
     $scope.user = Auth.user();
 
-    Chats.get().success(function(chats) {
-      $rootScope.$broadcast('chat:chats', chats);
-      console.log(chats);
-      $scope.chats = chats;
-      $scope.loaded = true;
+    Chats.get().success(function(val) {
+      $rootScope.$broadcast('chat:chats', val.items);
+      var promises = [];
+
+      val.items.forEach(function(chat, i) {
+        chat.userData = {};
+        chat.usernames = [];
+        chat.users.forEach(function(user, j) {
+          if (user != $scope.user.id) {
+            promises.push(User.getCached(user).success(function(val) {
+              chat.userData[user] = val;
+              chat.usernames.push(val.username);
+            }));
+          }
+        });
+      });
+
+      $q.all(promises).then(function() {
+        $scope.chats = val.items;
+        $scope.loaded = true;
+        $rootScope.$broadcast('chat:loaded');
+      });
     });
   });
 
