@@ -72,7 +72,7 @@ angular.module('breezio.account', ['http-auth-interceptor'])
   return self.funcs;
 })
 
-.controller('AccountCtrl', function($scope, $rootScope, Auth) {
+.controller('AccountCtrl', function($scope, $rootScope, $ionicLoading, Auth) {
   $scope.loginForm = {
     username : '',
     password : ''
@@ -86,6 +86,22 @@ angular.module('breezio.account', ['http-auth-interceptor'])
   }
 
   $scope.login = function() {
+    $rootScope.$on('event:logged-in', function() {
+      $ionicLoading.hide();
+    });
+
+    $rootScope.$on('event:login-failed', function() {
+      $ionicLoading.hide();
+      $ionicLoading.show({
+        template: 'Login failed...',
+        duration: 1000
+      });
+    });
+
+    $ionicLoading.show({
+      template: 'Logging in...'
+    });
+
     Auth.login($scope.loginForm);
   };
 
