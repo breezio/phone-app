@@ -78,19 +78,30 @@ angular.module('breezio.account', ['http-auth-interceptor'])
     password : ''
   };
 
-  $scope.user = null;
+  $scope.loggedIn = Auth.loggedIn();
+
+  if ($scope.loggedIn) {
+    $scope.user = Auth.user();
+    console.log('Logged in');
+  }
 
   $scope.login = function() {
     Auth.login($scope.loginForm);
   };
 
-  $scope.loggedIn = function() {
-    return Auth.loggedIn();
+  $scope.logout = function() {
+    Auth.logout();
   };
 
   $rootScope.$on('event:logged-in', function() {
+    $scope.loggedIn = Auth.loggedIn();
+    $scope.user = Auth.user();
+    console.log('Logged in');
   });
 
   $rootScope.$on('event:logged-out', function() {
+    $scope.loggedIn = Auth.loggedIn();
+    $scope.user = null;
+    console.log('Logged out');
   });
 });

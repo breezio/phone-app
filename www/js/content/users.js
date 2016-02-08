@@ -37,7 +37,7 @@ angular.module('breezio.content.users', [])
   return funcs;
 })
 
-.directive('breezioUser', function(User, $rootScope, $stateParams) {
+.directive('breezioUser', function(User, Auth, $rootScope, $stateParams) {
   return {
     templateUrl: 'templates/breezio-user.html',
     link: function(scope, element, attrs) {
@@ -47,11 +47,36 @@ angular.module('breezio.content.users', [])
         }
       };
 
+      if (attrs.profile == '') {
+        scope.profile = true;
+      }
+
       scope.$parent.$watch('user', function(user) {
-        user.success(function(val) {
-          scope.user = val;
+        if (user && user.success) {
+          user.success(function(val) {
+            scope.user = val;
+            scope.loaded = true;
+            scope.loggedIn = Auth.loggedIn();
+          });
+        }
+
+        if (user && user.id) {
+          scope.user = user;
           scope.loaded = true;
-        });
+          scope.loggedIn = Auth.loggedIn();
+        }
+
+        if (!user) {
+          scope.loggedIn = false;
+        }
+      });
+
+      $rootScope.$on('event:logged-in', function() {
+        scope.loggedIn = true;
+      });
+
+      $rootScope.$on('event:logged-out', function() {
+        scope.loggedIn = false;
       });
     }
   };

@@ -15,6 +15,7 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
   $rootScope.config.host = 'https://health.breezio.com';
   $rootScope.config.api = '/api/1';
   $rootScope.config.url = $rootScope.config.host + $rootScope.config.api;
+  Auth.init();
 
   $ionicPlatform.ready(function() {
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
@@ -25,8 +26,6 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
     if (window.StatusBar) {
       StatusBar.styleDefault();
     }
-
-    Auth.init();
   });
 })
 

@@ -1,6 +1,6 @@
 <ion-view view-title="Account">
   <ion-content scroll="false">
-    <div class="list list-inset">
+    <div class="list list-inset" ng-hide="loggedIn">
       <label class="item item-input">
         <input type="text" ng-model="loginForm.username" placeholder="Email or Username">
       </label>
@@ -13,5 +13,12 @@
         <button class="button button-block button-calm">Sign Up</button>
       </div>
     </div>
+
+    <breezio-user profile ng-show="loggedIn">
+    </breezio-user>
+
+    <ion-footer-bar ng-show="loggedIn" ng-click="logout()" class="bar-assertive">
+      <h1 class="title">Sign Out</h1>
+    </ion-footer-bar>
   </ion-content>
 </ion-view>
