@@ -1,6 +1,15 @@
-angular.module('breezio', ['ionic', 'breezio.content', 'breezio.chats', 'breezio.account'])
+angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.chats', 'breezio.account'])
 
-.run(function($ionicPlatform, $rootScope) {
+.factory('Config', function($rootScope) {
+  $rootScope.config = {};
+  $rootScope.config.host = 'https://health.breezio.com';
+  $rootScope.config.api = '/api/1';
+  $rootScope.config.url = $rootScope.config.host + $rootScope.config.api;
+
+  return true;
+})
+
+.run(function($ionicPlatform, $rootScope, Auth) {
 
   $rootScope.config = {};
   $rootScope.config.host = 'https://health.breezio.com';
@@ -16,6 +25,8 @@ angular.module('breezio', ['ionic', 'breezio.content', 'breezio.chats', 'breezio
     if (window.StatusBar) {
       StatusBar.styleDefault();
     }
+
+    Auth.init();
   });
 })
 

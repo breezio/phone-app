@@ -2,14 +2,14 @@
   <ion-content scroll="false">
     <div class="list list-inset">
       <label class="item item-input">
-        <input type="text" placeholder="Email or Username">
+        <input type="text" ng-model="loginForm.username" placeholder="Email or Username">
       </label>
       <label class="item item-input">
-        <input type="password" placeholder="Password">
+        <input type="password" ng-model="loginForm.password" placeholder="Password">
       </label>
 
       <div class="button-bar">
-        <button class="button button-block button-positive">Sign In</button>
+        <button ng-click="login(loginForm)" class="button button-block button-positive">Sign In</button>
         <button class="button button-block button-calm">Sign Up</button>
       </div>
     </div>
