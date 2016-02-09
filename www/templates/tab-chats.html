@@ -1,11 +1,10 @@
 <ion-view view-title="Chats">
   <ion-content ng-show="loaded">
     <div class="header item" ng-repeat="chat in chats">
-      <span ng-repeat="u in chat.users" ng-if="u != user.id" class="user-image"><img ng-src="{{chat.userData[u].imagePath | static}}"></span>
+      <span ng-repeat="other in chat.others" class="user-image"><img ng-src="{{chat.userData[other].imagePath | static}}"></span>
       <div class="title">
         <h1>{{chat.title}}</h1>
-        <h2 ng-if="chat.title">{{chat.usernames.join(', ')}}</h2>
-        <h1 ng-if="!chat.title">{{chat.usernames.join(', ')}}</h1>
+        <h2>{{chat.usernames.join(', ')}}</h2>
       </div>
       <span class="down"><i class="balanced icon ion-ios-circle-filled"></i></span>
     </div>

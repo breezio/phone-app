@@ -25,15 +25,20 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
   $rootScope.$on('chat:token', function() {
     console.log('Chat token fetched');
   });
+
+  $rootScope.$on('chat:chats', function() {
+    console.log('Chats fetched');
+  });
 })
 
-.run(function($ionicPlatform, $rootScope, Auth) {
+.run(function($ionicPlatform, $rootScope, Auth, Chats) {
 
   $rootScope.config = {};
   $rootScope.config.host = 'https://health.breezio.com';
   $rootScope.config.api = '/api/1';
   $rootScope.config.url = $rootScope.config.host + $rootScope.config.api;
   Auth.init();
+  Chats.init();
 
   $ionicPlatform.ready(function() {
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
@@ -50,7 +55,11 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
 .filter('static', function($rootScope) {
   return function(input) {
     if (input) {
-      return $rootScope.config.host + input;
+      if (input.substring(0, 4) == 'http') {
+        return input
+      } else {
+        return $rootScope.config.host + input;
+      }
     } else {
       return input;
     }
@@ -59,13 +68,19 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
 
 .controller('TabCtrl', function($scope, $rootScope, Auth) {
   $scope.loggedIn = Auth.loggedIn();
+  $scope.haveChats = false;
 
   $rootScope.$on('auth:logged-in', function() {
     $scope.loggedIn = true;
   });
 
+  $rootScope.$on('chat:chats', function() {
+    $scope.haveChats = true;
+  });
+
   $rootScope.$on('auth:logged-out', function() {
     $scope.loggedIn = false;
+    $scope.haveChats = false;
   });
 })
 
