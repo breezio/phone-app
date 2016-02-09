@@ -15,6 +15,7 @@ angular.module('breezio.chats', [])
   var funcs = {};
   var chatToken = null;
   var chats = null;
+  var fetched = false;
 
   funcs.get = function(params) {
     var params = angular.extend({}, params);
@@ -34,6 +35,10 @@ angular.module('breezio.chats', [])
 
   funcs.chats = function() {
     return chats;
+  };
+
+  funcs.fetched = function() {
+    return fetched;
   };
 
   funcs.init = function() {
@@ -58,9 +63,16 @@ angular.module('breezio.chats', [])
 
         $q.all(promises).then(function() {
           chats = val.items;
+          fetched = true;
           $rootScope.$broadcast('chat:chats', val.items);
         });
       });
+    });
+
+    $rootScope.$on('auth:logged-out', function() {
+      chats = null;
+      chatToken = null;
+      fetched = false;
     });
   };
 
@@ -70,7 +82,7 @@ angular.module('breezio.chats', [])
 .controller('ChatsCtrl', function($scope, $rootScope, Auth, Chats) {
   $scope.loaded = false;
 
-  $rootScope.$on('chat:chats', function(e, chats) {
+  $scope.parseChats = function(chats) {
     $scope.user = Auth.user();
     $scope.chats = chats;
 
@@ -90,9 +102,17 @@ angular.module('breezio.chats', [])
       }
     });
 
-    console.log($scope.chats);
-
     $scope.loaded = true;
+  };
+
+  $scope.$on('$ionicView.beforeEnter', function() {
+    if (Chats.fetched() && !$scope.loaded) {
+      $scope.parseChats(Chats.chats());
+    }
+  });
+
+  $rootScope.$on('chat:chats', function(e, chats) {
+    $scope.parseChats(chats);
   });
 
   $rootScope.$on('auth:logged-out', function() {
