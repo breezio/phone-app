@@ -1,6 +1,6 @@
 <ion-view view-title="Chats">
   <ion-content ng-show="loaded">
-    <div class="header item" ng-repeat="chat in chats">
+    <div class="header item" ng-repeat="chat in chats" ng-click="openChat(chat.hash)">
       <span ng-repeat="other in chat.others" class="user-image"><img ng-src="{{chat.userData[other].imagePath | static}}"></span>
       <div class="title">
         <h1>{{chat.title}}</h1>

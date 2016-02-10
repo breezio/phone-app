@@ -7,6 +7,7 @@
   "dependencies": {
     "angular-http-auth": "^1.2.3",
     "ngstorage": "^0.3.10",
-    "strophejs-plugins": "^0.0.6"
+    "strophejs-plugins": "^0.0.6",
+    "angular-md5": "^0.1.10"
   }
 }
