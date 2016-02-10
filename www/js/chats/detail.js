@@ -1,6 +1,6 @@
 angular.module('breezio.chats.detail', [])
 
-.directive('breezioMessages', function(User, $ionicScrollDelegate) {
+.directive('breezioMessages', function(User, $ionicScrollDelegate, $rootScope) {
   return {
     templateUrl: 'templates/breezio-messages.html',
     link: function(scope, element, attrs) {
@@ -19,6 +19,7 @@ angular.module('breezio.chats.detail', [])
           };
 
           scope.send = function() {
+            $rootScope.$broadcast('messages:send', scope.text);
             scope.text = ''; 
           };
 
@@ -45,6 +46,69 @@ angular.module('breezio.chats.detail', [])
       $ionicScrollDelegate.scrollBottom(true);
     });
   };
+
+  var tmp1 = $rootScope.$on('chat:new-message:' + $stateParams.hash, function(e, msg) {
+    $scope.messages.push(msg);
+    $ionicScrollDelegate.scrollBottom(true);
+
+    try {
+      $scope.$digest();
+    } catch (e) {}
+  });
+
+  var tmp2 = $rootScope.$on('messages:send', function(e, text) {
+    if (Chats.connected()) {
+      var other;
+      var tripped = false;
+      $scope.chat.users.forEach(function(id) {
+        if (id != $scope.chat.us.id) {
+          other = id;
+          tripped = true;
+        }
+      });
+      if (!tripped) {
+        other = $scope.chat.us.id;
+      }
+
+      var m =  {};
+      var token = Chats.chatToken();
+      var to = token.user_prefix + other + "@" + token.xmpp_host;
+      var msg = $msg({
+        to: to,
+        type: 'chat'
+      })
+      .cnode(Strophe.xmlElement('body', text)).up()
+      .c('active', {xmlns: 'http://jabber.org/protocol/chatstates'});
+
+      if ($scope.chat.context && $scope.chat.context.id) {
+        var topic = {
+          id: $scope.chat.context.id,
+          title: $scope.chat.context.title,
+          slug: $scope.chat.context.slug,
+          postType: $scope.chat.context.postType,
+          type: $scope.chat.context.type
+        };
+
+        m.topic = topic;
+        msg.up().cnode(Strophe.xmlElement('topic', topic)).up();
+      }
+
+      m.creationDate = (new Date);
+      m.userId = Auth.user().id;
+      m.action = 'message';
+      m.hash = $stateParams.hash;
+      m.body = text;
+
+      $rootScope.$broadcast('chat:new-message:' + $stateParams.hash, m);
+
+      Chats.connection().send(msg);
+    }
+  });
+
+  $scope.$on('$ionicView.beforeLeave', function() {
+    tmp1();
+    tmp2();
+  });
 
   $scope.$on('$ionicView.beforeEnter', function() {
     if (Chats.fetched()) {

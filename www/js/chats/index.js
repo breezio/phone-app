@@ -48,6 +48,10 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.detail'])
     return md5.createHash(key);
   };
 
+  funcs.jidToId = function(jid) {
+    return jid.split(chatToken.user_prefix)[1].split('@')[0];
+  };
+
   funcs.chatToken = function() {
     return chatToken;
   };
@@ -72,6 +76,10 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.detail'])
 
   funcs.connected = function() {
     return connected;
+  };
+
+  funcs.connection = function() {
+    return connection;
   };
 
   funcs.getMessages = function(hash, params) {
@@ -106,6 +114,38 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.detail'])
     }
   };
 
+  funcs.parseMessage = function(msg) {
+    var m = {};
+    m.creationDate = (new Date);
+    m.to = msg.getAttribute('to');
+    m.from = msg.getAttribute('from');
+    m.type = msg.getAttribute('type');
+    m.fromId = funcs.jidToId(m.from);
+    m.toId = funcs.jidToId(m.to);
+    m.userId = m.fromId;
+    m.action = 'message';
+
+    var topic = msg.getElementsByTagName('topic')[0];
+    if (topic) {
+      m.topic = {
+        id: topic.getAttribute('id'),
+        title: topic.getAttribute('title'),
+        slug: topic.getAttribute('slug'),
+        postType: topic.getAttribute('posttype'),
+        type: topic.getAttribute('type')
+      };
+    }
+
+
+    m.hash = funcs.generateHash([m.fromId, m.toId], m.topic);
+    var elms = msg.getElementsByTagName('body');
+    if (m.type == 'chat' && elms[0]) {
+      m.body = Strophe.getText(elms[0]);
+    }
+
+    return m;
+  };
+
   funcs.connect = function() {
     if (fetched) {
       connection = new Strophe.Connection(chatToken.ws_address);
@@ -138,7 +178,13 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.detail'])
             $rootScope.$broadcast('chat:connected', connection);
 
             connection.addHandler(function(msg) {
-              $rootScope.$broadcast('chat:new-message');
+              var m = funcs.parseMessage(msg);
+
+              if (m.body != undefined) {
+                $rootScope.$broadcast('chat:new-message', m);
+                $rootScope.$broadcast('chat:new-message:' + m.hash, m);
+              }
+
               return true;
             }, null, 'message', null, null, null);
 
