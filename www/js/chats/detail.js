@@ -31,6 +31,8 @@ angular.module('breezio.chats.detail', [])
 
 .controller('ChatsDetailCtrl', function($scope, $rootScope, $stateParams, User, Auth, Chats, $ionicScrollDelegate, $timeout) {
   $scope.loaded = false;
+  $scope.scrolled = {};
+
   var clean = null;
   var getMessages = function() {
     Chats.messages($stateParams.hash).success(function(msgs) {
@@ -43,13 +45,25 @@ angular.module('breezio.chats.detail', [])
       }
 
       $scope.loaded = true;
-      $ionicScrollDelegate.scrollBottom(true);
+ 
+      if (!$scope.scrolled[$scope.chat.hash]) {
+        $ionicScrollDelegate.$getByHandle('chatScroll').scrollBottom(true);
+        $scope.scrolled[$scope.chat.hash] = true;
+      }
     });
   };
 
+  $scope.$on('$ionicView.beforeEnter', function() {
+    if ($rootScope.scrolled) {
+      $scope.scrolled = $rootScope.scrolled;
+    }
+  });
+  $scope.$on('$ionicView.beforeLeave', function() {
+    $rootScope.scrolled = $scope.scrolled;
+  });
+
   var tmp1 = $rootScope.$on('chat:new-message:' + $stateParams.hash, function(e, msg) {
     $scope.messages.push(msg);
-    $ionicScrollDelegate.scrollBottom(true);
 
     try {
       $scope.$digest();
