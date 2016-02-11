@@ -93,15 +93,21 @@ angular.module('breezio.chats.detail', [])
         msg.up().cnode(Strophe.xmlElement('topic', topic)).up();
       }
 
-      m.creationDate = (new Date);
+      m.creationDate = Math.round((new Date).getTime()/1000);
       m.userId = Auth.user().id;
       m.action = 'message';
       m.hash = $stateParams.hash;
       m.body = text;
 
       $rootScope.$broadcast('chat:new-message:' + $stateParams.hash, m);
-
       Chats.connection().send(msg);
+
+      Chats.postMessage(m.hash, {
+        body: m.body,
+        users: $scope.chat.users
+      }).success(function(ret) {
+        m.id = ret.id;
+      });
     }
   });
 

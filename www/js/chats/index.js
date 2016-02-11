@@ -114,6 +114,19 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.detail'])
     }
   };
 
+  funcs.postMessage = function(hash, data, params) {
+    var params = angular.extend({}, params);
+
+    var promise = $http({
+      method: 'POST',
+      url: $rootScope.config.url + '/conversations/' + hash + '/messages',
+      params: params,
+      data: data
+    });
+
+    return promise;
+  };
+
   funcs.parseMessage = function(msg) {
     var m = {};
     m.creationDate = (new Date);
