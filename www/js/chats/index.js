@@ -279,6 +279,11 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.detail'])
         }
       });
 
+      if (chat.names.length == 0) {
+        chat.names.push(chat.us.firstName + ' ' + chat.us.lastName);
+        chat.usernames.push(chat.us.username);
+      }
+
       if (!chat.title) {
         chat.title = chat.names.join(', ');
       }
