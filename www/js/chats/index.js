@@ -266,19 +266,6 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.detail'])
     $scope.user = Auth.user();
     $scope.chats = chats;
 
-    $scope.chats = $scope.chats.sort(function(a, b) {
-      x = (new Date(a.modifiedDate)).getTime();
-      y = (new Date(b.modifiedDate)).getTime();
-
-      if (x < y) {
-        return 1;
-      }
-
-      if (x > y) {
-        return -1;
-      }
-    });
-
     $scope.chats.forEach(function(chat) {
       chat.others = [];
       chat.usernames = [];
