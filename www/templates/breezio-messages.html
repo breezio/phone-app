@@ -4,7 +4,7 @@
     on-refresh="loadMore()">
   </ion-refresher>
   <div class="padding">
-    <p ng-repeat="line in messages" ng-bind-html="formatLine(line)"></p> 
+    <p ng-repeat="line in messages" ng-bind-html="formatLine(messages, $index)"></p>
   </div>
 </ion-content>
 <ion-footer-bar class="bar bar-light item-input-inset">

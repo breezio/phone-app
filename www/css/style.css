@@ -95,3 +95,8 @@ i {
   top: -5px;
   right: -5px;
 }
+
+.timestamp {
+  text-align: center;
+  color: grey;
+}

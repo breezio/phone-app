@@ -21,15 +21,25 @@ angular.module('breezio.chats.detail', [])
 
 .controller('ChatsDetailCtrl', function($scope, $rootScope, $stateParams, User, Auth, Chats, $ionicScrollDelegate, $timeout) {
 
-  $scope.formatLine = function(line) {
+  $scope.formatLine = function(lines, index) {
+    var line = lines[index];
     var username;
+    var text = '';
     if (line.userId == $scope.chat.us.id) {
       username = $scope.chat.us.username;
     } else {
       username = $scope.chat.userData[line.userId].username;
     }
 
-    return '<strong>' + username + '</strong> ' + line.body;
+    if (lines[index-1]) {
+      var diff = line.creationDate - lines[index-1].creationDate;
+      if (diff > 180) {
+        text += '<p class="timestamp"><strong>' + (new Date(line.creationDate * 1000)).toString() + '</strong></p>';
+      }
+    }
+
+    text += '<strong>' + username + '</strong> ' + line.body;
+    return text;
   };
 
   var recieveHandler = $rootScope.$on('chat:new-message:' + $stateParams.hash, function(e, msg) {
