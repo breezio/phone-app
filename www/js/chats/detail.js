@@ -129,8 +129,11 @@ angular.module('breezio.chats.detail', [])
     recieveHandler();
     sendHandler();
 
-    $scope.chat.scrollPos = $ionicScrollDelegate.$getByHandle('chatScroll').getScrollPosition().top;
-    $scope.chat.msgNum = $scope.messages.length;
+    var pos = $ionicScrollDelegate.$getByHandle('chatScroll').getScrollPosition();
+    if (typeof pos == 'object') {
+      $scope.chat.scrollPos = pos.top;
+    }
+
     Chats.setMessages($stateParams.hash, $scope.messages);
   });
 

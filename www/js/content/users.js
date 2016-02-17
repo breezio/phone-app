@@ -37,7 +37,7 @@ angular.module('breezio.content.users', [])
   return funcs;
 })
 
-.directive('breezioUser', function(Auth, $rootScope, $stateParams, $state) {
+.directive('breezioUser', function(Auth, Chats, $rootScope, $stateParams, $state) {
   return {
     templateUrl: 'templates/breezio-user.html',
     link: function(scope, element, attrs) {
@@ -48,7 +48,8 @@ angular.module('breezio.content.users', [])
       };
 
       scope.message = function() {
-        $state.go('tab.chats', {sendTo: '69095cf2746a76670ab3180fd92a1854'});
+        var hash = Chats.generateHash([scope.user.id]);
+        $state.go('tab.chats-detail', {hash: hash});
       };
 
       if (attrs.profile == '') {
