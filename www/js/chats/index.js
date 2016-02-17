@@ -82,6 +82,19 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.detail'])
     return connection;
   };
 
+  funcs.setMessages = function(hash, list) {
+    if (typeof messages[hash] == 'object') {
+      messages[hash] = list;
+    }
+  };
+
+  funcs.addMessage = function(hash, msg) {
+    if (messages[hash].length > 0) {
+      console.log('true');
+      messages[hash].push(msg);
+    }
+  };
+
   funcs.getMessages = function(hash, params) {
     var params = angular.extend({
       limit: 15
@@ -93,25 +106,11 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.detail'])
       params: params
     });
 
-    promise.success(function(val) {
-      messages[hash] = val;
-    });
-
     return promise;
   };
 
-  funcs.messages = function(hash, params) {
-    if (messages[hash].length > 0) {
-      return {
-        success: function(cb) {
-          if (cb) {
-            cb(messages[hash]);
-          }
-        }
-      };
-    } else {
-      return funcs.getMessages(hash, params);
-    }
+  funcs.messages = function(hash) {
+    return messages[hash];
   };
 
   funcs.postMessage = function(hash, data, params) {
@@ -214,6 +213,61 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.detail'])
 
         return true;
       }, null, 'message', null, null, null);
+    }
+  };
+
+  funcs.send = function(chat, text) {
+    if (funcs.connected()) {
+      var other;
+      var tripped = false;
+      chat.users.forEach(function(id) {
+        if (id != chat.us.id) {
+          other = id;
+          tripped = true;
+        }
+      });
+      if (!tripped) {
+        other = chat.us.id;
+      }
+
+      var m =  {};
+      var token = funcs.chatToken();
+      var to = token.user_prefix + other + "@" + token.xmpp_host;
+      var msg = $msg({
+        to: to,
+        type: 'chat'
+      })
+      .cnode(Strophe.xmlElement('body', text)).up()
+      .c('active', {xmlns: 'http://jabber.org/protocol/chatstates'});
+
+      if (chat.context && chat.context.id) {
+        var topic = {
+          id: chat.context.id,
+          title: chat.context.title,
+          slug: chat.context.slug,
+          postType: chat.context.postType,
+          type: chat.context.type
+        };
+
+        m.topic = topic;
+        msg.up().cnode(Strophe.xmlElement('topic', topic)).up();
+      }
+
+      m.creationDate = Math.round((new Date).getTime()/1000);
+      m.userId = Auth.user().id;
+      m.action = 'message';
+      m.hash = chat.hash;
+      m.body = text;
+
+      $rootScope.$broadcast('chat:new-message:' + chat.hash, m);
+      funcs.connection().send(msg);
+
+      funcs.postMessage(m.hash, {
+        body: m.body,
+        users: chat.users
+      }).success(function(ret) {
+        m.id = ret.id;
+      });
     }
   };
 

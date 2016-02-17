@@ -1,22 +1,12 @@
 angular.module('breezio.chats.detail', [])
 
-.directive('breezioMessages', function(User, $ionicScrollDelegate, $rootScope) {
+.directive('breezioMessages', function(User, $ionicScrollDelegate, $rootScope, $timeout) {
   return {
     templateUrl: 'templates/breezio-messages.html',
     link: function(scope, element, attrs) {
       if (attrs.type == 'chat') {
         scope.text = '';
         scope.$watch('messages', function(messages) {
-          scope.formatLine = function(line) {
-            var username;
-            if (line.userId == scope.chat.us.id) {
-              username = scope.chat.us.username;
-            } else {
-              username = scope.chat.userData[line.userId].username;
-            }
-
-            return '<strong>' + username + '</strong> ' + line.body;
-          };
 
           scope.send = function() {
             $rootScope.$broadcast('messages:send', scope.text);
@@ -30,142 +20,119 @@ angular.module('breezio.chats.detail', [])
 })
 
 .controller('ChatsDetailCtrl', function($scope, $rootScope, $stateParams, User, Auth, Chats, $ionicScrollDelegate, $timeout) {
-  $scope.loaded = false;
-  $scope.scrolled = {};
 
-  var clean = null;
-  var getMessages = function() {
-    Chats.messages($stateParams.hash).success(function(msgs) {
-      if (msgs.items.length > 0) {
-        $scope.messages = msgs.items;
-        $scope.chat.lastId = msgs.items[0].id;
-        $scope.chat.exhausted = false;
-      } else {
-        $scope.chat.exhausted = false;
-      }
+  $scope.formatLine = function(line) {
+    var username;
+    if (line.userId == $scope.chat.us.id) {
+      username = $scope.chat.us.username;
+    } else {
+      username = $scope.chat.userData[line.userId].username;
+    }
 
-      $scope.loaded = true;
- 
-      if (!$scope.scrolled[$scope.chat.hash]) {
-        $ionicScrollDelegate.$getByHandle('chatScroll').scrollBottom(true);
-        $scope.scrolled[$scope.chat.hash] = true;
-      }
-    });
+    return '<strong>' + username + '</strong> ' + line.body;
   };
 
-  $scope.$on('$ionicView.beforeEnter', function() {
-    if ($rootScope.scrolled) {
-      $scope.scrolled = $rootScope.scrolled;
-    }
-  });
-  $scope.$on('$ionicView.beforeLeave', function() {
-    $rootScope.scrolled = $scope.scrolled;
-  });
-
-  var tmp1 = $rootScope.$on('chat:new-message:' + $stateParams.hash, function(e, msg) {
+  var recieveHandler = $rootScope.$on('chat:new-message:' + $stateParams.hash, function(e, msg) {
     $scope.messages.push(msg);
+
+    $ionicScrollDelegate.$getByHandle('chatScroll').resize();
+    var max = $ionicScrollDelegate.$getByHandle('chatScroll').getScrollView().__maxScrollTop;
+    var pos = $ionicScrollDelegate.$getByHandle('chatScroll').getScrollPosition().top;
+
+    if (max - pos <= 50) {
+      $scope.scrollDown();
+    } else {
+      if (!$scope.chat.newChats) {
+        $scope.chat.newChats = 0;
+      }
+
+      $scope.chat.newChats += 1;
+      $scope.chat.showScroll = true;
+    }
 
     try {
       $scope.$digest();
     } catch (e) {}
   });
 
-  var tmp2 = $rootScope.$on('messages:send', function(e, text) {
-    if (Chats.connected()) {
-      var other;
-      var tripped = false;
-      $scope.chat.users.forEach(function(id) {
-        if (id != $scope.chat.us.id) {
-          other = id;
-          tripped = true;
+  var sendHandler = $rootScope.$on('messages:send', function(e, text) {
+    Chats.send($scope.chat, text);
+    $scope.scrollDown();
+  });
+
+  $scope.scrollDown = function() {
+    $ionicScrollDelegate.$getByHandle('chatScroll').scrollBottom(true);
+    $scope.chat.showScroll = false;
+    $scope.chat.newChats = 0;
+  };
+
+  var load = function() {
+    var msgs = Chats.messages($scope.chat.hash);
+    if (msgs.length < 1 && !$scope.chat.exhausted) {
+      Chats.getMessages($scope.chat.hash).success(function(res) {
+        $scope.messages = res.items;
+        if (res.items.length < 1) {
+          $scope.chat.exhausted = true;
+        } else {
+          $scope.chat.lastId = res.items[0].id;
         }
       });
-      if (!tripped) {
-        other = $scope.chat.us.id;
-      }
-
-      var m =  {};
-      var token = Chats.chatToken();
-      var to = token.user_prefix + other + "@" + token.xmpp_host;
-      var msg = $msg({
-        to: to,
-        type: 'chat'
-      })
-      .cnode(Strophe.xmlElement('body', text)).up()
-      .c('active', {xmlns: 'http://jabber.org/protocol/chatstates'});
-
-      if ($scope.chat.context && $scope.chat.context.id) {
-        var topic = {
-          id: $scope.chat.context.id,
-          title: $scope.chat.context.title,
-          slug: $scope.chat.context.slug,
-          postType: $scope.chat.context.postType,
-          type: $scope.chat.context.type
-        };
-
-        m.topic = topic;
-        msg.up().cnode(Strophe.xmlElement('topic', topic)).up();
-      }
-
-      m.creationDate = Math.round((new Date).getTime()/1000);
-      m.userId = Auth.user().id;
-      m.action = 'message';
-      m.hash = $stateParams.hash;
-      m.body = text;
-
-      $rootScope.$broadcast('chat:new-message:' + $stateParams.hash, m);
-      Chats.connection().send(msg);
-
-      Chats.postMessage(m.hash, {
-        body: m.body,
-        users: $scope.chat.users
-      }).success(function(ret) {
-        m.id = ret.id;
-      });
-    }
-  });
-
-  $scope.$on('$ionicView.beforeLeave', function() {
-    tmp1();
-    tmp2();
-  });
-
-  $scope.$on('$ionicView.beforeEnter', function() {
-    if (Chats.fetched()) {
-      $scope.chat = Chats.chat($stateParams.hash);
-      getMessages();
     } else {
-      clean = $rootScope.$on('chat:chats', function() {
-        $scope.chat = Chats.chat($stateParams.hash);
-        getMessages();
-      });
+      $scope.messages = msgs;
     }
+  };
+
+  $scope.$watch('messages', function(val) {
+    if (val) {
+      if (!$scope.chat.scrolled) {
+        $scope.chat.scrolled = true;
+        $scope.scrollDown();
+      } else {
+        $ionicScrollDelegate.$getByHandle('chatScroll').scrollTo(0, $scope.chat.scrollPos, true);
+      }
+    }
+  });
+
+  $rootScope.$on('chat:offscreen-update', function() {
+    $scope.scrollDown();
   });
 
   $scope.loadMore = function() {
     if ($scope.chat.lastId && !$scope.chat.exhausted) {
       var p = Chats.getMessages($stateParams.hash, {lastId: $scope.chat.lastId});
-      p.success(function(ret) {
-        if (ret.items.length > 0) {
-          $scope.chat.lastId = ret.items[0].id;
-          $scope.messages = ret.items.concat($scope.messages);
-        } else {
+      p.success(function(res) {
+        if (res.items.length < 1) {
           $scope.chat.exhausted = true;
+        } else {
+          $scope.chat.lastId = res.items[0].id;
+          $scope.messages = res.items.concat($scope.messages);
         }
+        $scope.chat.scrollPos = $ionicScrollDelegate.$getByHandle('chatScroll').getScrollPosition().top;
         $scope.$broadcast('scroll.refreshComplete');
-      }).error(function() {
-        $scope.$broadcast('scroll.refreshComplete');
-        $scope.chat.exhuasted = true;
       });
     } else {
       $scope.$broadcast('scroll.refreshComplete');
     }
   };
-  
-  $scope.$on('$ionicView.afterLeave', function() {
-    if (typeof clean == 'function') {
-      $scope.loaded = false;
-      clean(); 
+
+  $scope.$on('$ionicView.beforeLeave', function() {
+    recieveHandler();
+    sendHandler();
+
+    $scope.chat.scrollPos = $ionicScrollDelegate.$getByHandle('chatScroll').getScrollPosition().top;
+    $scope.chat.msgNum = $scope.messages.length;
+    Chats.setMessages($stateParams.hash, $scope.messages);
+  });
+
+  $scope.$on('$ionicView.loaded', function() {
+    if (Chats.fetched()) {
+      $scope.chat = Chats.chat($stateParams.hash);
+      load();
+    } else {
+      clean = $rootScope.$on('chat:chats', function() {
+        $scope.chat = Chats.chat($stateParams.hash);
+        load();
+      });
     }
   });
 });
