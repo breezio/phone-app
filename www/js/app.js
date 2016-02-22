@@ -1,14 +1,5 @@
 angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.chats', 'breezio.account'])
 
-.factory('Config', function($rootScope) {
-  $rootScope.config = {};
-  $rootScope.config.host = 'http://breezio';
-  $rootScope.config.api = '/api/1';
-  $rootScope.config.url = $rootScope.config.host + $rootScope.config.api;
-
-  return true;
-})
-
 .run(function($rootScope) {
   $rootScope.$on('auth:logged-in', function() {
     console.log('Logged in');
@@ -31,12 +22,16 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
   });
 })
 
-.run(function($ionicPlatform, $rootScope, Auth, Chats) {
+.factory('Config', function() {
+  var config = {};
+  config.host = 'http://10.0.0.111';
+  config.api = '/api/1';
+  config.url = config.host + config.api;
+  return config;
+})
 
-  $rootScope.config = {};
-  $rootScope.config.host = 'http://breezio';
-  $rootScope.config.api = '/api/1';
-  $rootScope.config.url = $rootScope.config.host + $rootScope.config.api;
+.run(function($ionicPlatform, Auth, Chats) {
+
   Auth.init();
   Chats.init();
 
@@ -52,13 +47,13 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
   });
 })
 
-.filter('static', function($rootScope) {
+.filter('static', function(Config) {
   return function(input) {
     if (input) {
       if (input.substring(0, 4) == 'http') {
         return input
       } else {
-        return $rootScope.config.host + input;
+        return Config.host + input;
       }
     } else {
       return input;

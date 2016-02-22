@@ -1,6 +1,6 @@
 angular.module('breezio.content.users', [])
 
-.factory('User', function($http, $rootScope) {
+.factory('User', function($http, Config) {
   var users = {};
   var funcs = {};
 
@@ -9,7 +9,7 @@ angular.module('breezio.content.users', [])
 
     var promise = $http({
       method: 'GET',
-      url: $rootScope.config.url + '/users/' + userId,
+      url: Config.url + '/users/' + userId,
       params: params
     });
 

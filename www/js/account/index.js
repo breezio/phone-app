@@ -1,8 +1,8 @@
 angular.module('breezio.account', ['http-auth-interceptor'])
 
-.factory('Auth', function($http, $rootScope, $localStorage, authService, Config, ChatToken) {
+.factory('Auth', function($http, $rootScope, $localStorage, authService, ChatToken, Config) {
   var self = this;
-  this.oauthUrl = $rootScope.config.url + '/oauth2/token';
+  this.oauthUrl = Config.url + '/oauth2/token';
   this.user = null;
   this.loggedIn = false;
   this.funcs = {};

@@ -1,6 +1,6 @@
 angular.module('breezio.content.posts', [])
 
-.factory('Posts', function($http, $rootScope) {
+.factory('Posts', function($http, Config) {
   return {
     get: function(params) {
       var params = angular.extend({
@@ -11,14 +11,14 @@ angular.module('breezio.content.posts', [])
 
       return $http({
         method: 'GET',
-        url: $rootScope.config.url + '/posts',
+        url: Config.url + '/posts',
         params: params
       });
     }
   };
 })
 
-.factory('Post', function($http, $rootScope) {
+.factory('Post', function($http, Config) {
   var posts = {};
   var funcs = {};
 
@@ -27,7 +27,7 @@ angular.module('breezio.content.posts', [])
 
     var promise = $http({
       method: 'GET',
-      url: $rootScope.config.url + '/posts/' + postId,
+      url: Config.url + '/posts/' + postId,
       params: params
     });
 

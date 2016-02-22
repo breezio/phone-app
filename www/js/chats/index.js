@@ -1,17 +1,17 @@
 angular.module('breezio.chats', ['angular-md5', 'breezio.chats.detail'])
 
-.factory('ChatToken', function($http, $rootScope) {
+.factory('ChatToken', function($http, Config) {
   return {
     get: function() {
       return $http({
         method: 'GET',
-        url: $rootScope.config.url + '/chat/token'
+        url: Config.url + '/chat/token'
       });
     }
   };
 })
 
-.factory('Chats', function($http, $rootScope, $q, md5, ChatToken, Auth, User) {
+.factory('Chats', function($http, $rootScope, $q, md5, ChatToken, Auth, User, Config) {
   var funcs = {};
   var chatToken = null;
   var chats = null;
@@ -25,7 +25,7 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.detail'])
 
     var promise = $http({
       method: 'GET',
-      url: $rootScope.config.url + '/conversations',
+      url: Config.url + '/conversations',
       params: params
     });
 
@@ -102,7 +102,7 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.detail'])
 
     var promise = $http({
       method: 'GET',
-      url: $rootScope.config.url + '/conversations/' + hash + '/messages',
+      url: Config.url + '/conversations/' + hash + '/messages',
       params: params
     });
 
@@ -118,7 +118,7 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.detail'])
 
     var promise = $http({
       method: 'POST',
-      url: $rootScope.config.url + '/conversations/' + hash + '/messages',
+      url: Config.url + '/conversations/' + hash + '/messages',
       params: params,
       data: data
     });
