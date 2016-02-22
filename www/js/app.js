@@ -30,10 +30,11 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
   return config;
 })
 
-.run(function($ionicPlatform, Auth, Chats) {
+.run(function($ionicPlatform, Auth, Chats, Roster) {
 
   Auth.init();
   Chats.init();
+  Roster.init();
 
   $ionicPlatform.ready(function() {
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
@@ -178,6 +179,16 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
       'tab-chats': {
         templateUrl: 'templates/chats-detail.html',
         controller: 'ChatsDetailCtrl'
+      }
+    }
+  })
+
+  .state('tab.roster', {
+    url: '/roster',
+    views: {
+      'tab-roster': {
+        templateUrl: 'templates/tab-roster.html',
+        controller: 'RosterCtrl'
       }
     }
   })

@@ -10,6 +10,11 @@
     <ion-nav-view name="tab-chats"></ion-nav-view>
   </ion-tab>
 
+  <!-- Roster Tab -->
+  <ion-tab title="Roster" icon-off="ion-ios-people-outline" icon-on="ion-ios-people" badge="requests" badge-style="badge-assertive" href="#/tab/roster" hidden="{{!loggedIn}}">
+    <ion-nav-view name="tab-roster"></ion-nav-view>
+  </ion-tab>
+
   <!-- Account Tab -->
   <ion-tab title="Account" icon-off="ion-ios-gear-outline" icon-on="ion-ios-gear" href="#/tab/account">
     <ion-nav-view name="tab-account"></ion-nav-view>

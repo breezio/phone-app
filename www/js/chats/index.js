@@ -1,4 +1,4 @@
-angular.module('breezio.chats', ['angular-md5', 'breezio.chats.detail'])
+angular.module('breezio.chats', ['angular-md5', 'breezio.chats.detail', 'breezio.chats.roster'])
 
 .factory('ChatToken', function($http, Config) {
   return {
@@ -285,7 +285,7 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.detail'])
 
           chat.users.forEach(function(userId) {
             if (chat.us.id != userId) {
-              promises.push(User.getCached(userId).success(function(user) {
+              promises.push(User.getCached(userId).then(function(user) {
                 chat.userData[userId] = user;
               }));
             }

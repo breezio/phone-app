@@ -1,6 +1,6 @@
 angular.module('breezio.content.users', [])
 
-.factory('User', function($http, Config) {
+.factory('User', function($http, $q, Config) {
   var users = {};
   var funcs = {};
 
@@ -21,17 +21,17 @@ angular.module('breezio.content.users', [])
   };
 
   funcs.getCached = function(userId, params) {
-    if (users[userId]) {
-      return {
-        success: function(cb) {
-          if (cb) {
-            cb(users[userId]);
-          }
-        }
-      };
-    } else {
-      return funcs.get(userId, params);
-    }
+    return $q(function(resolve, reject) {
+      if (users[userId]) {
+        resolve(users[userId]);
+      } else {
+        funcs.get(userId, params).success(function(val) {
+          resolve(val);
+        }).error(function(val) {
+          reject(val);
+        });
+      }
+    });
   };
 
   return funcs;
@@ -57,8 +57,8 @@ angular.module('breezio.content.users', [])
       }
 
       scope.$parent.$watch('user', function(user) {
-        if (user && user.success) {
-          user.success(function(val) {
+        if (user && user.then) {
+          user.then(function(val) {
             scope.user = val;
             scope.loaded = true;
             scope.loggedIn = Auth.loggedIn();
