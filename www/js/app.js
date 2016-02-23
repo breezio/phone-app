@@ -24,7 +24,7 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
 
 .factory('Config', function() {
   var config = {};
-  config.host = 'http://10.0.0.111';
+  config.host = 'http://breezio';
   config.api = '/api/1';
   config.url = config.host + config.api;
   return config;

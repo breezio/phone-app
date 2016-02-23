@@ -18,6 +18,21 @@ angular.module('breezio.chats.roster', [])
         });
 
         $q.all(users).then(function() {
+          roster.sort(function(a, b) {
+            if (a.user.firstName < b.user.firstName) {
+              return -1;
+            }
+
+            if (a.user.firstName > b.user.firstName) {
+              return 1;
+            }
+
+            if (a.user.firstName == b.user.firstName) {
+              return 0;
+            }
+          });
+
+          console.log('Roster fetched');
           $rootScope.$broadcast('chat:roster', roster);
           resolve(roster);
         });
@@ -34,6 +49,8 @@ angular.module('breezio.chats.roster', [])
   return funcs;
 })
 
-.controller('RosterCtrl', function($scope, Roster) {
-
+.controller('RosterCtrl', function($scope, $rootScope, Roster) {
+  $rootScope.$on('chat:roster', function(e, r) {
+    $scope.items = r;
+  });
 });

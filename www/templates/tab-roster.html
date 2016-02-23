@@ -1,8 +1,10 @@
 <ion-view view-title="Roster">
   <ion-content>
-    <div class="header item">
+    <div class="header item" ng-repeat="item in items">
+      <span class="user-image"><img ng-src="{{item.user.imagePath | static}}"></span>
       <div class="title">
-        <h1>test</h1>
+        <h1>{{item.user.firstName}} {{item.user.lastName}}</h1>
+        <h2>{{item.user.username}}</h2>
       </div>
     </div>
   </ion-content>
