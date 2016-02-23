@@ -24,7 +24,7 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
 
 .factory('Config', function() {
   var config = {};
-  config.host = 'http://breezio';
+  config.host = 'https://health.breezio.com';
   config.api = '/api/1';
   config.url = config.host + config.api;
   return config;
@@ -189,6 +189,15 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
       'tab-roster': {
         templateUrl: 'templates/tab-roster.html',
         controller: 'RosterCtrl'
+      }
+    }
+  })
+  .state('tab.roster-detail', {
+    url: '/roster/:hash',
+    views: {
+      'tab-roster': {
+        templateUrl: 'templates/roster-detail.html',
+        controller: 'ChatsDetailCtrl'
       }
     }
   })

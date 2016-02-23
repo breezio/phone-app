@@ -2,6 +2,11 @@ angular.module('breezio.chats.roster', [])
 
 .factory('Roster', function($rootScope, Chats, User, $q) {
   var funcs = {};
+  var roster;
+
+  funcs.roster = function() {
+    return roster;
+  };
 
   funcs.get = function(connection) {
     return $q(function(resolve, reject) {
@@ -42,26 +47,37 @@ angular.module('breezio.chats.roster', [])
 
   funcs.init = function() {
     $rootScope.$on('chat:connected', function(e, c) {
-      funcs.get(c);
+      funcs.get(c).then(function(r) {
+        roster = r;
+      });
     });
   };
 
   return funcs;
 })
 
-.controller('RosterCtrl', function($scope, $rootScope, Roster, Chats) {
+.controller('RosterCtrl', function($scope, $rootScope, $state, Roster, Chats) {
   $scope.presence = {};
 
-  $rootScope.$on('chat:roster', function(e, r) {
-    r.forEach(function(i) {
-      $scope.presence[i.fromId] = Chats.presence(i.fromId);
+  $scope.isOnline = Chats.isOnline;
+
+  $scope.openChat = function(item) {
+    var hash = Chats.generateHash([item.user.id]);
+    $state.go('tab.roster-detail', {hash: hash});
+  };
+
+  $scope.$on('$ionicView.beforeEnter', function() {
+    if (Roster.roster()) {
+      $scope.items = Roster.roster();
+      console.log('Before enter', $scope.items);
+    }
+
+    $rootScope.$on('chat:roster', function(e, r) {
+      $scope.items = r;
     });
 
-    $scope.items = r;
-  });
-
-  $rootScope.$on('chat:new-presence', function(e, p) {
-    $scope.presence[p.fromId] = p;
-    $scope.$digest();
+    $rootScope.$on('chat:new-presence', function(e, p) {
+      $scope.$digest();
+    });
   });
 });

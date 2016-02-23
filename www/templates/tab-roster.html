@@ -1,11 +1,15 @@
 <ion-view view-title="Roster">
   <ion-content>
-    <div class="header item" ng-repeat="item in items">
+    <div class="header item" ng-repeat="item in items" ng-click="openChat(item)">
       <span class="user-image"><img ng-src="{{item.user.imagePath | static}}"></span>
       <div class="title">
         <h1>{{item.user.firstName}} {{item.user.lastName}}</h1>
-        <h2>{{item.user.username}} {{presence[item.user.id].type}}</h2>
+        <h2>{{item.user.username}}</h2>
       </div>
+      <span class="down">
+        <i ng-if="isOnline(item.user.id)" class="balanced icon ion-ios-circle-filled"></i>
+        <i ng-if="!isOnline(item.user.id)" class="assertive icon ion-ios-circle-filled"></i>
+      </span>
     </div>
   </ion-content>
 </ion-view>

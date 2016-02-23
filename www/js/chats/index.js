@@ -84,11 +84,29 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.detail', 'breezio
   };
 
   funcs.presence = function(userId) {
-    if (presence[userId]) {
-      return presence[userId];
+    if (userId) {
+      if (presence[userId]) {
+        return presence[userId];
+      }
+    } else {
+      return presence;
     }
 
     return null;
+  };
+
+  funcs.isOnline = function(userId) {
+    if (presence[userId]) {
+      if (presence[userId].type == 'available') {
+        return true;
+      } else if (presence[userId].type == 'unavailable') {
+        return false;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
   };
 
   funcs.setMessages = function(hash, list) {
