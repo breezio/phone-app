@@ -19,6 +19,7 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.detail', 'breezio
   var fetched = false;
   var connection = null;
   var connected = false;
+  var presence = {};
 
   funcs.get = function(params) {
     var params = angular.extend({}, params);
@@ -80,6 +81,14 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.detail', 'breezio
 
   funcs.connection = function() {
     return connection;
+  };
+
+  funcs.presence = function(userId) {
+    if (presence[userId]) {
+      return presence[userId];
+    }
+
+    return null;
   };
 
   funcs.setMessages = function(hash, list) {
@@ -201,7 +210,13 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.detail', 'breezio
             }, null, 'message', null, null, null);
 
             connection.addHandler(function(msg) {
-              $rootScope.$broadcast('chat:new-presence');
+              var m = {};
+              m.from = msg.getAttribute('from');
+              m.type = msg.getAttribute('type');
+              m.fromId = funcs.jidToId(m.from);
+
+              presence[m.fromId] = m;
+              $rootScope.$broadcast('chat:new-presence', m);
               return true;
             }, null, 'presence', null, null, null);
 

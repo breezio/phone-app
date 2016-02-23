@@ -49,8 +49,19 @@ angular.module('breezio.chats.roster', [])
   return funcs;
 })
 
-.controller('RosterCtrl', function($scope, $rootScope, Roster) {
+.controller('RosterCtrl', function($scope, $rootScope, Roster, Chats) {
+  $scope.presence = {};
+
   $rootScope.$on('chat:roster', function(e, r) {
+    r.forEach(function(i) {
+      $scope.presence[i.fromId] = Chats.presence(i.fromId);
+    });
+
     $scope.items = r;
+  });
+
+  $rootScope.$on('chat:new-presence', function(e, p) {
+    $scope.presence[p.fromId] = p;
+    $scope.$digest();
   });
 });
