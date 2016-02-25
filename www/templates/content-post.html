@@ -1,6 +1,18 @@
 <ion-view>
   <ion-nav-title>
+    <div class="nav-user" ng-click="openUser(post.user)">
+      <img class="nav-image" ng-src="{{post.user.imagePath | static}}">
+      <div>
+        <h1>{{post.user.firstName}} {{post.user.lastName}}</h1>
+        <h2>{{post.user.username}} <strong>&#183</strong> {{post.dateString}}</h2>
+      </div>
+    </div>
   </ion-nav-title>
+  <ion-nav-buttons side="right">
+    <button class="button" ng-click="openUser(post.user)">
+      <i class="icon ion-ios-chatboxes"></i>
+    </button>
+  </ion-nav-buttons>
   <ion-content>
     <ion-refresher
       pulling-text="Pull to refresh..."
@@ -10,23 +22,10 @@
     <div ng-show="loaded" class="list">
 
       <!-- header -->
-      <div class="flex-item item" ng-click="expand()" ng-class="{expanded: expanded}">
-        <span class="user-image"><img ng-src="{{post.imagePath | static}}"></span>
+      <div class="flex-item item">
         <div class="title">
           <h1 ng-class="{alone: !subtitleExists()}">{{post.title}}</h1>
           <h2 ng-show="subtitleExists()">{{post.subtitle}}</h2>
-        </div>
-        <span class="down"><i class="icon" ng-class="{'ion-ios-arrow-down': !expanded, 'ion-ios-arrow-up': expanded}"></i></span>
-      </div>
-
-      <!-- header info -->
-      <div ng-show="expanded">
-        <div class="flex-item item" ng-click="openUser(post.user)">
-          <span class="user-image"><img ng-src="{{post.user.imagePath | static}}"></span>
-          <div class="title">
-            <h1>By {{post.user.firstName}} {{post.user.lastName}}</h1>
-            <h2>Created {{post.dateString}}</h2>
-          </div>
         </div>
       </div>
 

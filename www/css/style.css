@@ -2,8 +2,22 @@ i {
   margin: 0px 5px;
 }
 
-.button {
-  line-height: 50px;
+.bar-header {
+  height: 60px !important;
+}
+
+.has-header {
+  top: 60px !important;
+}
+
+.bar .header-item.title {
+  height: 60px !important;
+  line-height: 60px !important;
+}
+
+.button.back-button.header-item {
+  height: 100%;
+  max-height: none;
 }
 
 .flex-item {
@@ -12,18 +26,16 @@ i {
   text-align: left;
 }
 
-.flex-item.expanded .title * {
+.flex-item .title * {
   white-space: normal;
 }
 
 .flex-item h1 {
   font-size: 20px;
-  line-height: 25px;
   margin: 0px;
 }
 
 .flex-item h2 {
-  line-height: 25px;
   margin: 0px;
 }
 
@@ -34,30 +46,11 @@ i {
   min-width: 50px;
   overflow: hidden;
   float: right;
+  margin-right: 20px;
 }
 
 .user-image img {
   width: 100%;
-}
-
-.flex-item .title {
-  margin-left: 20px;
-  line-height: 50px;
-  max-width: 65%;
-}
-
-.flex-item .title h1.alone {
-  line-height: 50px;
-}
-
-.flex-item.expanded .title h1.alone {
-  line-height: 25px;
-}
-
-.flex-item .down {
-  margin-left: auto;
-  line-height: 50px;
-  font-size: 25px;;
 }
 
 .post p, .post h3, .post h2, .post h1 {
@@ -99,4 +92,35 @@ i {
 .timestamp {
   text-align: center;
   color: grey;
+}
+
+.nav-user {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  height: 60px;;
+}
+
+.nav-user div {
+  margin-left: 5px;
+}
+
+.nav-user h1 {
+  font-size: 14px;
+  margin: 0px;
+  margin: 0px;
+}
+
+.nav-user h2 {
+  font-size: 12px;
+  padding: 0px;
+  margin: 0px;
+}
+
+.nav-user img {
+  max-width: 30px;
+  max-height: 30px;
+  width: 30px;
+  height: 30px;
+  border-radius: 30px;
 }

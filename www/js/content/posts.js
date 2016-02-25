@@ -110,13 +110,13 @@ angular.module('breezio.content.posts', [])
 
 .controller('PostCtrl', function($scope, $state, $stateParams, Post) {
   $scope.post = {};
-  $scope.expanded = false;
   $scope.alone = false;
 
   $scope.refreshPost = function() {
     Post.get($stateParams.postId).then(function(res) {
       $scope.post = res.data;
-      $scope.post.dateString = (new Date($scope.post.creationDate)).toDateString();
+      var tmp = new Date($scope.post.creationDate);
+      $scope.post.dateString = tmp.getMonth() + '/' + tmp.getDay() + '/' + tmp.getFullYear();
     }).finally(function() {
       $scope.loaded = true;
       $scope.$broadcast('scroll.refreshComplete');
@@ -131,10 +131,6 @@ angular.module('breezio.content.posts', [])
     return false;
   };
 
-  $scope.expand = function() {
-    $scope.expanded = !$scope.expanded;
-  };
-
   $scope.openUser = function(user) {
     $state.go('tab.content-user', {userId: user.id});
   };
@@ -142,7 +138,8 @@ angular.module('breezio.content.posts', [])
   $scope.$on('$ionicView.loaded', function() {
     Post.getCached($stateParams.postId).success(function(val) {
       $scope.post = val;
-      $scope.post.dateString = (new Date($scope.post.creationDate)).toDateString();
+      var tmp = new Date($scope.post.creationDate);
+      $scope.post.dateString = tmp.getMonth() + '/' + tmp.getDay() + '/' + tmp.getFullYear();
       $scope.loaded = true;
     });
   });
