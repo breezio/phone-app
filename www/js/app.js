@@ -62,6 +62,13 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
   };
 })
 
+.controller('NavCtrl', function($scope, $rootScope, $ionicHistory) {
+  $scope.backText = '';
+  $scope.goBack = function() {
+    $ionicHistory.goBack();
+  }
+})
+
 .controller('TabCtrl', function($scope, $rootScope, $location, Auth, Chats) {
   $scope.loggedIn = Auth.loggedIn();
   $scope.haveChats = false;

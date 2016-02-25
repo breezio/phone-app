@@ -43,8 +43,9 @@
 
   </head>
   <body ng-app="breezio" ng-csp>
-    <ion-nav-bar class="bar-stable">
-      <ion-nav-back-button>
+    <ion-nav-bar ng-controller="NavCtrl" class="bar-stable" align-title="left">
+      <ion-nav-back-button class="button-clear" ng-click="goBack()">
+        <i class="ion-arrow-left-c"></i> {{backText}}
       </ion-nav-back-button>
     </ion-nav-bar>
     <ion-nav-view></ion-nav-view>
