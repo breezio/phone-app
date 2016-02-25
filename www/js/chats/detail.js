@@ -19,7 +19,11 @@ angular.module('breezio.chats.detail', [])
   };
 })
 
-.controller('ChatsDetailCtrl', function($scope, $rootScope, $stateParams, User, Auth, Chats, $ionicScrollDelegate, $timeout) {
+.controller('ChatsDetailCtrl', function($scope, $rootScope, $stateParams, User, Auth, Chats, $ionicScrollDelegate, $timeout, $ionicHistory) {
+
+  $scope.goBack = function() {
+    $ionicHistory.goBack();
+  };
 
   $scope.formatLine = function(lines, index) {
     var line = lines[index];

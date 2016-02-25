@@ -182,14 +182,10 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
       }
     }
   })
-  .state('tab.chats-detail', {
+  .state('chat', {
     url: '/chats/:hash',
-    views: {
-      'tab-chats': {
-        templateUrl: 'templates/chats-detail.html',
-        controller: 'ChatsDetailCtrl'
-      }
-    }
+    templateUrl: 'templates/chats-detail.html',
+    controller: 'ChatsDetailCtrl'
   })
 
   .state('tab.roster', {

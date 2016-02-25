@@ -384,7 +384,7 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.detail', 'breezio
   };
 
   $scope.openChat = function(hash) {
-    $state.go('tab.chats-detail', {hash: hash});
+    $state.go('chat', {hash: hash});
   };
 
   $scope.$on('$ionicView.beforeEnter', function() {

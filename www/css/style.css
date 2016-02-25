@@ -128,3 +128,8 @@ i {
   height: 30px;
   border-radius: 30px;
 }
+
+i.fake-back {
+  margin: 0px;
+  margin-right: 15px;
+}
