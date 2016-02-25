@@ -1,6 +1,6 @@
 <ion-view view-title="Roster">
   <ion-content>
-    <div class="header item" ng-repeat="item in items" ng-click="openChat(item)">
+    <div class="flex-item item" ng-repeat="item in items" ng-click="openChat(item)">
       <span class="user-image"><img ng-src="{{item.user.imagePath | static}}"></span>
       <div class="title">
         <h1>{{item.user.firstName}} {{item.user.lastName}}</h1>

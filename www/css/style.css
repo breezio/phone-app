@@ -6,23 +6,23 @@ i {
   line-height: 50px;
 }
 
-.header {
+.flex-item {
   display: flex;
   justify-content: flex-start;
   text-align: left;
 }
 
-.header.expanded .title * {
+.flex-item.expanded .title * {
   white-space: normal;
 }
 
-.header h1 {
+.flex-item h1 {
   font-size: 20px;
   line-height: 25px;
   margin: 0px;
 }
 
-.header h2 {
+.flex-item h2 {
   line-height: 25px;
   margin: 0px;
 }
@@ -40,21 +40,21 @@ i {
   width: 100%;
 }
 
-.header .title {
+.flex-item .title {
   margin-left: 20px;
   line-height: 50px;
   max-width: 65%;
 }
 
-.header .title h1.alone {
+.flex-item .title h1.alone {
   line-height: 50px;
 }
 
-.header.expanded .title h1.alone {
+.flex-item.expanded .title h1.alone {
   line-height: 25px;
 }
 
-.header .down {
+.flex-item .down {
   margin-left: auto;
   line-height: 50px;
   font-size: 25px;;
