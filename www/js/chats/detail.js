@@ -77,6 +77,16 @@ angular.module('breezio.chats.detail', [])
   };
 
   var load = function() {
+    var other;
+    for (var i in $scope.chat.users) {
+      if ($scope.chat.users[i] != $scope.chat.us.id) {
+        other = i;
+        break;
+      }
+    }
+
+    $scope.chat.other = $scope.chat.userData[$scope.chat.users[i]];
+
     var msgs = Chats.messages($scope.chat.hash);
     if (msgs.length < 1 && !$scope.chat.exhausted) {
       Chats.getMessages($scope.chat.hash).success(function(res) {

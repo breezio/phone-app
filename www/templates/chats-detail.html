@@ -1,6 +1,12 @@
 <ion-view>
   <ion-nav-title>
-    Messages
+    <div class="nav-user">
+      <img class="nav-image" ng-src="{{chat.other.imagePath | static}}">
+      <div>
+        <h1>{{chat.other.firstName}} {{chat.other.lastName}}</h1>
+        <h2>{{chat.other.username}}</h2>
+      </div>
+    </div>
   </ion-nav-title>
   <breezio-messages type="chat">
 </ion-view>
