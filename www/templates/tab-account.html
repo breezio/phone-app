@@ -1,4 +1,9 @@
 <ion-view view-title="Account">
+  <ion-nav-buttons side="right">
+    <button ng-show="loggedIn" class="button" ng-click="logout()">
+      <i class="icon ion-log-out"></i>
+    </button>
+  </ion-nav-buttons>
   <ion-content scroll="false">
     <div class="list list-inset" ng-hide="loggedIn">
       <label class="item item-input">
@@ -16,9 +21,5 @@
 
     <breezio-user profile ng-show="loggedIn">
     </breezio-user>
-
-    <ion-footer-bar ng-show="loggedIn" ng-click="logout()" class="bar-assertive">
-      <h1 class="title">Sign Out</h1>
-    </ion-footer-bar>
   </ion-content>
 </ion-view>
