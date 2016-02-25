@@ -39,6 +39,10 @@ i {
   margin: 0px;
 }
 
+.content-title h1 {
+  margin-bottom: 10px;
+}
+
 .user-image {
   border-radius: 50px;
   width: 50px;
