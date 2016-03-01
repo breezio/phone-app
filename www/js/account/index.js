@@ -1,6 +1,6 @@
 angular.module('breezio.account', ['http-auth-interceptor'])
 
-.factory('Auth', function($http, $rootScope, $localStorage, authService, ChatToken, Config) {
+.factory('Auth', function($http, $rootScope, $localStorage, authService, ChatToken, Config, $state) {
   var self = this;
   this.oauthUrl = Config.url + '/oauth2/token';
   this.user = null;
@@ -16,6 +16,11 @@ angular.module('breezio.account', ['http-auth-interceptor'])
   };
 
   this.funcs.init = function() {
+    $rootScope.$on('event:auth-loginRequired', function(e, rejection) {
+      console.log('Login required');
+      self.funcs.refresh();
+    });
+
     if ($localStorage.auth && $localStorage.auth.access_token && $localStorage.user) {
       $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.auth.access_token;
       self.user = $localStorage.user;
@@ -77,6 +82,45 @@ angular.module('breezio.account', ['http-auth-interceptor'])
     delete $localStorage.user;
     delete $localStorage.auth;
     delete $http.defaults.headers.common.Authorization;
+  };
+
+  this.funcs.refresh = function() {
+    if (self.refreshingToken) {
+      return;
+    }
+
+    self.refreshingToken = true;
+
+    if (!$localStorage.auth || !$localStorage.auth.refresh_token) {
+      $state.go('tab.account');
+    }
+
+    delete $http.defaults.headers.common.Authorization;
+    delete $localStorage.auth.access_token;
+
+    $http.post(self.oauthUrl, {
+      grant_type: 'refresh_token',
+      client_id: 'phoneapp',
+      refresh_token: $localStorage.auth.refresh_token
+    }).success(function(res) {
+      self.refreshingToken = false;
+      console.log(res);
+      if (res.access_token) {
+        $localStorage.auth.access_token = res.access_token;
+        self.user = $localStorage.user = res.user;
+        $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.auth.access_token;
+
+        authService.loginConfirmed(res, function(config) {
+          config.headers.Authorization = 'Bearer ' + $localStorage.auth.access_token;
+          return config;
+        });
+      } else {
+        $state.go('tab.account');
+      }
+    }).error(function(res) {
+      self.refreshingToken = false;
+      $state.go('tab.account');
+    });
   };
 
   return self.funcs;
