@@ -197,15 +197,6 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
       }
     }
   })
-  .state('tab.roster-detail', {
-    url: '/roster/:hash',
-    views: {
-      'tab-roster': {
-        templateUrl: 'templates/roster-detail.html',
-        controller: 'ChatsDetailCtrl'
-      }
-    }
-  })
 
   .state('tab.account', {
     url: '/account',
