@@ -57,6 +57,12 @@ i {
   width: 100%;
 }
 
+.user-image i.status {
+  position: absolute;
+  bottom: 15px;
+  left: 50px;
+}
+
 .post p, .post h3, .post h2, .post h1 {
   margin-bottom: 20px;
 }

@@ -1,7 +1,11 @@
 <ion-view view-title="Chats">
   <ion-content ng-show="loaded">
     <div class="flex-item item" ng-repeat="chat in chats" ng-click="openChat(chat.hash)">
-      <span ng-repeat="other in chat.others" class="user-image"><img ng-src="{{chat.userData[other].imagePath | static}}"></span>
+      <span ng-repeat="other in chat.others" class="user-image">
+        <img ng-src="{{chat.userData[other].imagePath | static}}">
+        <i ng-if="isOnline(other)" class="status balanced icon ion-record"></i>
+        <i ng-if="!isOnline(other)" class="status assertive icon ion-record"></i>
+      </span>
       <div class="title">
         <h1>{{chat.title}}</h1>
         <h2>{{chat.usernames.join(', ')}}</h2>

@@ -349,6 +349,8 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.detail', 'breezio
 .controller('ChatsCtrl', function($scope, $rootScope, $state, Auth, Chats) {
   $scope.loaded = false;
 
+  $scope.isOnline = Chats.isOnline;
+
   $scope.parseChats = function(chats) {
     $scope.user = Auth.user();
     $scope.chats = chats;
@@ -388,6 +390,10 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.detail', 'breezio
   };
 
   $scope.$on('$ionicView.beforeEnter', function() {
+    $rootScope.$on('chat:new-presence', function(e, p) {
+      $scope.$digest();
+    });
+
     if (Chats.fetched() && !$scope.loaded) {
       $scope.parseChats(Chats.chats());
     }
