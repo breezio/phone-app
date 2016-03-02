@@ -71,6 +71,28 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.detail', 'breezio
     return null;
   };
 
+  funcs.newChat = function(title, users, context) {
+    var c = {};
+
+    c.users = [];
+    users.forEach(function(user) {
+      if (user != Auth.user().id) {
+        c.users.push(user);
+      }
+    });
+
+    c.hash = funcs.generateHash(users, context);
+    c.type = "Conversation";
+    c.context = context;
+    c.title = title;
+
+    if (!funcs.chat(c.hash)) {
+      chats = [c].concat(chats);
+    }
+
+    return c.hash;
+  };
+
   funcs.fetched = function() {
     return fetched;
   };
@@ -117,7 +139,6 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.detail', 'breezio
 
   funcs.addMessage = function(hash, msg) {
     if (messages[hash].length > 0) {
-      console.log('true');
       messages[hash].push(msg);
     }
   };
@@ -254,7 +275,7 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.detail', 'breezio
       var other;
       var tripped = false;
       chat.users.forEach(function(id) {
-        if (id != chat.us.id) {
+        if (id != Auth.user().id) {
           other = id;
           tripped = true;
         }
@@ -312,17 +333,15 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.detail', 'breezio
         var promises = [];
 
         val.items.forEach(function(chat) {
-          chat.userData = {};
-          chat.us = Auth.user();
           messages[chat.hash] = [];
-
+          var users = [];
           chat.users.forEach(function(userId) {
-            if (chat.us.id != userId) {
-              promises.push(User.getCached(userId).then(function(user) {
-                chat.userData[userId] = user;
-              }));
+            if (Auth.user().id != userId) {
+              users.push(userId);
+              promises.push(User.getCached(userId));
             }
           });
+          chat.users = users;
         });
 
         $q.all(promises).then(function() {
@@ -346,8 +365,9 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.detail', 'breezio
   return funcs;
 })
 
-.controller('ChatsCtrl', function($scope, $rootScope, $state, Auth, Chats) {
+.controller('ChatsCtrl', function($scope, $rootScope, $state, $q, Auth, Chats, User) {
   $scope.loaded = false;
+  $scope.users = {};
 
   $scope.isOnline = Chats.isOnline;
 
@@ -359,30 +379,36 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.detail', 'breezio
       return new Date(a.modifiedDate) - new Date(b.modifiedDate);
     });
 
+    var promises = [];
     $scope.chats.forEach(function(chat) {
-      chat.others = [];
-      chat.usernames = [];
-      chat.names = [];
-
+      var futureUsers = [];
+      var title = [];
+      var subtitle = [];
       chat.users.forEach(function(user) {
-        if (chat.us.id != user) {
-          chat.others.push(user);
-          chat.usernames.push(chat.userData[user].username);
-          chat.names.push(chat.userData[user].firstName + ' ' + chat.userData[user].lastName);
-        }
+        var p = User.getCached(user).then(function(res) {
+          title.push(res.firstName + ' ' + res.lastName);
+          subtitle.push(res.username);
+          $scope.users[res.id] = res;
+        });
+
+        promises.push(p);
+        futureUsers.push(p);
       });
 
-      if (chat.names.length == 0) {
-        chat.names.push(chat.us.firstName + ' ' + chat.us.lastName);
-        chat.usernames.push(chat.us.username);
-      }
+      $q.all(futureUsers).then(function() {
+        if (!chat.title) {
+          chat.title = title.sort().join(',');
+        }
 
-      if (!chat.title) {
-        chat.title = chat.names.join(', ');
-      }
+        if (!chat.subtitle) {
+          chat.subtitle = subtitle.sort().join(',');
+        }
+      });
     });
 
-    $scope.loaded = true;
+    $q.all(promises).then(function() {
+      $scope.loaded = true;
+    });
   };
 
   $scope.openChat = function(hash) {

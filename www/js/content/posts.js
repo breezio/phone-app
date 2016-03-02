@@ -108,7 +108,7 @@ angular.module('breezio.content.posts', [])
   };
 })
 
-.controller('PostCtrl', function($scope, $state, $stateParams, Post) {
+.controller('PostCtrl', function($scope, $state, $stateParams, Post, Chats, Auth) {
   $scope.post = {};
   $scope.alone = false;
 
@@ -133,6 +133,11 @@ angular.module('breezio.content.posts', [])
 
   $scope.openUser = function(user) {
     $state.go('tab.content-user', {userId: user.id});
+  };
+
+  $scope.openChat = function(post) {
+    var hash = Chats.newChat(post.title, [post.user.id, Auth.user().id], post);
+    $state.go('chat', {hash: hash});
   };
 
   $scope.$on('$ionicView.loaded', function() {

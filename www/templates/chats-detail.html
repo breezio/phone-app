@@ -2,10 +2,10 @@
   <ion-nav-title>
     <div class="nav-user">
       <i class="fake-back icon ion-arrow-left-c" ng-click="goBack()"></i>
-      <img class="nav-image" ng-src="{{chat.other.imagePath | static}}">
+      <img class="nav-image" ng-src="{{users[chat.users[0]].imagePath | static}}">
       <div>
-        <h1>{{chat.other.firstName}} {{chat.other.lastName}}</h1>
-        <h2>{{chat.other.username}}</h2>
+        <h1>{{users[chat.users[0]].firstName}} {{users[chat.users[0]].lastName}}</h1>
+        <h2>{{users[chat.users[0]].username}}</h2>
       </div>
     </div>
   </ion-nav-title>

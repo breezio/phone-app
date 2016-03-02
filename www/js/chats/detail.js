@@ -19,7 +19,9 @@ angular.module('breezio.chats.detail', [])
   };
 })
 
-.controller('ChatsDetailCtrl', function($scope, $rootScope, $stateParams, User, Auth, Chats, $ionicScrollDelegate, $timeout, $ionicHistory) {
+.controller('ChatsDetailCtrl', function($scope, $rootScope, $stateParams, User, Auth, Chats, $ionicScrollDelegate, $timeout, $ionicHistory, $q) {
+
+  $scope.users = {};
 
   $scope.goBack = function() {
     $ionicHistory.goBack();
@@ -29,10 +31,11 @@ angular.module('breezio.chats.detail', [])
     var line = lines[index];
     var username;
     var text = '';
-    if (line.userId == $scope.chat.us.id) {
-      username = $scope.chat.us.username;
+    var us = Auth.user();
+    if (line.userId == us.id) {
+      username = us.username;
     } else {
-      username = $scope.chat.userData[line.userId].username;
+      username = $scope.users[line.userId].username;
     }
 
     if (lines[index-1]) {
@@ -81,29 +84,30 @@ angular.module('breezio.chats.detail', [])
   };
 
   var load = function() {
-    var other;
-    for (var i in $scope.chat.users) {
-      if ($scope.chat.users[i] != $scope.chat.us.id) {
-        other = i;
-        break;
-      }
-    }
-
-    $scope.chat.other = $scope.chat.userData[$scope.chat.users[i]];
-
-    var msgs = Chats.messages($scope.chat.hash);
-    if (msgs.length < 1 && !$scope.chat.exhausted) {
-      Chats.getMessages($scope.chat.hash).success(function(res) {
-        $scope.messages = res.items;
-        if (res.items.length < 1) {
-          $scope.chat.exhausted = true;
-        } else {
-          $scope.chat.lastId = res.items[0].id;
-        }
+    var promises = [];
+    $scope.chat.users.forEach(function(user) {
+      var p = User.getCached(user).then(function(res) {
+        $scope.users[res.id] = res;
       });
-    } else {
-      $scope.messages = msgs;
-    }
+
+      promises.push(p);
+    });
+
+    $q.all(promises).then(function() {
+      var msgs = Chats.messages($scope.chat.hash);
+      if ((!msgs || msgs.length < 1) && !$scope.chat.exhausted) {
+        Chats.getMessages($scope.chat.hash).success(function(res) {
+          $scope.messages = res.items;
+          if (res.items.length < 1) {
+            $scope.chat.exhausted = true;
+          } else {
+            $scope.chat.lastId = res.items[0].id;
+          }
+        });
+      } else {
+        $scope.messages = msgs;
+      }
+    });
   };
 
   $scope.$watch('messages', function(val) {
@@ -154,11 +158,19 @@ angular.module('breezio.chats.detail', [])
   $scope.$on('$ionicView.loaded', function() {
     if (Chats.fetched()) {
       $scope.chat = Chats.chat($stateParams.hash);
-      load();
+      if ($scope.chat) {
+        load();
+      } else {
+        console.log('Not loaded1');
+      }
     } else {
       clean = $rootScope.$on('chat:chats', function() {
         $scope.chat = Chats.chat($stateParams.hash);
-        load();
+        if ($scope.chat) {
+          load();
+        } else {
+          console.log('Not loaded2');
+        }
       });
     }
   });
