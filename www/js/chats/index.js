@@ -316,10 +316,18 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.detail', 'breezio
       $rootScope.$broadcast('chat:new-message:' + chat.hash, m);
       funcs.connection().send(msg);
 
-      funcs.postMessage(m.hash, {
+      var data = {
         body: m.body,
         users: chat.users
-      }).success(function(ret) {
+      };
+
+      if (m.topic) {
+        data.topicId = m.topic.id;
+        data.contextId = m.topic.id;
+        data.contextType = m.topic.type;
+      }
+
+      funcs.postMessage(m.hash, data).success(function(ret) {
         m.id = ret.id;
       });
     }
