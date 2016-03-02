@@ -69,7 +69,6 @@ angular.module('breezio.chats.roster', [])
   $scope.$on('$ionicView.beforeEnter', function() {
     if (Roster.roster()) {
       $scope.items = Roster.roster();
-      console.log('Before enter', $scope.items);
     }
 
     $rootScope.$on('chat:roster', function(e, r) {
