@@ -4,6 +4,7 @@ angular.module('breezio.chats.detail', [])
   return {
     templateUrl: 'templates/breezio-messages.html',
     link: function(scope, element, attrs) {
+      var input = document.getElementById('chatInput');
       if (attrs.type == 'chat') {
         scope.text = '';
         scope.$watch('messages', function(messages) {
@@ -11,6 +12,10 @@ angular.module('breezio.chats.detail', [])
           scope.send = function() {
             $rootScope.$broadcast('messages:send', scope.text);
             scope.text = ''; 
+
+            $timeout(function() {
+              input.focus();
+            }, 50);
           };
 
         });
