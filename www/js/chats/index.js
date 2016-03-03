@@ -72,6 +72,7 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.detail', 'breezio
   };
 
   funcs.newChat = function(title, users, context) {
+    console.log('new chat');
     var c = {};
 
     c.users = [];
@@ -90,6 +91,8 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.detail', 'breezio
       chats = [c].concat(chats);
     }
 
+    messages[c.hash] = [];
+    console.log(messages);
     return c.hash;
   };
 
@@ -428,7 +431,7 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.detail', 'breezio
       $scope.$digest();
     });
 
-    if (Chats.fetched() && !$scope.loaded) {
+    if (Chats.fetched()) {
       $scope.parseChats(Chats.chats());
     }
   });
