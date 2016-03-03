@@ -1,6 +1,6 @@
 angular.module('breezio.account', ['http-auth-interceptor'])
 
-.factory('Auth', function($http, $rootScope, $localStorage, authService, ChatToken, Config, $state) {
+.factory('Auth', function($http, $rootScope, $localStorage, authService, ChatToken, Config, $state, $ionicLoading, $timeout) {
   var self = this;
   this.oauthUrl = Config.url + '/oauth2/token';
   this.user = null;
@@ -18,7 +18,12 @@ angular.module('breezio.account', ['http-auth-interceptor'])
   this.funcs.init = function() {
     $rootScope.$on('event:auth-loginRequired', function(e, rejection) {
       console.log('Login required');
-      self.funcs.refresh();
+      $state.go('tab.account');
+      self.funcs.logout();
+      $ionicLoading.show({
+        template: 'Login required...',
+        duration: 1000
+      });
     });
 
     if ($localStorage.auth && $localStorage.auth.access_token && $localStorage.user) {
