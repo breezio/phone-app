@@ -59,7 +59,7 @@ i {
 
 .user-image i.status {
   position: absolute;
-  bottom: 15px;
+  top: 50px;
   left: 50px;
 }
 
