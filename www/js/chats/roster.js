@@ -1,6 +1,6 @@
 angular.module('breezio.chats.roster', [])
 
-.factory('Roster', function($rootScope, Chats, User, $q) {
+.factory('Roster', function($rootScope, Chats, User, $q, $http, Config) {
   var funcs = {};
   var roster;
 
@@ -8,7 +8,19 @@ angular.module('breezio.chats.roster', [])
     return roster;
   };
 
-  funcs.get = function(connection) {
+  funcs.add = function(id) {
+    return $http({
+      url: Config.url + '/chat/users/' + id,
+      method: 'POST'
+    }).then(function(ret) {
+      if (ret.data.success == true) {
+        funcs.get();
+      }
+    });
+  };
+
+  funcs.get = function() {
+    var connection = Chats.connection();
     return $q(function(resolve, reject) {
       connection.roster.get(function(roster) {
         var users = [];
@@ -47,9 +59,11 @@ angular.module('breezio.chats.roster', [])
 
   funcs.init = function() {
     $rootScope.$on('chat:connected', function(e, c) {
-      funcs.get(c).then(function(r) {
-        roster = r;
-      });
+      funcs.get();
+    });
+
+    $rootScope.$on('chat:roster', function(e, r) {
+      roster = r;
     });
   };
 
