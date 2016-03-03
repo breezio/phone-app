@@ -72,7 +72,6 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.detail', 'breezio
   };
 
   funcs.newChat = function(title, users, context) {
-    console.log('new chat');
     var c = {};
 
     c.users = [];
@@ -89,10 +88,9 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.detail', 'breezio
 
     if (!funcs.chat(c.hash)) {
       chats = [c].concat(chats);
+      messages[c.hash] = [];
     }
 
-    messages[c.hash] = [];
-    console.log(messages);
     return c.hash;
   };
 

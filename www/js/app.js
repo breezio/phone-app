@@ -24,7 +24,7 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
 
 .factory('Config', function() {
   var config = {};
-  config.host = 'https://health.breezio.com';
+  config.host = 'http://breezio';
   config.api = '/api/1';
   config.url = config.host + config.api;
   return config;
@@ -94,7 +94,6 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
 
   $rootScope.$on('chat:new-message', function(e, msg) {
     var loc = $location.url().split('/');
-    loc.shift();
     loc.shift();
 
     if (loc[0] == 'chats' && loc[1] == msg.hash) {

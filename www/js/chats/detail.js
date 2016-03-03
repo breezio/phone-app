@@ -49,34 +49,6 @@ angular.module('breezio.chats.detail', [])
     return text;
   };
 
-  var recieveHandler = $rootScope.$on('chat:new-message:' + $stateParams.hash, function(e, msg) {
-    $scope.messages.push(msg);
-
-    $ionicScrollDelegate.$getByHandle('chatScroll').resize();
-    var max = $ionicScrollDelegate.$getByHandle('chatScroll').getScrollView().__maxScrollTop;
-    var pos = $ionicScrollDelegate.$getByHandle('chatScroll').getScrollPosition().top;
-
-    if (max - pos <= 50) {
-      $scope.scrollDown();
-    } else {
-      if (!$scope.chat.newChats) {
-        $scope.chat.newChats = 0;
-      }
-
-      $scope.chat.newChats += 1;
-      $scope.chat.showScroll = true;
-    }
-
-    try {
-      $scope.$digest();
-    } catch (e) {}
-  });
-
-  var sendHandler = $rootScope.$on('messages:send', function(e, text) {
-    Chats.send($scope.chat, text);
-    $scope.scrollDown();
-  });
-
   $scope.scrollDown = function() {
     $ionicScrollDelegate.$getByHandle('chatScroll').scrollBottom(true);
     $scope.chat.showScroll = false;
@@ -155,7 +127,36 @@ angular.module('breezio.chats.detail', [])
     Chats.setMessages($stateParams.hash, $scope.messages);
   });
 
-  $scope.$on('$ionicView.loaded', function() {
+  $scope.$on('$ionicView.beforeEnter', function() {
+
+    recieveHandler = $rootScope.$on('chat:new-message:' + $stateParams.hash, function(e, msg) {
+      $scope.messages.push(msg);
+
+      $ionicScrollDelegate.$getByHandle('chatScroll').resize();
+      var max = $ionicScrollDelegate.$getByHandle('chatScroll').getScrollView().__maxScrollTop;
+      var pos = $ionicScrollDelegate.$getByHandle('chatScroll').getScrollPosition().top;
+
+      if (max - pos <= 50) {
+        $scope.scrollDown();
+      } else {
+        if (!$scope.chat.newChats) {
+          $scope.chat.newChats = 0;
+        }
+
+        $scope.chat.newChats += 1;
+        $scope.chat.showScroll = true;
+      }
+
+      try {
+        $scope.$digest();
+      } catch (e) {}
+    });
+
+    sendHandler = $rootScope.$on('messages:send', function(e, text) {
+      Chats.send($scope.chat, text);
+      $scope.scrollDown();
+    });
+
     if (Chats.fetched()) {
       $scope.chat = Chats.chat($stateParams.hash);
       if ($scope.chat) {
