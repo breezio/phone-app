@@ -70,13 +70,13 @@ angular.module('breezio.chats.roster', [])
   return funcs;
 })
 
-.controller('RosterCtrl', function($scope, $rootScope, $state, Roster, Chats) {
+.controller('RosterCtrl', function($scope, $rootScope, $state, Roster, Chats, Auth) {
   $scope.presence = {};
 
   $scope.isOnline = Chats.isOnline;
 
   $scope.openChat = function(item) {
-    var hash = Chats.generateHash([item.user.id]);
+    var hash = Chats.newChat(item.user.firstName + ' ' + item.user.lastName, [item.user.id, Auth.user().id]);
     $state.go('chat', {hash: hash});
   };
 
