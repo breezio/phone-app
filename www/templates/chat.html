@@ -2,16 +2,19 @@
   <ion-nav-title>
     <div class="nav-user">
       <i class="fake-back icon ion-arrow-left-c" ng-click="goBack()"></i>
-      <img class="nav-image" ng-src="{{users[chat.users[0]].imagePath | static}}">
+      <img class="nav-image" ng-src="{{chat.imagePath | static}}">
       <div>
-        <h1>{{users[chat.users[0]].firstName}} {{users[chat.users[0]].lastName}}</h1>
-        <h2>{{users[chat.users[0]].username}}</h2>
+        <h1>{{chat.title}}</h1>
+        <h2>{{chat.subtitle}}</h2>
       </div>
     </div>
   </ion-nav-title>
   <breezio-messages type="chat">
 </ion-view>
+
+<!--
 <div class="scroll-down" ng-show="chat.showScroll" ng-click="scrollDown()">
   <i class="icon ion-chevron-down"></i>
   <span class="badge badge-assertive">{{chat.newChats}}</span>
 </div>
+-->

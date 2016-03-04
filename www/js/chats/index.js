@@ -1,4 +1,4 @@
-angular.module('breezio.chats', ['angular-md5', 'breezio.chats.detail', 'breezio.chats.roster'])
+angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.chats.roster'])
 
 .factory('ChatToken', function($http, Config) {
   return {
