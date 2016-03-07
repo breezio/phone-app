@@ -342,15 +342,47 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
         var promises = [];
 
         val.items.forEach(function(chat) {
+          var futureUsers = [];
           messages[chat.hash] = [];
           var users = [];
+          var title = [];
+          var subtitle = [];
+          var userData = {};
           chat.users.forEach(function(userId) {
             if (Auth.user().id != userId) {
               users.push(userId);
-              promises.push(User.getCached(userId));
+
+              var p = User.getCached(userId).then(function(res) {
+                userData[res.id] = res;
+                title.push(res.firstName + ' ' + res.lastName);
+                subtitle.push(res.username);
+              });
+
+              promises.push(p);
+              futureUsers.push(p);
             }
           });
+
           chat.users = users;
+
+          $q.all(futureUsers).then(function() {
+            if (!chat.title) {
+              chat.title = title.sort().join(',');
+            }
+
+            if (!chat.subtitle) {
+              chat.subtitle = subtitle.sort().join(',');
+            }
+
+            if (!chat.imagePath) {
+              if (chat.context && chat.context.imagePath) {
+                chat.imagePath = chat.context.imagePath;
+              } else {
+                chat.imagePath = userData[users[0]].imagePath;
+                delete userData;
+              }
+            }
+          });
         });
 
         $q.all(promises).then(function() {
@@ -390,28 +422,12 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
 
     var promises = [];
     $scope.chats.forEach(function(chat) {
-      var futureUsers = [];
-      var title = [];
-      var subtitle = [];
       chat.users.forEach(function(user) {
         var p = User.getCached(user).then(function(res) {
-          title.push(res.firstName + ' ' + res.lastName);
-          subtitle.push(res.username);
           $scope.users[res.id] = res;
         });
 
         promises.push(p);
-        futureUsers.push(p);
-      });
-
-      $q.all(futureUsers).then(function() {
-        if (!chat.title) {
-          chat.title = title.sort().join(',');
-        }
-
-        if (!chat.subtitle) {
-          chat.subtitle = subtitle.sort().join(',');
-        }
       });
     });
 

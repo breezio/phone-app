@@ -2,15 +2,39 @@
   <ion-nav-title>
     <div class="nav-user">
       <i class="fake-back icon ion-arrow-left-c" ng-click="goBack()"></i>
-      <img class="nav-image" ng-src="{{chat.imagePath | static}}">
-      <div>
+      <img ng-show="chatLoaded" class="nav-image" ng-src="{{chat.imagePath | static}}">
+      <div ng-show="chatLoaded">
         <h1>{{chat.title}}</h1>
         <h2>{{chat.subtitle}}</h2>
       </div>
     </div>
   </ion-nav-title>
-  <breezio-messages type="chat">
+
+  <ion-content>
+
+    <ion-refresher
+      pulling-text="Load more..."
+      on-refresh="loadMore()">
+    </ion-refresher>
+
+    <div class="padding">
+      <p ng-repeat="line in messages track by $index" ng-bind-html="formatLine(messages, $index)"></p>
+    </div>
+
+  </ion-content>
+
+  <ion-footer-bar class="bar bar-light item-input-inset">
+    <label class="item-input-wrapper">
+      <input id="chatInput" type="text" placeholder="{{placeholder}}" value="{{text}}" ng-model="text">
+    </label>
+    <button class="button button-clear" ng-click="send()">Send</button>
+  </ion-footer-bar>
+
 </ion-view>
+
+<div ng-hide="msgsLoaded" class="spinner">
+  <ion-spinner></ion-spinner>
+</div>
 
 <!--
 <div class="scroll-down" ng-show="chat.showScroll" ng-click="scrollDown()">
