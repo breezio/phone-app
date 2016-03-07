@@ -2,7 +2,7 @@
   <ion-content ng-show="loaded">
     <div class="flex-item item" ng-repeat="chat in chats" ng-click="openChat(chat.hash)">
       <span ng-repeat="user in chat.users" class="user-image">
-        <img ng-src="{{users[user].imagePath | static}}">
+        <img ng-src="{{chat.imagePath | static}}">
         <i ng-if="isOnline(user)" class="status balanced icon ion-record"></i>
         <i ng-if="!isOnline(user)" class="status assertive icon ion-record"></i>
       </span>
