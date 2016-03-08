@@ -54,6 +54,7 @@ angular.module('breezio.chats.chat', [])
 
   $scope.send = function() {
     if ($scope.msgsLoaded && Chats.connected()) {
+      Chats.send($scope.chat, $scope.text);
       $scope.text = '';
 
       $timeout(function() {
@@ -105,9 +106,18 @@ angular.module('breezio.chats.chat', [])
     });
   };
 
+
   $scope.$on('$ionicView.beforeLeave', function() {
-    if ($scope.chat && Chats.messages($scope.chat.hash) != $scope.messages) {
-      Chats.setMessages($scope.chat.hash, $scope.messages);
+    if ($scope.chat) {
+      if (Chats.messages($scope.chat.hash) != $scope.messages) {
+        Chats.setMessages($scope.chat.hash, $scope.messages);
+      }
+
+      if (typeof $scope.recieveHandler == 'function') {
+        $scope.recieveHandler();
+      }
+
+      $scope.chat = {};
     }
   });
 
@@ -118,6 +128,16 @@ angular.module('breezio.chats.chat', [])
       $scope.loadMessages(chat.hash).then(function(msgs) {
         $scope.messages = msgs;
         $scope.msgsLoaded = true;
+
+        $scope.recieveHandler = $rootScope.$on('chat:new-message:' + chat.hash, function(e, msg) {
+          $scope.messages.push(msg);
+          $ionicScrollDelegate.scrollBottom(true);
+          $ionicScrollDelegate.resize();
+
+          try {
+            $scope.$digest();
+          } catch (e) {}
+        });
       });
 
       chat.users.forEach(function(user) {
