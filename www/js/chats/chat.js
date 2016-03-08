@@ -105,6 +105,12 @@ angular.module('breezio.chats.chat', [])
     });
   };
 
+  $scope.$on('$ionicView.beforeLeave', function() {
+    if ($scope.chat && Chats.messages($scope.chat.hash) != $scope.messages) {
+      Chats.setMessages($scope.chat.hash, $scope.messages);
+    }
+  });
+
   $scope.$on('$ionicView.beforeEnter', function() {
     $scope.loadChat().then(function(chat) {
       var promises = [];
