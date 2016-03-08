@@ -2,6 +2,10 @@ i {
   margin: 0px 5px;
 }
 
+.item .badge {
+  top: 26px !important;
+}
+
 .bar-header {
   height: 60px !important;
 }
@@ -57,10 +61,10 @@ i {
   width: 100%;
 }
 
-.user-image i.status {
+.user-status i.status {
   position: absolute;
-  top: 50px;
-  left: 50px;
+  top: 40px;
+  left: 40px;
 }
 
 .post p, .post h3, .post h2, .post h1 {

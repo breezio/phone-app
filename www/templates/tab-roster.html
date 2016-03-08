@@ -1,17 +1,15 @@
 <ion-view view-title="Roster">
   <ion-content>
-    <div class="flex-item item" ng-repeat="item in items" ng-click="openChat(item)">
-      <span class="user-image">
+    <div class="list">
+      <a class="item item-avatar" ng-repeat="item in items" ng-click="openChat(item)">
         <img ng-src="{{item.user.imagePath | static}}">
-        <i ng-if="isOnline(item.user.id)" class="status balanced icon ion-record"></i>
-        <i ng-if="!isOnline(item.user.id)" class="status assertive icon ion-record"></i>
-      </span>
-      <div class="title">
-        <h1>{{item.user.firstName}} {{item.user.lastName}}</h1>
-        <h2>
-          {{item.user.username}}
-        </h2>
-      </div>
+        <span class="user-status">
+          <i ng-if="isOnline(item.user.id)" class="status balanced icon ion-record"></i>
+          <i ng-if="!isOnline(item.user.id)" class="status assertive icon ion-record"></i>
+        </span>
+        <h2>{{item.user.firstName}} {{item.user.lastName}}</h2>
+        <p>{{item.user.username}}</p>
+      </a>
     </div>
   </ion-content>
 </ion-view>
