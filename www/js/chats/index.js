@@ -418,7 +418,7 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
     $rootScope.totalUnread = 0;
     $rootScope.$on('chat:new-message', function(e, msg) {
       var loc = $location.url().split('/');
-      loc.shift();
+      loc = loc.slice(-2);
 
       if (loc[0] == 'chats' && loc[1] == msg.hash) {
       } else {
@@ -436,10 +436,7 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
 
     $rootScope.$on('$locationChangeStart', function(e, url) {
       var loc = url.split('/');
-      loc.shift();
-      loc.shift();
-      loc.shift();
-      loc.shift();
+      loc = loc.slice(-2);
 
       if (loc[0] == 'chats' && $rootScope.unread[loc[1]] > 0) {
         var chat = funcs.chat(loc[1]);
