@@ -71,63 +71,18 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
 
 .controller('TabCtrl', function($scope, $rootScope, $location, Auth, Chats) {
   $scope.loggedIn = Auth.loggedIn();
-  $scope.haveChats = false;
-  $scope.newChats = 0;
-  $scope.unread = {};
-  $scope.moveDown = {};
+  $scope.newChats = $rootScope.totalUnread;
 
-  $scope.$watch('unread', function(val) {
+  $rootScope.$watch('totalUnread', function(val) {
+    $scope.newChats = val;
   });
 
   $rootScope.$on('auth:logged-in', function() {
     $scope.loggedIn = true;
   });
 
-  $rootScope.$on('chat:chats', function() {
-    $scope.haveChats = true;
-  });
-
   $rootScope.$on('auth:logged-out', function() {
     $scope.loggedIn = false;
-    $scope.haveChats = false;
-  });
-
-  $rootScope.$on('chat:new-message', function(e, msg) {
-    var loc = $location.url().split('/');
-    loc.shift();
-
-    if (loc[0] == 'chats' && loc[1] == msg.hash) {
-    } else {
-      if (!$scope.unread[msg.hash]) {
-        $scope.unread[msg.hash] = 0;
-      }
-
-      $scope.unread[msg.hash] += 1;
-      $scope.newChats += 1;
-
-      Chats.addMessage(msg.hash, msg);
-      $scope.moveDown[msg.hash] = true;
-
-      $scope.$digest();
-    }
-  });
-
-  $scope.$on('$locationChangeStart', function(e, url) {
-    var loc = url.split('/');
-    loc.shift();
-    loc.shift();
-    loc.shift();
-    loc.shift();
-    loc.shift();
-
-    if (loc[0] == 'chats' && $scope.unread[loc[1]] > 0) {
-      $scope.newChats -= $scope.unread[loc[1]];
-      $scope.unread[loc[1]] = 0;
-
-      if ($scope.moveDown[loc[1]]) {
-        $rootScope.$broadcast('chat:offscreen-update');
-      }
-    }
   });
 })
 

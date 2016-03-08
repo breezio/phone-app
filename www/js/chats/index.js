@@ -11,7 +11,7 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
   };
 })
 
-.factory('Chats', function($http, $rootScope, $q, md5, ChatToken, Auth, User, Config) {
+.factory('Chats', function($http, $rootScope, $q, $location, $ionicScrollDelegate, md5, ChatToken, Auth, User, Config) {
   var funcs = {};
   var chatToken = null;
   var chats = null;
@@ -118,6 +118,14 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
     return null;
   };
 
+  funcs.unread = function(hash) {
+    if ($rootScope.unread[hash]) {
+      return $rootScope.unread[hash];
+    } else {
+      return null;
+    }
+  };
+
   funcs.isOnline = function(userId) {
     if (presence[userId]) {
       if (presence[userId].type == 'available') {
@@ -139,8 +147,11 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
   };
 
   funcs.addMessage = function(hash, msg) {
-    if (chats[hash] && messages[hash]) {
-      messages[hash].push(msg);
+    var chat = funcs.chat(hash);
+    if (chat && messages[hash]) {
+      if (chat.gotten) {
+        messages[hash].push(msg);
+      }
     }
   };
 
@@ -343,7 +354,6 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
 
         val.items.forEach(function(chat) {
           var futureUsers = [];
-          messages[chat.hash] = [];
           var users = [];
           var title = [];
           var subtitle = [];
@@ -366,6 +376,8 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
           chat.users = users;
 
           $q.all(futureUsers).then(function() {
+            messages[chat.hash] = [];
+
             if (!chat.title) {
               chat.title = title.sort().join(',');
             }
@@ -401,6 +413,44 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
       connection = null;
       connected = false;
     });
+
+    $rootScope.unread = {};
+    $rootScope.totalUnread = 0;
+    $rootScope.$on('chat:new-message', function(e, msg) {
+      var loc = $location.url().split('/');
+      loc.shift();
+
+      if (loc[0] == 'chats' && loc[1] == msg.hash) {
+      } else {
+        if (!$rootScope.unread[msg.hash]) {
+          $rootScope.unread[msg.hash] = 0;
+        }
+
+        $rootScope.unread[msg.hash] += 1;
+        $rootScope.totalUnread += 1;
+
+        funcs.addMessage(msg.hash, msg);
+        $rootScope.$digest();
+      }
+    });
+
+    $rootScope.$on('$locationChangeStart', function(e, url) {
+      var loc = url.split('/');
+      loc.shift();
+      loc.shift();
+      loc.shift();
+      loc.shift();
+
+      if (loc[0] == 'chats' && $rootScope.unread[loc[1]] > 0) {
+        var chat = funcs.chat(loc[1]);
+        $rootScope.totalUnread -= $rootScope.unread[chat.hash];
+        $rootScope.unread[chat.hash] = 0;
+
+        if (chat.gotten) {
+          $ionicScrollDelegate.scrollBottom();
+        }
+      }
+    });
   };
 
   return funcs;
@@ -415,6 +465,7 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
   $scope.parseChats = function(chats) {
     $scope.user = Auth.user();
     $scope.chats = chats;
+    $scope.unread = Chats.unread;
 
     $scope.chats.sort(function(a, b) {
       return new Date(a.modifiedDate) - new Date(b.modifiedDate);
