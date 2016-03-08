@@ -1,13 +1,13 @@
 angular.module('breezio.chats.chat', [])
 
-.controller('ChatCtrl', function($scope, $rootScope, $stateParams, $timeout, $ionicHistory, $q, User, Auth, Chats) {
+.controller('ChatCtrl', function($scope, $rootScope, $stateParams, $timeout, $ionicHistory, $ionicScrollDelegate, $q, User, Auth, Chats) {
 
   $scope.users = {};
   $scope.msgsLoaded = false;
   $scope.chatLoaded = false;
-  $scope.exhausted = false;
   $scope.text = '';
   $scope.input = document.getElementById('chatInput');
+  $scope.chat = {};
 
   $scope.goBack = function() {
     $ionicHistory.goBack();
@@ -31,7 +31,25 @@ angular.module('breezio.chats.chat', [])
   };
 
   $scope.loadMore = function() {
-    $scope.$broadcast('scroll.refreshComplete');
+    if ($scope.chat.exhausted) {
+      $scope.$broadcast('scroll.refreshComplete');
+      $ionicScrollDelegate.resize();
+    } else {
+      var p = Chats.getMessages($scope.chat.hash, {lastId: $scope.chat.lastId});
+      p.success(function(res) {
+        if (res.items.length < 1) {
+          $scope.chat.exhausted = true;
+        } else {
+          $scope.messages = res.items.concat($scope.messages);
+          $scope.chat.lastId = res.items[0].id;
+        }
+      }).catch(function() {
+        console.log('Load error');
+      }).finally(function() {
+        $scope.$broadcast('scroll.refreshComplete');
+        $ionicScrollDelegate.resize();
+      });
+    }
   };
 
   $scope.send = function() {
@@ -47,8 +65,14 @@ angular.module('breezio.chats.chat', [])
   $scope.loadMessages = function(hash) {
     return $q(function(resolve, reject) {
       var msgs = Chats.messages(hash);
-      if (msgs && msgs.length < 1 && !$scope.exhausted) {
+      if (msgs && msgs.length < 1 && !$scope.chat.exhausted) {
         var p = Chats.getMessages(hash).success(function(res) {
+          if (res.items.length < 1) {
+            $scope.chat.exhausted = true;
+          } else {
+            $scope.chat.lastId = res.items[0].id;
+          }
+
           resolve(res.items);
         }).catch(function(err) {
           reject(err);

@@ -13,6 +13,7 @@
   <ion-content>
 
     <ion-refresher
+      ng-if="!chat.exhausted && msgsLoaded"
       pulling-text="Load more..."
       on-refresh="loadMore()">
     </ion-refresher>

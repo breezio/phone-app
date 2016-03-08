@@ -139,7 +139,7 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
   };
 
   funcs.addMessage = function(hash, msg) {
-    if (messages[hash].length > 0) {
+    if (chats[hash] && messages[hash]) {
       messages[hash].push(msg);
     }
   };
