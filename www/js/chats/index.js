@@ -85,6 +85,7 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
     c.type = "Conversation";
     c.context = context;
     c.title = title;
+    c.subtitle = context.user.username;
 
     if (!funcs.chat(c.hash)) {
       chats = [c].concat(chats);
