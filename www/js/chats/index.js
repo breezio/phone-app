@@ -449,7 +449,7 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
 
         $rootScope.totalUnread -= $rootScope.unread[chat.hash];
         $rootScope.unread[chat.hash] = 0;
-        $ionicScrollDelegate.scrollBottom();
+        $ionicScrollDelegate.scrollBottom(true);
       }
     });
   };

@@ -159,7 +159,7 @@ angular.module('breezio.chats.chat', [])
 
       $scope.loadMessages(chat.hash).then(function(msgs) {
         if (!chat.gotten) {
-          $ionicScrollDelegate.scrollBottom();
+          $ionicScrollDelegate.scrollBottom(true);
         }
 
         chat.gotten = true;
