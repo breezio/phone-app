@@ -83,10 +83,12 @@ angular.module('breezio.chats.roster', [])
   $scope.$on('$ionicView.beforeEnter', function() {
     if (Roster.roster()) {
       $scope.items = Roster.roster();
+      $scope.loaded = true;
     }
 
     $rootScope.$on('chat:roster', function(e, r) {
       $scope.items = r;
+      $scope.loaded = true;
     });
 
     $rootScope.$on('chat:new-presence', function(e, p) {

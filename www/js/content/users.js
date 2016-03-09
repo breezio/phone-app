@@ -99,6 +99,7 @@ angular.module('breezio.content.users', [])
   $scope.$on('$ionicView.beforeEnter', function() {
     User.getCached($stateParams.userId).then(function(u) {
       $scope.user = u;
+      $scope.loaded = true;
     });
   });
 });

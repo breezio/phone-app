@@ -1,8 +1,8 @@
 <ion-view>
   <ion-nav-title>
     <div class="nav-user" ng-click="openUser(post.user)">
-      <img class="nav-image" ng-src="{{post.user.imagePath | static}}">
-      <div>
+      <img ng-show="loaded" class="nav-image" ng-src="{{post.user.imagePath | static}}">
+      <div ng-show="loaded">
         <h1>{{post.user.firstName}} {{post.user.lastName}}</h1>
         <h2>{{post.user.username}} <strong>&#183</strong> {{post.dateString}}</h2>
       </div>
@@ -34,3 +34,7 @@
     </div>
   </ion-content>
 </ion-view>
+
+<div ng-hide="loaded" class="spinner">
+  <ion-spinner></ion-spinner>
+</div>
