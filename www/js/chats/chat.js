@@ -7,6 +7,7 @@ angular.module('breezio.chats.chat', [])
   $scope.chatLoaded = false;
   $scope.text = '';
   $scope.input = document.getElementById('chatInput');
+
   $scope.chat = {};
 
   $scope.unread = Chats.unread;
@@ -34,6 +35,7 @@ angular.module('breezio.chats.chat', [])
 
   $scope.scrollDown = function(chat) {
     if (chat.unread) {
+      $rootScope.totalUnread -= $scope.chat.unread;
       delete chat.unread
     }
 
@@ -46,6 +48,7 @@ angular.module('breezio.chats.chat', [])
       var top = $ionicScrollDelegate.getScrollPosition().top;
 
       if (height - top <= 50) {
+        $rootScope.totalUnread -= $scope.chat.unread;
         delete $scope.chat.unread;
         $scope.$digest();
       }
@@ -81,7 +84,7 @@ angular.module('breezio.chats.chat', [])
 
       $timeout(function() {
         $scope.input.focus();
-      }, 50);
+      }, 10);
     }
   };
 
@@ -169,7 +172,7 @@ angular.module('breezio.chats.chat', [])
           var top = $ionicScrollDelegate.getScrollPosition().top;
           $ionicScrollDelegate.resize();
 
-          if (height - top <= 50) {
+          if (height - top <= 50 || msg.fromApp) {
             $ionicScrollDelegate.scrollBottom(true);
           } else {
             if (!chat.unread) {

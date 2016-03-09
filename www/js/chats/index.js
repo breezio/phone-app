@@ -71,7 +71,7 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
     return null;
   };
 
-  funcs.newChat = function(title, users, context) {
+  funcs.newChat = function(title, creator, users, context) {
     var c = {};
 
     c.users = [];
@@ -85,7 +85,7 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
     c.type = "Conversation";
     c.context = context;
     c.title = title;
-    c.subtitle = context.user.username;
+    c.subtitle = creator.username;
 
     if (!funcs.chat(c.hash)) {
       chats = [c].concat(chats);
@@ -329,6 +329,7 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
       m.action = 'message';
       m.hash = chat.hash;
       m.body = text;
+      m.fromApp = true;
 
       $rootScope.$broadcast('chat:new-message:' + chat.hash, m);
       funcs.connection().send(msg);

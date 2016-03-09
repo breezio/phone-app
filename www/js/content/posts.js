@@ -136,7 +136,7 @@ angular.module('breezio.content.posts', [])
   };
 
   $scope.openChat = function(post) {
-    var hash = Chats.newChat(post.title, [post.user.id, Auth.user().id], post);
+    var hash = Chats.newChat(post.title, post.user, [post.user.id, Auth.user().id], post);
     $state.go('chat', {hash: hash});
   };
 
