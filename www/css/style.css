@@ -2,6 +2,10 @@ i {
   margin: 0px 5px;
 }
 
+.button i.icon {
+  margin: 0px;
+}
+
 .item .badge {
   top: 26px !important;
 }
@@ -22,6 +26,11 @@ i {
 .button.back-button.header-item {
   height: 100%;
   max-height: none;
+}
+
+.header-badge {
+  float: left;
+  margin-right: 5px;
 }
 
 .flex-item {
@@ -86,7 +95,7 @@ i {
   height: 50px;
   border-radius: 50px;
   right: 25px;
-  bottom: 115px;
+  bottom: 69px;
   color: white;
 }
 

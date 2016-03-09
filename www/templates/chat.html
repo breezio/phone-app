@@ -10,7 +10,13 @@
     </div>
   </ion-nav-title>
 
-  <ion-content>
+  <ion-nav-buttons side="right">
+    <button ng-show="chatLoaded && chat.unread > 0" class="button" ng-click="scrollDown(chat)">
+      <span class="badge header-badge badge-assertive">{{chat.unread}}</span>
+    </button>
+  </ion-nav-buttons>
+
+  <ion-content on-scroll="checkScroll()">
 
     <ion-refresher
       ng-if="!chat.exhausted && msgsLoaded"
@@ -36,10 +42,3 @@
 <div ng-hide="msgsLoaded" class="spinner">
   <ion-spinner></ion-spinner>
 </div>
-
-<!--
-<div class="scroll-down" ng-show="chat.showScroll" ng-click="scrollDown()">
-  <i class="icon ion-chevron-down"></i>
-  <span class="badge badge-assertive">{{chat.newChats}}</span>
-</div>
--->

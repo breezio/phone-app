@@ -127,6 +127,10 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
     }
   };
 
+  funcs.setUnread = function(hash, num) {
+    $rootScope.unread[hash] = num;
+  };
+
   funcs.isOnline = function(userId) {
     if (presence[userId]) {
       if (presence[userId].type == 'available') {
@@ -441,12 +445,10 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
 
       if (loc[0] == 'chats' && $rootScope.unread[loc[1]] > 0) {
         var chat = funcs.chat(loc[1]);
+
         $rootScope.totalUnread -= $rootScope.unread[chat.hash];
         $rootScope.unread[chat.hash] = 0;
-
-        if (chat.gotten) {
-          $ionicScrollDelegate.scrollBottom();
-        }
+        $ionicScrollDelegate.scrollBottom();
       }
     });
   };

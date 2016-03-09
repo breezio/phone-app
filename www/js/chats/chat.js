@@ -9,6 +9,8 @@ angular.module('breezio.chats.chat', [])
   $scope.input = document.getElementById('chatInput');
   $scope.chat = {};
 
+  $scope.unread = Chats.unread;
+
   $scope.goBack = function() {
     $ionicHistory.goBack();
   };
@@ -28,6 +30,26 @@ angular.module('breezio.chats.chat', [])
     text += '<strong>' + username + '</strong> ' + line.body;
 
     return text;
+  };
+
+  $scope.scrollDown = function(chat) {
+    if (chat.unread) {
+      delete chat.unread
+    }
+
+    $ionicScrollDelegate.scrollBottom(true);
+  };
+
+  $scope.checkScroll = function() {
+    if ($scope.chat.unread) {
+      var height = $ionicScrollDelegate.getScrollView().__maxScrollTop;
+      var top = $ionicScrollDelegate.getScrollPosition().top;
+
+      if (height - top <= 50) {
+        delete $scope.chat.unread;
+        $scope.$digest();
+      }
+    }
   };
 
   $scope.loadMore = function() {
@@ -112,6 +134,10 @@ angular.module('breezio.chats.chat', [])
         Chats.setMessages($scope.chat.hash, $scope.messages);
       }
 
+      if ($scope.chat.unread) {
+        Chats.setUnread($scope.chat.hash, $scope.chat.unread);
+      }
+
       if (typeof $scope.recieveHandler == 'function') {
         $scope.recieveHandler();
       }
@@ -124,15 +150,35 @@ angular.module('breezio.chats.chat', [])
     $scope.loadChat().then(function(chat) {
       var promises = [];
 
+      if (chat.unread) {
+        delete chat.unread;
+      }
+
       $scope.loadMessages(chat.hash).then(function(msgs) {
+        if (!chat.gotten) {
+          $ionicScrollDelegate.scrollBottom();
+        }
+
+        chat.gotten = true;
         $scope.messages = msgs;
-        $scope.chat.gotten = true;
         $scope.msgsLoaded = true;
 
         $scope.recieveHandler = $rootScope.$on('chat:new-message:' + chat.hash, function(e, msg) {
           $scope.messages.push(msg);
-          $ionicScrollDelegate.scrollBottom(true);
+          var height = $ionicScrollDelegate.getScrollView().__maxScrollTop;
+          var top = $ionicScrollDelegate.getScrollPosition().top;
           $ionicScrollDelegate.resize();
+
+          if (height - top <= 50) {
+            $ionicScrollDelegate.scrollBottom(true);
+          } else {
+            if (!chat.unread) {
+              chat.unread = 0;
+            }
+
+            chat.unread += 1;
+            $rootScope.totalUnread += 1;
+          }
 
           try {
             $scope.$digest();
