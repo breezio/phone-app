@@ -83,9 +83,17 @@ angular.module('breezio.chats.chat', [])
       $scope.text = '';
 
       $timeout(function() {
+        if (cordova.plugins.Keyboard) {
+          cordova.plugins.Keyboard.show();
+        }
+
         $scope.input.focus();
       }, 10);
     }
+  };
+
+  $scope.keyboardShow = function() {
+    $ionicScrollDelegate.scrollBottom(true);
   };
 
   $scope.loadMessages = function(hash) {
@@ -132,6 +140,8 @@ angular.module('breezio.chats.chat', [])
   };
 
   $scope.$on('$ionicView.beforeLeave', function() {
+    window.removeEventListener('native.keyboardshow', $scope.keyboardShow);
+
     if ($scope.chat) {
       if (Chats.messages($scope.chat.hash) != $scope.messages) {
         Chats.setMessages($scope.chat.hash, $scope.messages);
@@ -164,6 +174,9 @@ angular.module('breezio.chats.chat', [])
 
         chat.gotten = true;
         $scope.messages = msgs;
+
+        window.addEventListener('native.keyboardshow', $scope.keyboardShow);
+
         $scope.msgsLoaded = true;
 
         $scope.recieveHandler = $rootScope.$on('chat:new-message:' + chat.hash, function(e, msg) {
