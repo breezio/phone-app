@@ -33,43 +33,6 @@ i {
   margin-right: 5px;
 }
 
-.flex-item {
-  display: flex;
-  justify-content: flex-start;
-  text-align: left;
-}
-
-.flex-item .title * {
-  white-space: normal;
-}
-
-.flex-item h1 {
-  font-size: 20px;
-  margin: 0px;
-}
-
-.flex-item h2 {
-  margin: 0px;
-}
-
-.content-title h1 {
-  margin-bottom: 10px;
-}
-
-.user-image {
-  border-radius: 50px;
-  width: 50px;
-  height: 50px;
-  min-width: 50px;
-  overflow: hidden;
-  float: right;
-  margin-right: 20px;
-}
-
-.user-image img {
-  width: 100%;
-}
-
 .user-status i.status {
   position: absolute;
   top: 40px;
@@ -85,31 +48,6 @@ i {
   border-width: 1px 0px 0px;
   border-style: solid none none;
   border-color: #EEE;
-}
-
-.scroll-down {
-  position: fixed;
-  z-index: 1000;
-  background-color: black;
-  width: 50px;
-  height: 50px;
-  border-radius: 50px;
-  right: 25px;
-  bottom: 69px;
-  color: white;
-}
-
-.scroll-down i {
-  position: absolute;
-  font-size: 20px;
-  line-height: 55px;
-  left: 11.5px;
-}
-
-.scroll-down .badge {
-  position: absolute;
-  top: -5px;
-  right: -5px;
 }
 
 .timestamp {

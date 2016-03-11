@@ -1,10 +1,8 @@
 <div ng-show="loaded">
-  <div class="flex-item item">
-    <span class="user-image"><img ng-src="{{user.imagePath | static}}"></span>
-    <div class="title">
-      <h1>{{user.firstName}} {{user.lastName}}</h1>
-      <h2>{{user.username}}</h2>
-    </div>
+  <div class="item item-avatar">
+    <img ng-src="{{user.imagePath | static}}">
+    <h2>{{user.firstName}} {{user.lastName}}</h2>
+    <p>{{user.username}}</p>
   </div>
 
   <div ng-show="loggedIn && !profile" class="button-bar">

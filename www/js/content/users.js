@@ -90,8 +90,9 @@ angular.module('breezio.content.users', [])
 
 .controller('UserCtrl', function($scope, $rootScope, User, $stateParams) {
   $scope.refreshUser = function() {
-    $scope.user = User.get($stateParams.userId);
-    $scope.user.success(function() {
+    var p = User.get($stateParams.userId);
+    p.success(function(u) {
+      $scope.user = u;
       $scope.$broadcast('scroll.refreshComplete');
     });
   };
