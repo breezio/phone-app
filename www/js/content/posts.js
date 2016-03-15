@@ -69,6 +69,11 @@ angular.module('breezio.content.posts', [])
 
             case 'paragraph':
               e = angular.element(document.createElement('p'));
+
+              if (blurb.content == '&nbsp;') {
+                e.addClass('empty');
+              }
+
               e.html(blurb.content);
               break;
 
@@ -116,7 +121,7 @@ angular.module('breezio.content.posts', [])
 
   $scope.openNotes = function(e) {
     var id = e.target.getAttribute('name');
-    if ($scope.noteMode && $scope.post.id && id) {
+    if (!e.target.classList.contains('empty') && $scope.noteMode && $scope.post.id && id) {
       var clear = $scope.$on('$ionicView.afterLeave', function() {
         $scope.toggleNotes();
         clear();
