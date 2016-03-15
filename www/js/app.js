@@ -117,6 +117,15 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
       }
     }
   })
+  .state('tab.content-notes', {
+    url: '/post/:postId/notes/:noteId',
+    views: {
+      'tab-content': {
+        templateUrl: 'templates/content-notes.html',
+        controller: 'NoteCtrl'
+      }
+    }
+  })
   .state('tab.content-user', {
     url: '/user/:userId',
     views: {

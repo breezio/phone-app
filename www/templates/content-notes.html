@@ -1,0 +1,31 @@
+<ion-view>
+  <ion-nav-title>
+    <div class="nav-user">
+      <img ng-show="postLoaded" class="nav-image" ng-src="{{post.imagePath | static}}">
+      <div ng-show="postLoaded">
+        <h1>{{post.title}}</h1>
+        <h2>{{post.subtitle}}</h2>
+      </div>
+    </div>
+  </ion-nav-title>
+
+  <ion-content>
+
+    <div class="padding">
+      <p ng-repeat="line in messages track by $index" ng-bind-html="formatLine(messages, $index)"></p>
+    </div>
+
+  </ion-content>
+
+  <ion-footer-bar class="bar bar-light item-input-inset">
+    <label class="item-input-wrapper">
+      <input id="noteInput" type="text" placeholder="{{placeholder}}" value="{{text}}" ng-model="text">
+    </label>
+    <button class="button button-clear" ng-click="send()">Send</button>
+  </ion-footer-bar>
+
+</ion-view>
+
+<div ng-hide="notesLoaded" class="spinner">
+  <ion-spinner></ion-spinner>
+</div>

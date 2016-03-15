@@ -27,12 +27,12 @@
     <div ng-show="loaded" class="list">
 
       <!-- header -->
-      <div class="item">
+      <div class="post-header item">
         <h1>{{post.title}}</h1>
         <h2 ng-show="subtitleExists()">{{post.subtitle}}</h2>
       </div>
 
-      <breezio-post></breezio-post>
+      <breezio-post ng-click="openNotes($event)"></breezio-post>
 
     </div>
   </ion-content>

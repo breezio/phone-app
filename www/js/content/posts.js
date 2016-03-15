@@ -109,10 +109,22 @@ angular.module('breezio.content.posts', [])
   };
 })
 
-.controller('PostCtrl', function($scope, $state, $stateParams, Post, Chats, Auth) {
+.controller('PostCtrl', function($scope, $state, $stateParams, $timeout, Post, Chats, Auth) {
   $scope.post = {};
   $scope.alone = false;
   $scope.noteMode = false;
+
+  $scope.openNotes = function(e) {
+    var id = e.target.getAttribute('name');
+    if ($scope.noteMode && $scope.post.id && id) {
+      var clear = $scope.$on('$ionicView.afterLeave', function() {
+        $scope.toggleNotes();
+        clear();
+      });
+
+      $state.go('tab.content-notes', {postId: $scope.post.id, noteId: id});
+    }
+  };
 
   var noteBar = angular.element(document.querySelector('ion-header-bar.bar-subheader'));
   $scope.toggleNotes = function() {
