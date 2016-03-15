@@ -96,6 +96,7 @@ angular.module('breezio.content.posts', [])
             }
 
             e.attr('name', blurb.id);
+            e.addClass('blurb');
             item.append(e);
           }
           element.html('');
@@ -111,6 +112,21 @@ angular.module('breezio.content.posts', [])
 .controller('PostCtrl', function($scope, $state, $stateParams, Post, Chats, Auth) {
   $scope.post = {};
   $scope.alone = false;
+  $scope.noteMode = false;
+
+  var noteBar = angular.element(document.querySelector('ion-header-bar.bar-subheader'));
+  $scope.toggleNotes = function() {
+    var post = angular.element(document.querySelectorAll('breezio-post .blurb'));
+    if ($scope.noteMode) {
+      noteBar.addClass('ng-hide');
+      post.removeClass('note-mode');
+    } else {
+      noteBar.removeClass('ng-hide');
+      post.addClass('note-mode');
+    }
+
+    $scope.noteMode = !$scope.noteMode;
+  };
 
   $scope.refreshPost = function() {
     Post.get($stateParams.postId).then(function(res) {

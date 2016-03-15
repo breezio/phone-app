@@ -24,7 +24,7 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
 
 .factory('Config', function() {
   var config = {};
-  config.host = 'http://breezio';
+  config.host = 'https://health.breezio.com';
   config.api = '/api/1';
   config.url = config.host + config.api;
   return config;

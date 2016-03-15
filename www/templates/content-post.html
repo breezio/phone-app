@@ -9,10 +9,15 @@
     </div>
   </ion-nav-title>
   <ion-nav-buttons side="right">
-    <button class="button" ng-click="openChat(post)">
+    <button class="button" ng-click="toggleNotes()">
       <i class="icon ion-ios-chatboxes"></i>
     </button>
   </ion-nav-buttons>
+
+  <ion-header-bar align-title="center" class="bar bar-subheader bar-assertive ng-hide">
+    <h1 class="title">Select a blurb to comment</h1>
+  </ion-header-bar>
+
   <ion-content>
     <ion-refresher
       pulling-text="Pull to refresh..."

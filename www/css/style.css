@@ -23,6 +23,19 @@ i {
   line-height: 60px !important;
 }
 
+.bar-subheader {
+  top: 60px !important;
+  height: 44px !important;
+}
+
+.has-subheader {
+  top: 104px !important;
+}
+
+ion-content {
+  top: 60px !important;
+}
+
 .button.back-button.header-item {
   height: 100%;
   max-height: none;
@@ -48,6 +61,10 @@ i {
   border-width: 1px 0px 0px;
   border-style: solid none none;
   border-color: #EEE;
+}
+
+.blurb.note-mode{
+  background-color: #ECECEC;
 }
 
 .timestamp {
