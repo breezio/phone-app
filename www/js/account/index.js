@@ -131,6 +131,56 @@ angular.module('breezio.account', ['http-auth-interceptor'])
   return self.funcs;
 })
 
+.directive('loggedIn', function($rootScope, Auth) {
+  return {
+    restrict: 'A',
+    link: function(scope, element, attrs) {
+      var set = function() {
+        if (Auth.loggedIn()) {
+          element.removeClass('ng-hide');
+        } else {
+          element.addClass('ng-hide');
+        }
+      };
+
+      set();
+
+      $rootScope.$on('auth:logged-in', function() {
+        set();
+      });
+
+      $rootScope.$on('auth:logged-out', function() {
+        set();
+      });
+    }
+  };
+})
+
+.directive('loggedOut', function($rootScope, Auth) {
+  return {
+    restrict: 'A',
+    link: function(scope, element, attrs) {
+      var set = function() {
+        if (Auth.loggedIn()) {
+          element.addClass('ng-hide');
+        } else {
+          element.removeClass('ng-hide');
+        }
+      };
+
+      set();
+
+      $rootScope.$on('auth:logged-in', function() {
+        set();
+      });
+
+      $rootScope.$on('auth:logged-out', function() {
+        set();
+      });
+    }
+  };
+})
+
 .controller('AccountCtrl', function($scope, $rootScope, $ionicLoading, Auth) {
   $scope.loginForm = {
     username : '',

@@ -1,11 +1,11 @@
 <ion-view view-title="Account">
   <ion-nav-buttons side="right">
-    <button ng-show="loggedIn" class="button" ng-click="logout()">
+    <button logged-in class="button" ng-click="logout()">
       <i class="icon ion-log-out"></i>
     </button>
   </ion-nav-buttons>
   <ion-content scroll="false">
-    <div class="list list-inset" ng-hide="loggedIn">
+    <div class="list list-inset" logged-out>
       <label class="item item-input">
         <input type="text" ng-model="loginForm.username" placeholder="Email or Username">
       </label>
@@ -19,7 +19,7 @@
       </div>
     </div>
 
-    <breezio-user profile ng-show="loggedIn">
+    <breezio-user profile logged-in>
     </breezio-user>
   </ion-content>
 </ion-view>

@@ -12,12 +12,12 @@
   <ion-content>
 
     <div class="padding">
-      <p ng-repeat="line in messages track by $index" ng-bind-html="formatLine(messages, $index)"></p>
+      <p ng-repeat="line in items track by $index" ng-bind-html="formatLine(items, $index)"></p>
     </div>
 
   </ion-content>
 
-  <ion-footer-bar class="bar bar-light item-input-inset">
+  <ion-footer-bar logged-in class="bar bar-light item-input-inset">
     <label class="item-input-wrapper">
       <input id="noteInput" type="text" placeholder="{{placeholder}}" value="{{text}}" ng-model="text">
     </label>
