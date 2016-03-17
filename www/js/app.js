@@ -1,4 +1,4 @@
-angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.chats', 'breezio.account'])
+angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.chats', 'breezio.account', 'ionic-native-transitions'])
 
 .run(function($rootScope) {
   $rootScope.$on('auth:logged-in', function() {
@@ -24,8 +24,12 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
 
 .factory('Config', function() {
   var config = {};
-  config.host = 'https://health.breezio.com';
+  config.host = 'http://breezio';
   config.api = '/api/1';
+
+  if (window.cordova)
+    config.host = 'http://192.168.2.108';
+
   config.url = config.host + config.api;
   return config;
 })

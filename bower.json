@@ -8,6 +8,7 @@
     "angular-http-auth": "^1.2.3",
     "ngstorage": "^0.3.10",
     "strophejs-plugins": "^0.0.6",
-    "angular-md5": "^0.1.10"
+    "angular-md5": "^0.1.10",
+    "ionic-native-transitions": "shprink/ionic-native-transitions#^1.0.0-rc9"
   }
 }
