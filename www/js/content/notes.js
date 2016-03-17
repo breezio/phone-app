@@ -50,7 +50,7 @@ angular.module('breezio.content.notes', [])
   return funcs;
 })
 
-.controller('NoteCtrl', function($scope, $rootScope, $q, $stateParams, $timeout, Post, Notes) {
+.controller('NoteCtrl', function($scope, $rootScope, $q, $stateParams, $timeout, $ionicScrollDelegate, Post, Notes) {
 
   $scope.text = '';
   $scope.posting = false;
@@ -74,16 +74,19 @@ angular.module('breezio.content.notes', [])
         section: 'posts'
       }).success(function(val) {
         $scope.items.push(val);
+        $ionicScrollDelegate.scrollBottom(true);
+      }).finally(function() {
         $scope.text = '';
-
-        $timeout(function() {
-          if (window.cordova) {
-            cordova.plugins.Keyboard.show();
-          }
-
-          $scope.input.focus();
-        }, 10);
+        $scope.posting = false;
       });
+
+      $timeout(function() {
+        if (window.cordova) {
+          cordova.plugins.Keyboard.show();
+        }
+
+        $scope.input.focus();
+      }, 10);
     }
   };
 
