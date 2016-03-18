@@ -1,6 +1,6 @@
 angular.module('breezio.chats.chat', [])
 
-.controller('ChatCtrl', function($scope, $rootScope, $stateParams, $timeout, $ionicHistory, $ionicScrollDelegate, $q, User, Auth, Chats) {
+.controller('ChatCtrl', function($scope, $rootScope, $stateParams, $timeout, $ionicHistory, $ionicScrollDelegate, $ionicNativeTransitions, $q, User, Auth, Chats) {
 
   $scope.users = {};
   $scope.msgsLoaded = false;
@@ -13,7 +13,11 @@ angular.module('breezio.chats.chat', [])
   $scope.unread = Chats.unread;
 
   $scope.goBack = function() {
-    $ionicHistory.goBack();
+    var view = $ionicHistory.backView();
+    $ionicNativeTransitions.stateGo(view.stateId, view.stateParams, {
+      type: 'slide',
+      direction: 'right'
+    });
   };
 
   $scope.formatLine = function(lines, index) {

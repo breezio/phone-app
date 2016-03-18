@@ -1,4 +1,4 @@
-angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.chats', 'breezio.account'])
+angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.chats', 'breezio.account', 'ionic-native-transitions'])
 
 .run(function($rootScope) {
   $rootScope.$on('auth:logged-in', function() {
@@ -24,8 +24,12 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
 
 .factory('Config', function() {
   var config = {};
-  config.host = 'https://health.breezio.com';
+  config.host = 'http://breezio';
   config.api = '/api/1';
+
+  if (window.cordova)
+    config.host = 'https://health.breezio.com';
+
   config.url = config.host + config.api;
   return config;
 })
@@ -64,14 +68,30 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
 
 .controller('NavCtrl', function($scope, $rootScope, $ionicHistory) {
   $scope.backText = '';
-  $scope.goBack = function() {
-    $ionicHistory.goBack();
-  }
 })
 
-.controller('TabCtrl', function($scope, $rootScope, $location, Auth, Chats) {
+.controller('TabCtrl', function($scope, $rootScope, $location, $state, $ionicHistory, $ionicNativeTransitions, Auth, Chats) {
   $scope.loggedIn = Auth.loggedIn();
   $scope.newChats = $rootScope.totalUnread;
+  $scope.state = {};
+
+  $scope.select = function(state) {
+    if (!$scope.state[state]) {
+      var view = {stateName: state, stateParams: {}};
+    } else {
+      var view = $scope.state[state];
+    }
+
+    $ionicNativeTransitions.stateGo(view.stateName, view.stateParams, {
+      type: 'fade',
+      duration: 100
+    });
+  };
+
+  $scope.saveState = function(state) {
+    var view = $ionicHistory.viewHistory().currentView;
+    $scope.state[state] = view;
+  };
 
   $rootScope.$watch('totalUnread', function(val) {
     $scope.newChats = val;
@@ -86,7 +106,14 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider, $ionicNativeTransitionsProvider) {
+
+  $ionicNativeTransitionsProvider.setDefaultOptions({
+    duration: 200,
+    slowdownfactor: 1,
+    fixedPixelsBottom: 49,
+    backInOppositeDirection: true,
+  });
 
   $ionicConfigProvider.tabs.position('bottom');
 
@@ -101,6 +128,7 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
 
   .state('tab.content', {
     url: '/content',
+    nativeTransitions: null,
     views: {
       'tab-content': {
         templateUrl: 'templates/tab-content.html',
@@ -138,6 +166,7 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
 
   .state('tab.chats', {
     url: '/chats',
+    nativeTransitions: null,
     views: {
       'tab-chats': {
         templateUrl: 'templates/tab-chats.html',
@@ -153,6 +182,7 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
 
   .state('tab.roster', {
     url: '/roster',
+    nativeTransitions: null,
     views: {
       'tab-roster': {
         templateUrl: 'templates/tab-roster.html',
@@ -163,6 +193,7 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
 
   .state('tab.account', {
     url: '/account',
+    nativeTransitions: null,
     views: {
       'tab-account': {
         templateUrl: 'templates/tab-account.html',

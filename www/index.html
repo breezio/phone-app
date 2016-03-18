@@ -12,6 +12,9 @@
     <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
 
+    <!-- ionic-native-transitions -->
+    <script src="lib/ionic-native-transitions/dist/ionic-native-transitions.min.js"></script>
+
     <!-- angular-http-auth -->
     <script src="lib/angular-http-auth/src/http-auth-interceptor.js"></script>
 
@@ -45,7 +48,7 @@
   </head>
   <body ng-app="breezio" ng-csp>
     <ion-nav-bar ng-controller="NavCtrl" class="bar-stable" align-title="left">
-      <ion-nav-back-button class="button-clear" ng-click="goBack()">
+      <ion-nav-back-button class="button-clear">
         <i class="ion-arrow-left-c"></i> {{backText}}
       </ion-nav-back-button>
     </ion-nav-bar>
