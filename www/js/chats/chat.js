@@ -83,11 +83,10 @@ angular.module('breezio.chats.chat', [])
       $scope.text = '';
 
       $timeout(function() {
-        if (cordova.plugins.Keyboard) {
+        $scope.input.focus();
+        if (window.cordova) {
           cordova.plugins.Keyboard.show();
         }
-
-        $scope.input.focus();
       }, 10);
     }
   };
