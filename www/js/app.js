@@ -70,9 +70,28 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
   $scope.backText = '';
 })
 
-.controller('TabCtrl', function($scope, $rootScope, $location, Auth, Chats) {
+.controller('TabCtrl', function($scope, $rootScope, $location, $state, $ionicHistory, $ionicNativeTransitions, Auth, Chats) {
   $scope.loggedIn = Auth.loggedIn();
   $scope.newChats = $rootScope.totalUnread;
+  $scope.state = {};
+
+  $scope.select = function(state) {
+    if (!$scope.state[state]) {
+      var view = {stateName: state, stateParams: {}};
+    } else {
+      var view = $scope.state[state];
+    }
+
+    $ionicNativeTransitions.stateGo(view.stateName, view.stateParams, {
+      type: 'fade',
+      duration: 100
+    });
+  };
+
+  $scope.saveState = function(state) {
+    var view = $ionicHistory.viewHistory().currentView;
+    $scope.state[state] = view;
+  };
 
   $rootScope.$watch('totalUnread', function(val) {
     $scope.newChats = val;
