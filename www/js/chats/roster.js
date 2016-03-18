@@ -77,7 +77,7 @@ angular.module('breezio.chats.roster', [])
 
   $scope.openChat = function(item) {
     var hash = Chats.newChat(item.user.firstName + ' ' + item.user.lastName, item.user, [item.user.id, Auth.user().id]);
-    $state.go('chat', {hash: hash});
+    $state.go('tab.roster-chat', {hash: hash});
   };
 
   $scope.$on('$ionicView.beforeEnter', function() {

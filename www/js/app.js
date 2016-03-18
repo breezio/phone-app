@@ -174,10 +174,14 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
       }
     }
   })
-  .state('chat', {
+  .state('tab.chats-chat', {
     url: '/chats/:hash',
-    templateUrl: 'templates/chat.html',
-    controller: 'ChatCtrl'
+    views: {
+      'tab-chats': {
+        templateUrl: 'templates/chat.html',
+        controller: 'ChatCtrl'
+      }
+    }
   })
 
   .state('tab.roster', {
@@ -187,6 +191,15 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
       'tab-roster': {
         templateUrl: 'templates/tab-roster.html',
         controller: 'RosterCtrl'
+      }
+    }
+  })
+  .state('tab.roster-chat', {
+    url: '/chats/:hash',
+    views: {
+      'tab-roster': {
+        templateUrl: 'templates/chat.html',
+        controller: 'ChatCtrl'
       }
     }
   })
