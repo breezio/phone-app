@@ -27,7 +27,7 @@
     <div ng-show="loaded" class="list">
 
       <!-- header -->
-      <div class="post-header item">
+      <div class="post-header item" ng-click="openGeneralNotes()">
         <h1>{{post.title}}</h1>
         <h2 ng-show="subtitleExists()">{{post.subtitle}}</h2>
       </div>

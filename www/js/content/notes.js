@@ -20,6 +20,22 @@ angular.module('breezio.content.notes', [])
     return promise;
   };
 
+  funcs.general = function(postId, params) {
+    var params = angular.extend({}, params);
+
+    var promise = $http({
+      method: 'GET',
+      url: Config.url + '/posts/' + postId + '/notes',
+      params: params
+    });
+
+    promise.success(function(val) {
+      notes[postId] = val;
+    });
+
+    return promise;
+  };
+
   funcs.getCached = function(postId, noteId, params) {
     if (notes[postId + noteId]) {
       return {
@@ -116,9 +132,15 @@ angular.module('breezio.content.notes', [])
 
   $scope.loadNotes = function() {
     return $q(function(resolve, reject) {
-      Notes.get($stateParams.postId, $stateParams.noteId).success(function(ret) {
-        resolve(ret);
-      });
+      if ($stateParams.noteId == '0') {
+        Notes.general($stateParams.postId).success(function(ret) {
+          resolve(ret);
+        });
+      } else {
+        Notes.get($stateParams.postId, $stateParams.noteId).success(function(ret) {
+          resolve(ret);
+        });
+      }
     });
   };
 

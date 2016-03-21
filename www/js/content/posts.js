@@ -131,6 +131,17 @@ angular.module('breezio.content.posts', [])
     }
   };
 
+  $scope.openGeneralNotes = function() {
+    if ($scope.noteMode) {
+      var clear = $scope.$on('$ionicView.afterLeave', function() {
+        $scope.toggleNotes();
+        clear();
+      });
+
+      $state.go('tab.content-notes', {postId: $scope.post.id, noteId: 0});
+    }
+  };
+
   var noteBar = angular.element(document.querySelector('ion-header-bar.bar-subheader'));
   $scope.toggleNotes = function() {
     var post = angular.element(document.querySelectorAll('breezio-post .blurb'));
