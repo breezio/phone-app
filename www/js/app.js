@@ -70,14 +70,15 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
   $scope.backText = '';
 })
 
-.controller('TabCtrl', function($scope, $rootScope, $location, $state, $ionicHistory, $ionicNativeTransitions, Auth, Chats) {
+.controller('TabCtrl', function($scope, $rootScope, $location, $state, $ionicHistory, $ionicNativeTransitions, $ionicTabsDelegate, Auth, Chats) {
   $scope.loggedIn = Auth.loggedIn();
   $scope.newChats = $rootScope.totalUnread;
   $scope.state = {};
 
-  $scope.select = function(state) {
-    if (!$scope.state[state]) {
+  $scope.select = function(state, index) {
+    if (!$scope.state[state] || $ionicTabsDelegate.selectedIndex() == index) {
       var view = {stateName: state, stateParams: {}};
+      $ionicHistory.nextViewOptions({disableBack: true});
     } else {
       var view = $scope.state[state];
     }

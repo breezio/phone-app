@@ -1,22 +1,22 @@
 <ion-tabs class="tabs-bottom tabs-icon-top tabs-color-active-positive">
 
   <!-- Content Tab -->
-  <ion-tab on-deselect="saveState('tab.content')" ng-click="select('tab.content')" title="Content" icon-off="ion-ios-pulse" icon-on="ion-ios-pulse-strong">
+  <ion-tab on-deselect="saveState('tab.content')" ng-click="select('tab.content', 0)" title="Content" icon-off="ion-ios-pulse" icon-on="ion-ios-pulse-strong">
     <ion-nav-view name="tab-content"></ion-nav-view>
   </ion-tab>
 
   <!-- Chats Tab -->
-  <ion-tab on-deselect="saveState('tab.chats')" ng-click="select('tab.chats')" title="Chats" icon-off="ion-ios-chatboxes-outline" icon-on="ion-ios-chatboxes" badge="newChats" badge-style="badge-assertive" hidden="{{!loggedIn}}">
+  <ion-tab on-deselect="saveState('tab.chats')" ng-click="select('tab.chats', 1)" title="Chats" icon-off="ion-ios-chatboxes-outline" icon-on="ion-ios-chatboxes" badge="newChats" badge-style="badge-assertive" hidden="{{!loggedIn}}">
     <ion-nav-view name="tab-chats"></ion-nav-view>
   </ion-tab>
 
   <!-- Roster Tab -->
-  <ion-tab on-deselect="saveState('tab.roster')" ng-click="select('tab.roster')" title="Roster" icon-off="ion-ios-people-outline" icon-on="ion-ios-people" badge="requests" badge-style="badge-assertive" hidden="{{!loggedIn}}">
+  <ion-tab on-deselect="saveState('tab.roster')" ng-click="select('tab.roster', 2)" title="Roster" icon-off="ion-ios-people-outline" icon-on="ion-ios-people" badge="requests" badge-style="badge-assertive" hidden="{{!loggedIn}}">
     <ion-nav-view name="tab-roster"></ion-nav-view>
   </ion-tab>
 
   <!-- Account Tab -->
-  <ion-tab on-deselect="saveState('tab.account')" ng-click="select('tab.account')" title="Account" icon-off="ion-ios-gear-outline" icon-on="ion-ios-gear">
+  <ion-tab on-deselect="saveState('tab.account')" ng-click="select('tab.account', 3)" title="Account" icon-off="ion-ios-gear-outline" icon-on="ion-ios-gear">
     <ion-nav-view name="tab-account"></ion-nav-view>
   </ion-tab>
 
