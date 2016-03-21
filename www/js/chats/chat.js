@@ -1,6 +1,6 @@
 angular.module('breezio.chats.chat', [])
 
-.controller('ChatCtrl', function($scope, $rootScope, $stateParams, $timeout, $ionicHistory, $ionicScrollDelegate, $ionicNativeTransitions, $q, User, Auth, Chats) {
+.controller('ChatCtrl', function($scope, $rootScope, $stateParams, $timeout, $ionicHistory, $ionicScrollDelegate, $ionicNativeTransitions, $ionicTabsDelegate, $q, User, Auth, Chats) {
 
   $scope.users = {};
   $scope.msgsLoaded = false;
@@ -95,7 +95,19 @@ angular.module('breezio.chats.chat', [])
     }
   };
 
+  var tabElements = function() {
+    return angular.element(document.querySelectorAll('.has-tabs'));
+  };
+ 
   $scope.keyboardShow = function() {
+    $ionicTabsDelegate.showBar(false);
+    tabElements().addClass('hidden-tabs');
+    $ionicScrollDelegate.scrollBottom(true);
+  };
+
+  $scope.keyboardHide = function() {
+    $ionicTabsDelegate.showBar(true);
+    tabElements().removeClass('hidden-tabs');
     $ionicScrollDelegate.scrollBottom(true);
   };
 
@@ -143,7 +155,9 @@ angular.module('breezio.chats.chat', [])
   };
 
   $scope.$on('$ionicView.beforeLeave', function() {
+    $rootScope.$ionicGoBack = $scope.oldBack;
     window.removeEventListener('native.keyboardshow', $scope.keyboardShow);
+    window.removeEventListener('native.keyboardhide', $scope.keyboardHide);
 
     if ($scope.chat) {
       if (Chats.messages($scope.chat.hash) != $scope.messages) {
@@ -163,6 +177,20 @@ angular.module('breezio.chats.chat', [])
   });
 
   $scope.$on('$ionicView.beforeEnter', function() {
+    $scope.oldBack = $rootScope.$ionicGoBack;
+
+    $rootScope.$ionicGoBack = function() {
+      if (window.cordova && cordova.plugins.Keyboard.isVisible) {
+        cordova.plugins.Keyboard.close();
+        tabElements().removeClass('hidden-tabs');
+        $timeout(function() {
+          $scope.oldBack();
+        }, 200);
+      } else {
+        $scope.oldBack();
+      }
+    };
+
     $scope.loadChat().then(function(chat) {
       var promises = [];
 
@@ -179,6 +207,7 @@ angular.module('breezio.chats.chat', [])
         $scope.messages = msgs;
 
         window.addEventListener('native.keyboardshow', $scope.keyboardShow);
+        window.addEventListener('native.keyboardhide', $scope.keyboardHide);
 
         $scope.msgsLoaded = true;
 

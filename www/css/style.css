@@ -32,6 +32,14 @@ i {
   top: 104px !important;
 }
 
+ion-footer-bar.has-tabs.hidden-tabs {
+  bottom: 0px;
+}
+
+ion-content.has-tabs.has-footer.hidden-tabs {
+  bottom: 44px;
+}
+
 ion-content {
   top: 60px !important;
 }
