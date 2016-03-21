@@ -1,5 +1,5 @@
 <ion-view view-title="Chats">
-  <ion-content ng-show="loaded">
+  <ion-content>
     <div class="list">
       <a class="item item-avatar" ng-repeat="chat in chats" ng-click="openChat(chat.hash)">
         <img ng-src="{{chat.imagePath | static}}">

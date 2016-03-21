@@ -463,28 +463,17 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
 
   $scope.isOnline = Chats.isOnline;
 
-  $scope.parseChats = function(chats) {
-    $scope.user = Auth.user();
-    $scope.chats = chats;
-    $scope.unread = Chats.unread;
-
-    $scope.chats.sort(function(a, b) {
-      return new Date(a.modifiedDate) - new Date(b.modifiedDate);
-    });
-
-    var promises = [];
-    $scope.chats.forEach(function(chat) {
-      chat.users.forEach(function(user) {
-        var p = User.getCached(user).then(function(res) {
-          $scope.users[res.id] = res;
+  $scope.loadChats = function(chats) {
+    return $q(function(resolve, reject) {
+      if (Chats.fetched()) {
+        var chats = Chats.chats();
+        resolve(chats);
+      } else {
+        $rootScope.$on('chat:chats', function() {
+          var chats = Chats.chats();
+          resolve(chats);
         });
-
-        promises.push(p);
-      });
-    });
-
-    $q.all(promises).then(function() {
-      $scope.loaded = true;
+      }
     });
   };
 
@@ -497,13 +486,30 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
       $scope.$digest();
     });
 
-    if (Chats.fetched()) {
-      $scope.parseChats(Chats.chats());
-    }
-  });
+    $scope.loadChats().then(function(chats) {
+      $scope.user = Auth.user();
+      $scope.unread = Chats.unread;
 
-  $rootScope.$on('chat:chats', function(e, chats) {
-    $scope.parseChats(chats);
+      chats.sort(function(a, b) {
+        return new Date(a.modifiedDate) - new Date(b.modifiedDate);
+      });
+
+      var promises = [];
+      chats.forEach(function(chat) {
+        chat.users.forEach(function(user) {
+          var p = User.getCached(user).then(function(res) {
+            $scope.users[res.id] = res;
+          });
+
+          promises.push(p);
+        });
+      });
+
+      $q.all(promises).then(function() {
+        $scope.chats = chats;
+        $scope.loaded = true;
+      });
+    });
   });
 
   $rootScope.$on('auth:logged-out', function() {
