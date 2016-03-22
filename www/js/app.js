@@ -1,24 +1,29 @@
 angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.chats', 'breezio.account', 'ionic-native-transitions'])
 
 .run(function($rootScope) {
-  $rootScope.$on('auth:logged-in', function() {
+  var a = $rootScope.$on('auth:logged-in', function(e) {
     console.log('Logged in');
+    a();
   });
 
-  $rootScope.$on('auth:logged-out', function() {
+  var b = $rootScope.$on('auth:logged-out', function() {
     console.log('Logged out');
+    b();
   });
 
-  $rootScope.$on('auth:login-failed', function() {
+  var c = $rootScope.$on('auth:login-failed', function() {
     console.log('Login failed');
+    c();
   });
 
-  $rootScope.$on('chat:token', function() {
+  var d = $rootScope.$on('chat:token', function() {
     console.log('Chat token fetched');
+    d();
   });
 
-  $rootScope.$on('chat:chats', function() {
+  var e = $rootScope.$on('chat:chats', function() {
     console.log('Chats fetched');
+    e();
   });
 })
 

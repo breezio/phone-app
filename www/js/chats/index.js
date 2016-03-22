@@ -352,7 +352,7 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
   };
 
   funcs.init = function() {
-    $rootScope.$on('chat:token', function(e, token) {
+    var clearToken = $rootScope.$on('chat:token', function(e, token) {
       chatToken = token;
 
       funcs.get().success(function(val) {
@@ -410,6 +410,8 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
           $rootScope.$broadcast('chat:chats', val.items);
         });
       });
+
+      clearToken();
     });
 
     $rootScope.$on('auth:logged-out', function() {
