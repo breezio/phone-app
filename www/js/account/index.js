@@ -1,6 +1,6 @@
 angular.module('breezio.account', ['http-auth-interceptor'])
 
-.factory('Auth', function($http, $rootScope, $localStorage, authService, ChatToken, Config, $state, $ionicLoading, $timeout) {
+.factory('Auth', function($http, $rootScope, $localStorage, authService, ChatToken, Config, $state, $ionicLoading, $ionicHistory, $timeout) {
   var self = this;
   this.oauthUrl = Config.url + '/oauth2/token';
   this.user = null;
@@ -78,8 +78,11 @@ angular.module('breezio.account', ['http-auth-interceptor'])
 
   this.funcs.logout = function() {
     self.funcs.reset();
-    self.loggedIn = false;
-    $rootScope.$broadcast('auth:logged-out');
+    $ionicHistory.clearHistory();
+    $ionicHistory.clearCache().finally(function() {
+      self.loggedIn = false;
+      $rootScope.$broadcast('auth:logged-out');
+    });
   };
 
   this.funcs.reset = function() {
