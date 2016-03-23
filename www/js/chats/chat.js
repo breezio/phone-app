@@ -95,20 +95,19 @@ angular.module('breezio.chats.chat', [])
     }
   };
 
-  var tabElements = function() {
-    return angular.element(document.querySelectorAll('.has-tabs'));
-  };
- 
+  var tabElements;
   $scope.keyboardShow = function() {
     $ionicTabsDelegate.showBar(false);
-    tabElements().addClass('hidden-tabs');
+    tabElements = angular.element(document.querySelectorAll('.has-tabs'));
+    tabElements.addClass('hidden-tabs');
     $ionicScrollDelegate.scrollBottom(true);
   };
 
   $scope.keyboardHide = function() {
     $ionicTabsDelegate.showBar(true);
-    tabElements().removeClass('hidden-tabs');
+    tabElements.removeClass('hidden-tabs');
     $ionicScrollDelegate.scrollBottom(true);
+    $scope.$apply();
   };
 
   $scope.loadMessages = function(hash) {
