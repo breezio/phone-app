@@ -29,7 +29,7 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
 
 .factory('Config', function() {
   var config = {};
-  config.host = 'http://breezio';
+  config.host = 'https://health.breezio.com';
   config.api = '/api/1';
 
   if (window.cordova)
@@ -137,7 +137,7 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
     nativeTransitions: null,
     views: {
       'tab-content': {
-        templateUrl: 'templates/tab-content.html',
+        templateUrl: 'templates/content-tab.html',
         controller: 'ContentCtrl'
       }
     }
@@ -175,7 +175,7 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
     nativeTransitions: null,
     views: {
       'tab-chats': {
-        templateUrl: 'templates/tab-chats.html',
+        templateUrl: 'templates/chats-tab.html',
         controller: 'ChatsCtrl'
       }
     }
@@ -195,7 +195,7 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
     nativeTransitions: null,
     views: {
       'tab-roster': {
-        templateUrl: 'templates/tab-roster.html',
+        templateUrl: 'templates/roster-tab.html',
         controller: 'RosterCtrl'
       }
     }
@@ -206,7 +206,7 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
     nativeTransitions: null,
     views: {
       'tab-account': {
-        templateUrl: 'templates/tab-account.html',
+        templateUrl: 'templates/account-tab.html',
         controller: 'AccountCtrl'
       }
     }
