@@ -10,6 +10,18 @@ i {
   top: 26px !important;
 }
 
+.item h2 {
+  margin-bottom: 5px;
+}
+
+.item h2.alone {
+  margin: 0px;
+}
+
+.list:not(.list-inset) > .item:first-child {
+  border-top-width: 0px;
+}
+
 .bar-header {
   height: 60px !important;
 }
@@ -74,10 +86,14 @@ ion-content {
   margin: 0px;
 }
 
-.post-header h1, .post-header h2 {
+.post-header p, .post-header h2 {
   overflow: visible;
   white-space: normal;
   text-overflow: inherit;
+}
+
+.post-header h2 {
+  font-size: 22px;
 }
 
 .post h2 {
@@ -121,8 +137,8 @@ ion-content {
   height: 60px;
 }
 
-.nav-user div {
-  margin-left: 5px;
+.nav-user img {
+  margin-right: 5px;
 }
 
 .nav-user h1 {
@@ -137,12 +153,22 @@ ion-content {
   margin: 0px;
 }
 
-.nav-user img {
+img.small {
   max-width: 30px;
+  min-width: 30px;
   max-height: 30px;
   width: 30px;
   height: 30px;
   border-radius: 30px;
+}
+
+img.medium {
+  max-width: 50px;
+  min-width: 50px;
+  max-height: 50px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50px;
 }
 
 i.fake-back {
@@ -160,4 +186,14 @@ div.spinner {
   right: 0;
   text-align: center;
   height: 28px;
+}
+
+.post-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.post-item img {
+  margin-right: 16px;
 }

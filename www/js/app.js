@@ -29,7 +29,7 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
 
 .factory('Config', function() {
   var config = {};
-  config.host = 'https://health.breezio.com';
+  config.host = 'http://breezio';
   config.api = '/api/1';
 
   if (window.cordova)

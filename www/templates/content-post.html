@@ -1,7 +1,7 @@
 <ion-view>
   <ion-nav-title>
     <div class="nav-user" ng-click="openUser(post.user)">
-      <img ng-show="loaded" class="nav-image" ng-src="{{post.user.imagePath | static}}">
+      <img ng-show="loaded" class="small" ng-src="{{post.user.imagePath | static}}">
       <div ng-show="loaded">
         <h1>{{post.user.firstName}} {{post.user.lastName}}</h1>
         <h2>{{post.user.username}} <strong>&#183</strong> {{post.dateString}}</h2>
@@ -10,7 +10,7 @@
   </ion-nav-title>
   <ion-nav-buttons side="right">
     <button class="button" ng-click="toggleNotes()">
-      <i class="icon ion-ios-chatboxes"></i>
+      <i class="icon ion-edit"></i>
     </button>
   </ion-nav-buttons>
 
@@ -23,8 +23,8 @@
 
       <!-- header -->
       <div class="post-header item" ng-click="openGeneralNotes()">
-        <h1>{{post.title}}</h1>
-        <h2 ng-show="subtitleExists()">{{post.subtitle}}</h2>
+        <h2 ng-class="{'alone': !subtitleExists()}">{{post.title}}</h2>
+        <p ng-show="subtitleExists()">{{post.subtitle}}</p>
       </div>
 
       <breezio-post ng-click="openNotes($event)"></breezio-post>
