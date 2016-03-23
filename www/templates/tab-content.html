@@ -1,9 +1,10 @@
 <ion-view view-title="Content">
+  <ion-nav-buttons side="right">
+    <button class="button" ng-click="refreshPosts()">
+      <i class="icon ion-refresh"></i>
+    </button>
+  </ion-nav-buttons>
   <ion-content>
-    <ion-refresher
-      pulling-text="Pull to refresh..."
-      on-refresh="refreshPosts()">
-    </ion-refresher>
     <ion-list>
       <ion-item ng-click='openPost(post)' ng-repeat="post in posts">
         {{post.title}}
@@ -16,3 +17,7 @@
     </ion-infinite-scroll>
   </ion-content>
 </ion-view>
+
+<div ng-show="loading" class="spinner">
+  <ion-spinner></ion-spinner>
+</div>
