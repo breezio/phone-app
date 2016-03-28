@@ -134,6 +134,7 @@ angular.module('breezio.content.posts', [])
   $scope.post = {};
   $scope.alone = false;
   $scope.noteMode = false;
+  $scope.isOnline = Chats.isOnline;
 
   $scope.openNotes = function(e) {
     var id = e.target.getAttribute('name');

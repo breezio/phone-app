@@ -76,6 +76,12 @@ ion-content {
   left: 40px;
 }
 
+.user-status.medium i.status {
+  position: absolute;
+  top: 50px;
+  left: 50px;
+}
+
 .post {
   padding: 0px;
 }

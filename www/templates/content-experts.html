@@ -2,6 +2,10 @@
   <div class="list alone">
     <div class="item" ng-repeat="expert in post.experts" ng-click="openChat(expert.user, post)">
       <img ng-src="{{expert.user.imagePath | static}}" class="medium">
+      <span class="user-status medium">
+        <i ng-if="isOnline(expert.userId)" class="status balanced icon ion-record"></i>
+        <i ng-if="!isOnline(expert.userId)" class="status assertive icon ion-record"></i>
+      </span>
       <div>
         <h2>{{expert.user.firstName}} {{expert.user.lastName}}</h2>
         <p>{{expert.user.username}}</p>
