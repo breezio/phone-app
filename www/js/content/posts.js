@@ -38,6 +38,22 @@ angular.module('breezio.content.posts', [])
     return promise;
   };
 
+  funcs.experts = function(postId, params) {
+    var params = angular.extend({}, params);
+
+    var promise = $http({
+      method: 'GET',
+      url: Config.url + '/posts/' + postId + '/users/expert',
+      params: params
+    });
+
+    promise.success(function(val) {
+      posts[postId].experts = val.items;
+    });
+
+    return promise;
+  };
+
   funcs.getCached = function(postId, params) {
     if (posts[postId]) {
       return {
@@ -114,7 +130,7 @@ angular.module('breezio.content.posts', [])
   };
 })
 
-.controller('PostCtrl', function($scope, $state, $stateParams, $timeout, Post, Chats, Auth) {
+.controller('PostCtrl', function($scope, $state, $stateParams, $timeout, $ionicModal, Post, Chats, Auth) {
   $scope.post = {};
   $scope.alone = false;
   $scope.noteMode = false;
@@ -179,9 +195,21 @@ angular.module('breezio.content.posts', [])
     $state.go('tab.content-user', {userId: user.id});
   };
 
-  $scope.openChat = function(post) {
-    var hash = Chats.newChat(post.title, post.user, [post.user.id, Auth.user().id], post);
+  $ionicModal.fromTemplateUrl('templates/content-experts.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(m) {
+    $scope.modal = m;
+  });
+
+  $scope.openChat = function(user, post) {
+    $scope.modal.hide();
+    var hash = Chats.newChat(post.title, user, [user.id, Auth.user().id], post);
     $state.go('tab.chats-chat', {hash: hash});
+  };
+
+  $scope.toggleExperts = function() {
+    $scope.modal.show();
   };
 
   $scope.$on('$ionicView.loaded', function() {
@@ -190,6 +218,29 @@ angular.module('breezio.content.posts', [])
       var tmp = new Date($scope.post.creationDate);
       $scope.post.dateString = tmp.getMonth() + '/' + tmp.getDay() + '/' + tmp.getFullYear();
       $scope.loaded = true;
+
+      if (!$scope.post.experts) {
+        Post.experts($stateParams.postId).success(function(val) {
+
+          var found = false;
+          angular.forEach(val.items, function(expert, key) {
+            if (expert.userId == Auth.user().id) {
+              val.items.splice(key, 1);
+            } else if (expert.userId == $scope.post.user.id) {
+              found = true;
+            }
+          });
+
+          if (!found && $scope.post.user.id != Auth.user().id) {
+            val.items.push({
+              user: $scope.post.user,
+              userId: $scope.post.user.id
+            });
+          }
+
+          $scope.post.experts = val.items;
+        });
+      }
     });
   });
 });

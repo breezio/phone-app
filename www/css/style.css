@@ -22,6 +22,10 @@ i {
   border-top-width: 0px;
 }
 
+.list.alone > .item:first-child {
+  border-top-width: 1px;
+}
+
 .bar-header {
   height: 60px !important;
 }
@@ -195,5 +199,20 @@ div.spinner {
 }
 
 .post-item img {
+  margin-right: 16px;
+}
+
+.modal.experts {
+  bottom: 0px;
+  top: initial;
+  min-height: initial;
+}
+
+.experts .item {
+  display: flex;
+  align-items: center;
+}
+
+.experts .item img {
   margin-right: 16px;
 }

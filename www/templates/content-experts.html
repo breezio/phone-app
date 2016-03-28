@@ -1,0 +1,11 @@
+<ion-modal-view class="experts">
+  <div class="list alone">
+    <div class="item" ng-repeat="expert in post.experts" ng-click="openChat(expert.user, post)">
+      <img ng-src="{{expert.user.imagePath | static}}" class="medium">
+      <div>
+        <h2>{{expert.user.firstName}} {{expert.user.lastName}}</h2>
+        <p>{{expert.user.username}}</p>
+      </div>
+    </div>
+  </div>
+</ion-modal-view>

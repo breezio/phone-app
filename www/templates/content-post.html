@@ -9,7 +9,7 @@
     </div>
   </ion-nav-title>
   <ion-nav-buttons side="right">
-    <button class="button" ng-click="openChat(post)">
+    <button logged-in class="button" ng-show="(post.experts.length > 0)" ng-click="toggleExperts()">
       <i class="icon ion-ios-chatboxes"></i>
     </button>
     <button class="button" ng-click="toggleNotes()">
