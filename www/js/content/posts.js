@@ -181,7 +181,7 @@ angular.module('breezio.content.posts', [])
 
   $scope.openChat = function(post) {
     var hash = Chats.newChat(post.title, post.user, [post.user.id, Auth.user().id], post);
-    $state.go('chat', {hash: hash});
+    $state.go('tab.chats-chat', {hash: hash});
   };
 
   $scope.$on('$ionicView.loaded', function() {

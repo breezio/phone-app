@@ -87,6 +87,12 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
     c.title = title;
     c.subtitle = creator.username;
 
+    if (context && context.imagePath) {
+      c.imagePath = context.imagePath;
+    } else {
+      c.imagePath = creator.imagePath;
+    }
+
     if (!funcs.chat(c.hash)) {
       chats = [c].concat(chats);
       messages[c.hash] = [];
