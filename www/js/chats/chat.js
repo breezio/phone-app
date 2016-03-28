@@ -91,7 +91,7 @@ angular.module('breezio.chats.chat', [])
         if (window.cordova) {
           cordova.plugins.Keyboard.show();
         }
-      }, 10);
+      }, 20);
     }
   };
 
