@@ -25,6 +25,13 @@
     {
       "locator": "https://github.com/Telerik-Verified-Plugins/NativePageTransitions#0.6.2",
       "id": "com.telerik.plugins.nativepagetransitions"
+    },
+    {
+      "variables": {
+        "SENDER_ID": "11111"
+      },
+      "locator": "phonegap-plugin-push",
+      "id": "phonegap-plugin-push"
     }
   ],
   "cordovaPlatforms": [

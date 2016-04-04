@@ -39,7 +39,7 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
   return config;
 })
 
-.run(function($ionicPlatform, Auth, Chats, Roster) {
+.run(function($ionicPlatform, $rootScope, $location, $http, Config, Auth, Chats, Roster) {
 
   Auth.init();
   Chats.init();
@@ -53,6 +53,48 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
     }
     if (window.StatusBar) {
       StatusBar.styleDefault();
+    }
+
+    //push notification code
+    if (window.cordova) {
+      $rootScope.$on('auth:logged-in', function() {
+        var push = PushNotification.init({
+          ios: {
+            badge: 'true',
+            alert: 'true',
+            sound: 'true'
+          },
+          android: {
+            senderID: '11111'
+          }
+        });
+
+        console.log('Initialized push notifications');
+
+        push.on('registration', function(data) {
+          $http.post(Config.url + '/user/devices', {
+            registrationId: data.registrationId,
+            deviceType: device.platform,
+            model: device.model,
+            version: '1.0.0'
+          }).success(function(res) {
+            console.log('Registered for push notifications');
+            console.log(res);
+          }).error(function(err) {
+            //TODO: handle error
+          });
+        });
+
+        push.on('error', function(e) {
+          console.log('Push notification error: ', e.message);
+          debugger;
+        });
+
+        push.on('notification', function(data) {
+          console.log(data);
+          //TODO: implement recieve logic
+        });
+      });
     }
   });
 })
@@ -75,7 +117,7 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
   $scope.backText = '';
 })
 
-.controller('TabCtrl', function($scope, $rootScope, $location, $state, $ionicHistory, $ionicNativeTransitions, $ionicTabsDelegate, Auth, Chats) {
+.controller('TabCtrl', function($scope, $rootScope, $location, $state, $ionicHistory, $ionicNativeTransitions, $ionicTabsDelegate, Config, Auth, Chats) {
   $scope.loggedIn = Auth.loggedIn();
   $scope.newChats = $rootScope.totalUnread;
   $scope.state = {};
