@@ -204,9 +204,11 @@ angular.module('breezio.content.posts', [])
   });
 
   $scope.openChat = function(user, post) {
-    $scope.modal.hide();
-    var hash = Chats.newChat(post.title, user, [user.id, Auth.user().id], post);
-    $state.go('tab.chats-chat', {hash: hash});
+    if (Auth.loggedIn()) {
+      $scope.modal.hide();
+      var hash = Chats.newChat(post.title, user, [user.id, Auth.user().id], post);
+      $state.go('tab.chats-chat', {hash: hash});
+    }
   };
 
   $scope.toggleExperts = function() {
@@ -225,14 +227,14 @@ angular.module('breezio.content.posts', [])
 
           var found = false;
           angular.forEach(val.items, function(expert, key) {
-            if (expert.userId == Auth.user().id) {
+            if (Auth.user() != null && expert.userId == Auth.user().id) {
               val.items.splice(key, 1);
             } else if (expert.userId == $scope.post.user.id) {
               found = true;
             }
           });
 
-          if (!found && $scope.post.user.id != Auth.user().id) {
+          if (!found && Auth.user() != null && $scope.post.user.id != Auth.user().id) {
             val.items.push({
               user: $scope.post.user,
               userId: $scope.post.user.id
