@@ -207,7 +207,9 @@ angular.module('breezio.content.posts', [])
     if (Auth.loggedIn()) {
       $scope.modal.hide();
       var hash = Chats.newChat(post.title, user, [user.id, Auth.user().id], post);
-      $state.go('tab.chats-chat', {hash: hash});
+      $timeout(function() {
+        $state.go('tab.chats-chat', {hash: hash});
+      }, 250);
     }
   };
 

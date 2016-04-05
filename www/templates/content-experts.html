@@ -1,18 +1,21 @@
 <ion-modal-view class="experts">
-  <div class="list alone">
-    <div class="item item-divider">
-      Experts
-    </div>
-    <div class="item" ng-repeat="expert in post.experts" ng-click="openChat(expert.user, post)">
-      <img ng-src="{{expert.user.imagePath | static}}" class="medium">
-      <span class="user-status medium">
-        <i ng-if="isOnline(expert.userId)" class="status balanced icon ion-record"></i>
-        <i ng-if="!isOnline(expert.userId)" class="status assertive icon ion-record"></i>
-      </span>
-      <div>
+  <ion-header-bar class="bar-stable">
+    <h1 class="title">Experts</h1>
+    <button class="button button-clear button-dark" ng-click="modal.hide()">
+      Close
+    </button>
+  </ion-header-bar>
+  <ion-content>
+    <div class="list">
+      <a class="item item-avatar" ng-repeat="expert in post.experts" ng-click="openChat(expert.user, post)">
+        <img ng-src="{{expert.user.imagePath | static}}">
+        <span class="user-status">
+          <i ng-if="isOnline(expert.userId)" class="status balanced icon ion-record"></i>
+          <i ng-if="!isOnline(expert.userId)" class="status assertive icon ion-record"></i>
+        </span>
         <h2>{{expert.user.firstName}} {{expert.user.lastName}}</h2>
         <p>{{expert.user.username}}</p>
-      </div>
+      </a>
     </div>
-  </div>
+  </ion-content>
 </ion-modal-view>

@@ -208,17 +208,10 @@ div.spinner {
   margin-right: 16px;
 }
 
-.modal.experts {
-  bottom: 0px;
-  top: initial;
-  min-height: initial;
+.experts ion-header-bar {
+  height: 43px !important;
 }
 
-.experts .item {
-  display: flex;
-  align-items: center;
-}
-
-.experts .item img {
-  margin-right: 16px;
+.experts ion-content {
+  top: 43px !important;
 }
