@@ -75,6 +75,10 @@ angular.module('breezio.chats.roster', [])
 
   $scope.isOnline = Chats.isOnline;
 
+  $scope.openUser = function(item) {
+    $state.go('tab.content-user', {userId: item.id});
+  };
+
   $scope.openChat = function(item) {
     var hash = Chats.newChat(item.user.firstName + ' ' + item.user.lastName, item.user, [item.user.id, Auth.user().id]);
     $state.go('tab.chats-chat', {hash: hash});

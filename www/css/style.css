@@ -215,3 +215,11 @@ div.spinner {
 .experts ion-content {
   top: 43px !important;
 }
+
+.button.message {
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  right: 16px;
+  margin: auto;
+}

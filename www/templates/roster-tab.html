@@ -1,7 +1,7 @@
 <ion-view view-title="Roster">
   <ion-content>
     <div class="list">
-      <a class="item item-avatar" ng-repeat="item in items" ng-click="openChat(item)">
+      <a class="item item-avatar" ng-repeat="item in items" ng-click="openUser(item.user)">
         <img ng-src="{{item.user.imagePath | static}}">
         <span class="user-status">
           <i ng-if="isOnline(item.user.id)" class="status balanced icon ion-record"></i>
@@ -9,6 +9,7 @@
         </span>
         <h2>{{item.user.firstName}} {{item.user.lastName}}</h2>
         <p>{{item.user.username}}</p>
+        <button ng-click="openChat(item);$event.stopPropagation()" class="message button button-clear button-dark icon ion-ios-chatboxes" ng-click=""></button>
       </a>
     </div>
   </ion-content>

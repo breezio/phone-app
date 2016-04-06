@@ -7,7 +7,7 @@
   </ion-header-bar>
   <ion-content>
     <div class="list">
-      <a class="item item-avatar" ng-repeat="expert in post.experts" ng-click="openChat(expert.user, post)">
+      <a class="item item-avatar" ng-repeat="expert in post.experts" ng-click="openUser(expert.user)">
         <img ng-src="{{expert.user.imagePath | static}}">
         <span class="user-status">
           <i ng-if="isOnline(expert.userId)" class="status balanced icon ion-record"></i>
@@ -15,6 +15,7 @@
         </span>
         <h2>{{expert.user.firstName}} {{expert.user.lastName}}</h2>
         <p>{{expert.user.username}}</p>
+        <button logged-in ng-click="openChat(expert.user, post);$event.stopPropagation()" class="message button button-clear button-dark icon ion-ios-chatboxes" ng-click=""></button>
       </a>
     </div>
   </ion-content>

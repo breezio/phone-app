@@ -193,6 +193,10 @@ angular.module('breezio.content.posts', [])
   };
 
   $scope.openUser = function(user) {
+    if ($scope.modal._isShown) {
+      $scope.modal.hide();
+    }
+
     $state.go('tab.content-user', {userId: user.id});
   };
 
