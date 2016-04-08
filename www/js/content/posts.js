@@ -195,9 +195,13 @@ angular.module('breezio.content.posts', [])
   $scope.openUser = function(user) {
     if ($scope.modal._isShown) {
       $scope.modal.hide();
+      $timeout(function() {
+        $state.go('tab.content-user', {userId: user.id});
+      }, 250);
+    } else {
+      $state.go('tab.content-user', {userId: user.id});
     }
 
-    $state.go('tab.content-user', {userId: user.id});
   };
 
   $ionicModal.fromTemplateUrl('templates/content-experts.html', {
