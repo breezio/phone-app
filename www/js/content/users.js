@@ -5,7 +5,9 @@ angular.module('breezio.content.users', [])
   var funcs = {};
 
   funcs.get = function(userId, params) {
-    var params = angular.extend({}, params);
+    var params = angular.extend({
+      fields: 'isFollowing'
+    }, params);
 
     var promise = $http({
       method: 'GET',
@@ -18,6 +20,41 @@ angular.module('breezio.content.users', [])
     });
 
     return promise;
+  };
+
+  funcs.follow = function(userId, params) {
+    var params = angular.extend({}, params);
+
+    var promise = $http({
+      method: 'POST',
+      url: Config.url + '/subscription/user/' + userId,
+      data: {type: 'notify,feed'},
+      params: params
+    });
+
+    return promise;
+  };
+
+  funcs.unfollow = function(userId, params) {
+    var params = angular.extend({}, params);
+
+    var promise = $http({
+      method: 'DELETE',
+      url: Config.url + '/subscription/user/' + userId,
+      data: {type: 'notify,feed'},
+      params: params
+    });
+
+    return promise;
+  };
+
+  funcs.toggleFollow = function(user) {
+    console.log(user);
+    if (user.isFollowing == false) {
+      return funcs.follow(user.id);
+    } else {
+      return funcs.unfollow(user.id);
+    }
   };
 
   funcs.getCached = function(userId, params) {
@@ -37,7 +74,7 @@ angular.module('breezio.content.users', [])
   return funcs;
 })
 
-.directive('breezioUser', function(Auth, Chats, Roster, $rootScope, $stateParams, $state) {
+.directive('breezioUser', function(Auth, User, Chats, Roster, $rootScope, $stateParams, $state) {
   return {
     templateUrl: 'templates/breezio-user.html',
     link: function(scope, element, attrs) {
@@ -53,6 +90,19 @@ angular.module('breezio.content.users', [])
         }
       };
 
+      scope.followText = '';
+      scope.follow = function(user) {
+        User.toggleFollow(user).success(function() {
+          if (user.isFollowing == false) {
+            scope.followText = 'Unfollow';
+            user.isFollowing = ['notify', 'feed'];
+          } else {
+            scope.followText = 'Follow';
+            user.isFollowing = false;
+          }
+        });
+      };
+
       if (attrs.profile == '') {
         scope.profile = true;
       }
@@ -61,6 +111,13 @@ angular.module('breezio.content.users', [])
         if (user && user.then) {
           user.then(function(val) {
             scope.user = val;
+
+            if (scope.user.isFollowing == false) {
+              scope.followText = 'Follow';
+            } else {
+              scope.followText = 'Unfollow';
+            }
+
             scope.loaded = true;
             scope.loggedIn = Auth.loggedIn();
           });
@@ -68,6 +125,13 @@ angular.module('breezio.content.users', [])
 
         if (user && user.id) {
           scope.user = user;
+
+          if (scope.user.isFollowing == false) {
+            scope.followText = 'Follow';
+          } else {
+            scope.followText = 'Unfollow';
+          }
+
           scope.loaded = true;
           scope.loggedIn = Auth.loggedIn();
         }

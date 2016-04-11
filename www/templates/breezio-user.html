@@ -7,7 +7,7 @@
 
   <div ng-show="loggedIn && !profile" class="button-bar">
     <a ng-click="addToChat()" class="button">Add to chat</a>
-    <a class="button">Follow</a>
+    <a ng-click="follow(user)" class="button">{{followText}}</a>
   </div>
 
   <div ng-show="user.bio" class="item item-text-wrap">
