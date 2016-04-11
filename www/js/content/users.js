@@ -49,7 +49,6 @@ angular.module('breezio.content.users', [])
   };
 
   funcs.toggleFollow = function(user) {
-    console.log(user);
     if (user.isFollowing == false) {
       return funcs.follow(user.id);
     } else {
@@ -110,35 +109,30 @@ angular.module('breezio.content.users', [])
       scope.$parent.$watch('user', function(user) {
         if (user && user.then) {
           user.then(function(val) {
-            scope.user = val;
-
-            if (scope.user.isFollowing == false) {
-              scope.followText = 'Follow';
-            } else {
-              scope.followText = 'Unfollow';
-            }
-
-            scope.loaded = true;
-            scope.loggedIn = Auth.loggedIn();
+            scope.$emit('loaded', val);
           });
         }
 
         if (user && user.id) {
-          scope.user = user;
-
-          if (scope.user.isFollowing == false) {
-            scope.followText = 'Follow';
-          } else {
-            scope.followText = 'Unfollow';
-          }
-
-          scope.loaded = true;
-          scope.loggedIn = Auth.loggedIn();
+          scope.$emit('loaded', user);
         }
 
         if (!user) {
           scope.loggedIn = false;
         }
+      });
+
+      scope.$on('loaded', function(e, user) {
+        scope.user = user;
+
+        if (scope.user.isFollowing == false) {
+          scope.followText = 'Follow';
+        } else {
+          scope.followText = 'Unfollow';
+        }
+
+        scope.loaded = true;
+        scope.loggedIn = Auth.loggedIn();
       });
 
       $rootScope.$on('auth:logged-in', function() {
