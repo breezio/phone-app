@@ -77,6 +77,9 @@ angular.module('breezio.content.users', [])
   return {
     templateUrl: 'templates/breezio-user.html',
     link: function(scope, element, attrs) {
+      scope.followText = false;
+      scope.rosterText = false;
+
       scope.openWebsite = function() {
         if (scope.user.website) {
           window.open(scope.user.website, '_system');
@@ -89,7 +92,6 @@ angular.module('breezio.content.users', [])
         }
       };
 
-      scope.followText = '';
       scope.follow = function(user) {
         User.toggleFollow(user).success(function() {
           if (user.isFollowing == false) {
@@ -123,12 +125,30 @@ angular.module('breezio.content.users', [])
       });
 
       scope.$on('loaded', function(e, user) {
+        e.stopPropagation();
         scope.user = user;
 
         if (scope.user.isFollowing == false) {
           scope.followText = 'Follow';
         } else {
           scope.followText = 'Unfollow';
+        }
+
+        var setRosterText = function(r) {
+          if(Roster.onList(scope.user.id)) {
+            scope.rosterText = false;
+          } else {
+            scope.rosterText = 'Add to roster';
+          }
+        };
+
+        var roster = Roster.roster();
+        if (roster) {
+          setRosterText(roster);
+        } else {
+          $rootScope.$on('chat:roster', function(e, r) {
+            setRosterText(r);
+          });
         }
 
         scope.loaded = true;

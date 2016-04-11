@@ -8,6 +8,17 @@ angular.module('breezio.chats.roster', [])
     return roster;
   };
 
+  funcs.onList = function(userId) {
+    var found = false;
+    angular.forEach(roster, function(item) {
+      if (userId == item.user.id) {
+        found = true;
+      }
+    });
+
+    return found;
+  };
+
   funcs.add = function(id) {
     return $http({
       url: Config.url + '/chat/users/' + id,
