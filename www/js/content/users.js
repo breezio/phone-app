@@ -22,6 +22,44 @@ angular.module('breezio.content.users', [])
     return promise;
   };
 
+  funcs.getCached = function(userId, params) {
+    return $q(function(resolve, reject) {
+      if (users[userId]) {
+        resolve(users[userId]);
+      } else {
+        funcs.get(userId, params).success(function(val) {
+          resolve(val);
+        }).error(function(val) {
+          reject(val);
+        });
+      }
+    });
+  };
+
+  funcs.getBulk = function(ids, params) {
+    return $q(function(resolve, reject) {
+      var params = angular.extend({
+        ids: ids.join(',')
+      }, params);
+
+      var promise = $http({
+        method: 'GET',
+        url: Config.url + '/users',
+        params: params
+      });
+
+      promise.success(function(val) {
+        angular.forEach(val.items, function(user) {
+          users[user.id] = user;
+        });
+
+        resolve(val.items);
+      }).error(function(val) {
+        reject(val);
+      });
+    });
+  };
+
   funcs.follow = function(userId, params) {
     var params = angular.extend({}, params);
 
@@ -54,20 +92,6 @@ angular.module('breezio.content.users', [])
     } else {
       return funcs.unfollow(user.id);
     }
-  };
-
-  funcs.getCached = function(userId, params) {
-    return $q(function(resolve, reject) {
-      if (users[userId]) {
-        resolve(users[userId]);
-      } else {
-        funcs.get(userId, params).success(function(val) {
-          resolve(val);
-        }).error(function(val) {
-          reject(val);
-        });
-      }
-    });
   };
 
   return funcs;

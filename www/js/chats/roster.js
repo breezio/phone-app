@@ -34,18 +34,24 @@ angular.module('breezio.chats.roster', [])
     var connection = Chats.connection();
     return $q(function(resolve, reject) {
       connection.roster.get(function(roster) {
-        var users = [];
-        roster.forEach(function(val) {
-          var id = Chats.jidToId(val.jid);
-          var p = User.getCached(id);
-          users.push(p);
-
-          p.then(function(ret) {
-            val.user = ret;
-          });
+        var ids = [];
+        angular.forEach(roster, function(item) {
+          item.id = Chats.jidToId(item.jid);
+          if (ids.indexOf(item.id) == -1) {
+            ids.push(item.id);
+          }
         });
 
-        $q.all(users).then(function() {
+        User.getBulk(ids).then(function(users) {
+          var userData = {};
+          angular.forEach(users, function(user) {
+            userData[user.id] = user;
+          });
+
+          angular.forEach(roster, function(item) {
+            item.user = userData[item.id];
+          });
+
           roster.sort(function(a, b) {
             if (a.user.firstName < b.user.firstName) {
               return -1;

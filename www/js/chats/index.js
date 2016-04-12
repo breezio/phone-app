@@ -364,52 +364,62 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
       funcs.get().success(function(val) {
         var promises = [];
 
-        val.items.forEach(function(chat) {
-          var futureUsers = [];
-          var users = [];
-          var title = [];
-          var subtitle = [];
-          var userData = {};
-          chat.users.forEach(function(userId) {
-            if (Auth.user().id != userId) {
-              users.push(userId);
-
-              var p = User.getCached(userId).then(function(res) {
-                userData[res.id] = res;
-                title.push(res.firstName + ' ' + res.lastName);
-                subtitle.push(res.username);
-              });
-
-              promises.push(p);
-              futureUsers.push(p);
+        var ids = [];
+        val.items.map(function(chat, index, array) {
+          angular.forEach(chat.users, function(id) {
+            if (ids.indexOf(id) == -1) {
+              ids.push(id);
             }
           });
+        });
 
-          chat.users = users;
+        var userData = {};
+        var bulkUsers = User.getBulk(ids).then(function(users) {
+          angular.forEach(users, function(user, index) {
+            userData[user.id] = user;
+          });
 
-          $q.all(futureUsers).then(function() {
+          angular.forEach(val.items, function(chat) {
             messages[chat.hash] = [];
 
+            var title = [];
+            var subtitle = [];
+            var selfIndex = null;
+            angular.forEach(chat.users, function(id, index) {
+              if (id == Auth.user().id) {
+                selfIndex = index;
+              } else {
+                if (!chat.title) {
+                  title.push(userData[id].firstName + ' ' + userData[id].lastName);
+                }
+
+                if (!chat.subtitle) {
+                  subtitle.push(userData[id].username);
+                }
+              }
+            });
+
+            if (selfIndex != null) {
+              chat.users.splice(selfIndex, 1);
+            }
+
             if (!chat.title) {
-              chat.title = title.sort().join(',');
+              chat.title = title.sort().join(', ');
             }
 
             if (!chat.subtitle) {
-              chat.subtitle = subtitle.sort().join(',');
+              chat.subtitle = subtitle.sort().join(', ');
             }
 
             if (!chat.imagePath) {
               if (chat.context && chat.context.imagePath) {
                 chat.imagePath = chat.context.imagePath;
               } else {
-                chat.imagePath = userData[users[0]].imagePath;
-                delete userData;
+                chat.imagePath = userData[chat.users[0]].imagePath;
               }
             }
           });
-        });
 
-        $q.all(promises).then(function() {
           chats = val.items;
           fetched = true;
           funcs.connect();
