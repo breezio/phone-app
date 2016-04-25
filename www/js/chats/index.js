@@ -366,9 +366,9 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
 
         var ids = [];
         val.items.map(function(chat, index, array) {
-          angular.forEach(chat.users, function(id) {
-            if (ids.indexOf(id) == -1) {
-              ids.push(id);
+          angular.forEach(chat.users, function(user) {
+            if (ids.indexOf(user.id) == -1) {
+              ids.push(user.id);
             }
           });
         });
@@ -385,7 +385,9 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
             var title = [];
             var subtitle = [];
             var selfIndex = null;
-            angular.forEach(chat.users, function(id, index) {
+            angular.forEach(chat.users, function(user, index) {
+              var id = typeof user === 'object' ? user.id : user;
+
               if (id == Auth.user().id) {
                 selfIndex = index;
               } else {
@@ -415,7 +417,8 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
               if (chat.context && chat.context.imagePath) {
                 chat.imagePath = chat.context.imagePath;
               } else {
-                chat.imagePath = userData[chat.users[0]].imagePath;
+                var id = typeof chat.users[0] === 'object' ? chat.users[0].id : chat.users[0];
+                chat.imagePath = userData[id].imagePath;
               }
             }
           });
@@ -515,7 +518,8 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
       var promises = [];
       chats.forEach(function(chat) {
         chat.users.forEach(function(user) {
-          var p = User.getCached(user).then(function(res) {
+          var id = typeof user === 'object' ? user.id : user;
+          var p = User.getCached(id).then(function(res) {
             $scope.users[res.id] = res;
           });
 
