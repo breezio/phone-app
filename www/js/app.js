@@ -27,15 +27,26 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
   });
 })
 
-.factory('Config', function() {
+.factory('Config', function($localStorage) {
   var config = {};
-  config.host = 'http://breezio';
+
+  if ($localStorage.portal) {
+    config.host = $localStorage.portal
+  } else {
+    config.host = window.cordova ? 'https://health.breezio.com' : 'http://breezio';
+  }
+
   config.api = '/api/1';
 
-  if (window.cordova)
-    config.host = 'https://health.breezio.com';
+  config.setHost = function(url) {
+    config.host = url;
+    $localStorage.portal = url;
+  };
 
-  config.url = config.host + config.api;
+  config.url = function() {
+    return config.host + config.api;
+  };
+
   return config;
 })
 
@@ -72,7 +83,7 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
         console.log('Initialized push notifications');
 
         push.on('registration', function(data) {
-          $http.post(Config.url + '/user/devices', {
+          $http.post(Config.url() + '/user/devices', {
             registrationId: data.registrationId,
             deviceType: device.platform,
             model: device.model,

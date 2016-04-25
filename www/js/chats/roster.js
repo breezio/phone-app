@@ -21,7 +21,7 @@ angular.module('breezio.chats.roster', [])
 
   funcs.add = function(id) {
     return $http({
-      url: Config.url + '/chat/users/' + id,
+      url: Config.url() + '/chat/users/' + id,
       method: 'POST'
     }).then(function(ret) {
       if (ret.data.success == true) {

@@ -25,6 +25,7 @@ angular.module('breezio.content', ['breezio.content.posts', 'breezio.content.use
     if (!$scope.loading) {
       $scope.start += 20;
       Posts.get({start: $scope.start}).then(function(res) {
+        console.log($scope.posts);
         $scope.posts = $scope.posts.concat(res.data.items);
 
         if (res.data.items.length < 1) {

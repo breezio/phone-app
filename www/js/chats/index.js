@@ -5,7 +5,7 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
     get: function() {
       return $http({
         method: 'GET',
-        url: Config.url + '/chat/token'
+        url: Config.url() + '/chat/token'
       });
     }
   };
@@ -26,7 +26,7 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
 
     var promise = $http({
       method: 'GET',
-      url: Config.url + '/conversations',
+      url: Config.url() + '/conversations',
       params: params
     });
 
@@ -173,7 +173,7 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
 
     var promise = $http({
       method: 'GET',
-      url: Config.url + '/conversations/' + hash + '/messages',
+      url: Config.url() + '/conversations/' + hash + '/messages',
       params: params
     });
 
@@ -189,7 +189,7 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
 
     var promise = $http({
       method: 'POST',
-      url: Config.url + '/conversations/' + hash + '/messages',
+      url: Config.url() + '/conversations/' + hash + '/messages',
       params: params,
       data: data
     });

@@ -2,10 +2,13 @@ angular.module('breezio.account', ['http-auth-interceptor'])
 
 .factory('Auth', function($http, $rootScope, $localStorage, authService, ChatToken, Config, $state, $ionicLoading, $ionicHistory, $timeout) {
   var self = this;
-  this.oauthUrl = Config.url + '/oauth2/token';
   this.user = null;
   this.loggedIn = false;
   this.funcs = {};
+
+  this.oauthUrl = function() {
+    return Config.url() + '/oauth2/token';
+  };
 
   this.funcs.loggedIn = function() {
     return self.loggedIn;
@@ -45,7 +48,7 @@ angular.module('breezio.account', ['http-auth-interceptor'])
       client_id: 'phoneapp'
     });
 
-    $http.post(self.oauthUrl, data).success(function(res) {
+    $http.post(self.oauthUrl(), data).success(function(res) {
       if (res.access_token && res.refresh_token) {
         $localStorage.auth = {
           access_token: res.access_token,
@@ -106,7 +109,7 @@ angular.module('breezio.account', ['http-auth-interceptor'])
     delete $http.defaults.headers.common.Authorization;
     delete $localStorage.auth.access_token;
 
-    $http.post(self.oauthUrl, {
+    $http.post(self.oauthUrl(), {
       grant_type: 'refresh_token',
       client_id: 'phoneapp',
       refresh_token: $localStorage.auth.refresh_token
@@ -184,10 +187,11 @@ angular.module('breezio.account', ['http-auth-interceptor'])
   };
 })
 
-.controller('AccountCtrl', function($scope, $rootScope, $ionicLoading, Auth) {
+.controller('AccountCtrl', function($scope, $rootScope, $http, $ionicLoading, Auth, Config) {
   $scope.loginForm = {
-    username : '',
-    password : ''
+    username: '',
+    password: '',
+    portal: Config.host
   };
 
   $scope.loggedIn = Auth.loggedIn();
@@ -213,7 +217,19 @@ angular.module('breezio.account', ['http-auth-interceptor'])
       template: 'Logging in...'
     });
 
-    Auth.login($scope.loginForm);
+    $http({
+      method: 'GET',
+      url: $scope.loginForm.portal
+    }).success(function() {
+      Config.setHost($scope.loginForm.portal);
+      Auth.login($scope.loginForm);
+    }).error(function() {
+      $ionicLoading.show({
+        template: 'Could not reach ' + $scope.loginForm.portal,
+        duration: 1000
+      });
+    });
+
   };
 
   $scope.logout = function() {

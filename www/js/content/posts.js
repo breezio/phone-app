@@ -11,7 +11,7 @@ angular.module('breezio.content.posts', [])
 
       return $http({
         method: 'GET',
-        url: Config.url + '/posts',
+        url: Config.url() + '/posts',
         params: params
       });
     }
@@ -27,7 +27,7 @@ angular.module('breezio.content.posts', [])
 
     var promise = $http({
       method: 'GET',
-      url: Config.url + '/posts/' + postId,
+      url: Config.url() + '/posts/' + postId,
       params: params
     });
 
@@ -43,7 +43,7 @@ angular.module('breezio.content.posts', [])
 
     var promise = $http({
       method: 'GET',
-      url: Config.url + '/posts/' + postId + '/users/expert',
+      url: Config.url() + '/posts/' + postId + '/users/expert',
       params: params
     });
 

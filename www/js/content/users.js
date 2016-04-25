@@ -11,7 +11,7 @@ angular.module('breezio.content.users', [])
 
     var promise = $http({
       method: 'GET',
-      url: Config.url + '/users/' + userId,
+      url: Config.url() + '/users/' + userId,
       params: params
     });
 
@@ -44,7 +44,7 @@ angular.module('breezio.content.users', [])
 
       var promise = $http({
         method: 'GET',
-        url: Config.url + '/users',
+        url: Config.url() + '/users',
         params: params
       });
 
@@ -65,7 +65,7 @@ angular.module('breezio.content.users', [])
 
     var promise = $http({
       method: 'POST',
-      url: Config.url + '/subscription/user/' + userId,
+      url: Config.url() + '/subscription/user/' + userId,
       data: {type: 'notify,feed'},
       params: params
     });
@@ -78,7 +78,7 @@ angular.module('breezio.content.users', [])
 
     var promise = $http({
       method: 'DELETE',
-      url: Config.url + '/subscription/user/' + userId,
+      url: Config.url() + '/subscription/user/' + userId,
       data: {type: 'notify,feed'},
       params: params
     });
