@@ -178,6 +178,12 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
 
   $stateProvider
 
+  .state('portals', {
+    url: '/portals',
+    templateUrl: 'templates/portals.html',
+    controller: 'PortalCtrl'
+  })
+
   .state('tab', {
     url: '/tab',
     abstract: true,
