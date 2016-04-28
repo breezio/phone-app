@@ -271,6 +271,6 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
     }
   });
 
-  $urlRouterProvider.otherwise('/tab/content');
+  $urlRouterProvider.otherwise('/portals');
 
 });

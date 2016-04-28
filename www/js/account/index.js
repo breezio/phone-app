@@ -1,4 +1,4 @@
-angular.module('breezio.account', ['http-auth-interceptor'])
+angular.module('breezio.account', ['breezio.account.portals', 'http-auth-interceptor'])
 
 .factory('Auth', function($http, $rootScope, $localStorage, authService, ChatToken, Config, $state, $ionicLoading, $ionicHistory, $timeout) {
   var self = this;
