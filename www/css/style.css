@@ -232,28 +232,20 @@ div.spinner {
   background-color: #f8f8f8;
 }
 
-.portal-content button {
+.portal-form button {
   margin: 0 auto;
   display: flex;
-  position: fixed;
-  bottom: 75px;
-  left: 0px;
-  right: 0px;
-  width: 80px;
+  margin-top: 50px;
 }
 
 .portal-form {
   position: fixed;
   left: 0px;
   right: 0px;
-  bottom: 50px;
+  bottom: 0px;
   top: 0px;
   margin: auto;
-  height: 75px;
-}
-
-.portal-form h3 {
-  text-align: center;
+  height: 251px;
 }
 
 .portal-input {
@@ -267,7 +259,7 @@ div.spinner {
 
 .portal-input p {
   margin: 0px;
-  background-color: #0C314B;
+  background-color: #439FE0;
   color: #f8f8f8;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
@@ -285,4 +277,14 @@ div.spinner {
   max-width: 125px;
   text-align: right;
   text-decoration: underline;
+}
+
+.portal-logo {
+  margin: 0 auto;
+  margin-bottom: 50px;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: #0C314B;
+  width: 210px;
+  height: 60px;
 }
