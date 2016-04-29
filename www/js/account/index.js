@@ -187,11 +187,14 @@ angular.module('breezio.account', ['breezio.account.portals', 'http-auth-interce
   };
 })
 
-.controller('AccountCtrl', function($scope, $rootScope, $http, $ionicLoading, Auth, Config) {
+.controller('AccountCtrl', function($scope, $state, $rootScope, $ionicLoading, Auth) {
+  $scope.openPortals = function() {
+    $state.go('portals');
+  };
+
   $scope.loginForm = {
     username: '',
-    password: '',
-    portal: Config.host
+    password: ''
   };
 
   $scope.loggedIn = Auth.loggedIn();
@@ -217,19 +220,7 @@ angular.module('breezio.account', ['breezio.account.portals', 'http-auth-interce
       template: 'Logging in...'
     });
 
-    $http({
-      method: 'GET',
-      url: $scope.loginForm.portal
-    }).success(function() {
-      Config.setHost($scope.loginForm.portal);
-      Auth.login($scope.loginForm);
-    }).error(function() {
-      $ionicLoading.show({
-        template: 'Could not reach ' + $scope.loginForm.portal,
-        duration: 1000
-      });
-    });
-
+    Auth.login($scope.loginForm);
   };
 
   $scope.logout = function() {

@@ -30,17 +30,30 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
 .factory('Config', function($localStorage) {
   var config = {};
 
-  if ($localStorage.portal) {
-    config.host = $localStorage.portal
+  config.toHost = function(portal) {
+    return 'https://' + portal + '.breezio.com';
+  };
+
+  if ($localStorage.portal && $localStorage.host) {
+    config.portal = $localStorage.portal;
+    config.host = $localStorage.host;
   } else {
-    config.host = window.cordova ? 'https://health.breezio.com' : 'http://breezio';
+    if (window.cordova) {
+      config.portal = 'health';
+      config.host = config.toHost(config.portal);
+    } else {
+      config.portal = 'local';
+      config.host = 'http://breezio'
+    }
   }
 
   config.api = '/api/1';
 
-  config.setHost = function(url) {
-    config.host = url;
-    $localStorage.portal = url;
+  config.setPortal = function(portal, host) {
+    config.portal = portal;
+    config.host = host;
+    $localStorage.portal = portal;
+    $localStorage.host = host;
   };
 
   config.url = function() {
@@ -149,7 +162,9 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
 
   $scope.saveState = function(state) {
     var view = $ionicHistory.viewHistory().currentView;
-    $scope.state[state] = view;
+    if (view.stateName.split('.')[0] == 'tab') {
+      $scope.state[state] = view;
+    }
   };
 
   $rootScope.$watch('totalUnread', function(val) {
@@ -165,7 +180,7 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider, $ionicNativeTransitionsProvider) {
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider, $ionicNativeTransitionsProvider, $localStorageProvider) {
 
   $ionicNativeTransitionsProvider.setDefaultOptions({
     duration: 200,
@@ -271,6 +286,10 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
     }
   });
 
-  $urlRouterProvider.otherwise('/portals');
+  if ($localStorageProvider.get('host')) {
+    $urlRouterProvider.otherwise('/tab/content');
+  } else {
+    $urlRouterProvider.otherwise('/portals');
+  }
 
 });
