@@ -3,27 +3,26 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
 .run(function($rootScope) {
   var a = $rootScope.$on('auth:logged-in', function(e) {
     console.log('Logged in');
-    a();
-  });
 
-  var b = $rootScope.$on('auth:logged-out', function() {
-    console.log('Logged out');
-    b();
+    var b = $rootScope.$on('auth:logged-out', function() {
+      console.log('Logged out');
+      b();
+    });
+
+    var d = $rootScope.$on('chat:token', function() {
+      console.log('Chat token fetched');
+      d();
+    });
+
+    var e = $rootScope.$on('chat:chats', function() {
+      console.log('Chats fetched');
+      e();
+    });
   });
 
   var c = $rootScope.$on('auth:login-failed', function() {
     console.log('Login failed');
     c();
-  });
-
-  var d = $rootScope.$on('chat:token', function() {
-    console.log('Chat token fetched');
-    d();
-  });
-
-  var e = $rootScope.$on('chat:chats', function() {
-    console.log('Chats fetched');
-    e();
   });
 })
 
