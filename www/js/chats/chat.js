@@ -234,11 +234,18 @@ angular.module('breezio.chats.chat', [])
       });
 
       chat.users.forEach(function(user) {
-        var p = User.getCached(user).then(function(res) {
-          $scope.users[res.id] = res;
-        });
+        if (typeof user === 'object') {
+          promises.push($q(function(resolve, reject) {
+            $scope.users[user.id] = user;
+            resolve(user);
+          }));
+        } else if (typeof user === 'string') {
+          var p = User.getCached(user).then(function(res) {
+            $scope.users[res.id] = res;
+          });
 
-        promises.push(p);
+          promises.push(p);
+        }
       });
 
       $q.all(promises).then(function() {
