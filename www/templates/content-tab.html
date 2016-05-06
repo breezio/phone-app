@@ -4,7 +4,7 @@
       <i class="icon ion-refresh"></i>
     </button>
   </ion-nav-buttons>
-  <ion-content>
+  <ion-content class="content">
     <ion-list>
       <ion-item class="post-item item-text-wrap" ng-click='openPost(post)' ng-repeat="post in posts">
         <img class="medium" ng-src="{{post.user.imagePath | static}}">

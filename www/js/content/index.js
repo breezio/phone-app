@@ -4,12 +4,13 @@ angular.module('breezio.content', ['breezio.content.posts', 'breezio.content.use
   $rootScope.posts = {};
 })
 
-.controller('ContentCtrl', function($scope, $rootScope, $state, Posts, Config) {
+.controller('ContentCtrl', function($scope, $rootScope, $state, $timeout, Posts, Config) {
   $scope.loading = true;
   $scope.start = 0;
   $scope.exhausted = false;
   $scope.posts = [];
   $scope.portal = Config.portal;
+
 
   $scope.refreshPosts = function() {
     $scope.start = 0;
@@ -19,6 +20,12 @@ angular.module('breezio.content', ['breezio.content.posts', 'breezio.content.use
       $scope.loading = false;
       $scope.posts = res.data.items;
       $scope.exhausted = false;
+
+      var content = angular.element(document.querySelector('ion-content.content'));
+      content.removeClass('enter');
+      $timeout(function() {
+        content.addClass('enter');
+      }, 50);
     });
   };
 
@@ -49,6 +56,8 @@ angular.module('breezio.content', ['breezio.content.posts', 'breezio.content.use
 
   $scope.$on('$ionicView.enter', function() {
     if ($rootScope.reload) {
+      var content = angular.element(document.querySelector('ion-content.content'));
+      content.removeClass('enter');
       $scope.refreshPosts();
       $scope.portal = Config.portal;
       $rootScope.reload = false;

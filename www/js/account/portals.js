@@ -1,12 +1,15 @@
 angular.module('breezio.account.portals', [])
 
-.controller('PortalCtrl', function($scope, $http, $rootScope, $ionicLoading, $ionicNativeTransitions, Config) {
+.controller('PortalCtrl', function($scope, $timeout, $http, $rootScope, $ionicLoading, $ionicNativeTransitions, Config) {
   $scope.form = {portal: Config.portal, spin: false};
 
   $scope.connect = function() {
     var url = Config.toHost($scope.form.portal);
 
     $scope.form.spin = true;
+    $timeout(function() {
+      $scope.form.spin = false;
+    }, 5000);
 
     $http({
       method: 'GET',
