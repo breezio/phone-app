@@ -235,7 +235,7 @@ div.spinner {
 .portal-form button {
   margin: 0 auto;
   display: flex;
-  margin-top: 50px;
+  margin-top: 75px;
 }
 
 .portal-form {
@@ -282,11 +282,11 @@ div.spinner {
 .portal-logo {
   margin: 0 auto;
   margin-bottom: 50px;
-  padding: 5px;
-  border-radius: 5px;
-  background-color: #0C314B;
-  width: 210px;
-  height: 60px;
+  text-align: center;
+}
+
+.portal-logo img {
+  width: 225px;
 }
 
 .button-bar-list > .button-bar:first-child > .button {
