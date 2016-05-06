@@ -5,8 +5,11 @@
       <div class="portal-input">
         <input ng-model="form.portal" type="text" value="portal"><p>.breezio.com</p>
       </div>
-      <button class="button button-balanced" ng-click="connect()" >Next</button>
-      {{portal}}
+
+      <ion-spinner ng-if="form.spin"></ion-spinner>
+      <button ng-if="!form.spin" class="middle button button-balanced" ng-click="connect()">
+        Next
+      </button>
     </div>
   </ion-content>
 </ion-view>

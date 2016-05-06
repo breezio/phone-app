@@ -238,6 +238,15 @@ div.spinner {
   margin-top: 75px;
 }
 
+.portal-form ion-spinner {
+  position: fixed;
+  left: 0px;
+  right: 0px;
+  width: 100%;
+  margin-top: 85px;
+  text-align: center;
+}
+
 .portal-form {
   position: fixed;
   left: 0px;
