@@ -13,19 +13,17 @@
         <input type="password" ng-model="loginForm.password" placeholder="Password">
       </label>
 
-      <div class="button-bar-list">
-        <div class="button-bar">
-          <button ng-click="login(loginForm)" class="button button-block button-positive">Sign In</button>
-          <button class="button button-block button-calm">Sign Up</button>
-        </div>
-
-        <div class="button-bar">
-          <button ng-click="openPortals()" class="button button-block button-royal">Change Portal</button>
-        </div>
+      <div class="button-bar">
+        <button ng-click="login(loginForm)" class="button button-block button-positive">Sign In</button>
       </div>
     </div>
+
 
     <breezio-user profile logged-in>
     </breezio-user>
   </ion-content>
+
+  <ion-footer-bar logged-out align-title="center" class="change-portal">
+    <h1 class="title"><a href="#" ng-click="openPortals()">Change Portal</a></h1>
+  </ion-footer-bar>
 </ion-view>
