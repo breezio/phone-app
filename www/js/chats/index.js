@@ -298,6 +298,10 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
       var other;
       var tripped = false;
       chat.users.forEach(function(id) {
+        if (typeof id == 'object') {
+          id = id.id;
+        }
+
         if (id != Auth.user().id) {
           other = id;
           tripped = true;
