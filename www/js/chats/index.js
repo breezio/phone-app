@@ -514,7 +514,7 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
       $scope.unread = Chats.unread;
 
       chats.sort(function(a, b) {
-        return new Date(a.modifiedDate) - new Date(b.modifiedDate);
+        return new Date(b.modifiedDate) - new Date(a.modifiedDate);
       });
 
       var promises = [];
