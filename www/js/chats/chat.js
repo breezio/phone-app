@@ -108,10 +108,7 @@ angular.module('breezio.chats.chat', [])
       Chats.send($scope.chat, $scope.text);
       $scope.text = '';
 
-      var pos = Chats.indexOf($scope.chat);
-      if (pos != 0) {
-        Chats.toTop(pos);
-      }
+      Chats.toTop($scope.chat);
 
       $timeout(function() {
         $scope.input.focus();

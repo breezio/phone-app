@@ -75,10 +75,13 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
     return chats.indexOf(i);
   };
 
-  funcs.toTop = function(i) {
-    var el = chats[i];
-    chats.splice(i, 1);
-    chats.splice(0, 0, el);
+  funcs.toTop = function(chat) {
+    var pos = funcs.indexOf(chat);
+    if (pos != 0) {
+      var el = chats[pos];
+      chats.splice(pos, 1);
+      chats.splice(0, 0, el);
+    }
   };
 
   funcs.newChat = function(title, creator, users, context) {
@@ -472,6 +475,7 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
 
       if (loc[0] == 'chats' && loc[1] == msg.hash) {
       } else {
+        funcs.toTop(funcs.chat(msg.hash));
         funcs.incrementUnread(msg.hash);
         $rootScope.totalUnread += 1;
         funcs.addMessage(msg.hash, msg);
