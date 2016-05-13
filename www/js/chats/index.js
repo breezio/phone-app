@@ -14,7 +14,7 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
 .factory('Chats', function($http, $rootScope, $q, $location, $ionicScrollDelegate, md5, ChatToken, Auth, User, Config) {
   var funcs = {};
   var chatToken = null;
-  var chats = null;
+  var chats = {};
   var messages = {};
   var fetched = false;
   var connection = null;
@@ -136,15 +136,27 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
   };
 
   funcs.unread = function(hash) {
-    if ($rootScope.unread[hash]) {
-      return $rootScope.unread[hash];
+    var chat = funcs.chat(hash);
+    if (chat && chat.unread) {
+      return chat.unread;
     } else {
       return null;
     }
   };
 
   funcs.setUnread = function(hash, num) {
-    $rootScope.unread[hash] = num;
+    var chat = funcs.chat(hash);
+    if (chat) {
+      if (!chat.unread) {
+        chat.unread = 0;
+      }
+
+      chat.unread += 1;
+    }
+  };
+
+  funcs.incrementUnread = function(hash) {
+    funcs.setUnread(hash, funcs.unread(hash) + 1);
   };
 
   funcs.isOnline = function(userId) {
@@ -453,7 +465,6 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
       connected = false;
     });
 
-    $rootScope.unread = {};
     $rootScope.totalUnread = 0;
     $rootScope.$on('chat:new-message', function(e, msg) {
       var loc = $location.url().split('/');
@@ -461,28 +472,10 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
 
       if (loc[0] == 'chats' && loc[1] == msg.hash) {
       } else {
-        if (!$rootScope.unread[msg.hash]) {
-          $rootScope.unread[msg.hash] = 0;
-        }
-
-        $rootScope.unread[msg.hash] += 1;
+        funcs.incrementUnread(msg.hash);
         $rootScope.totalUnread += 1;
-
         funcs.addMessage(msg.hash, msg);
         $rootScope.$digest();
-      }
-    });
-
-    $rootScope.$on('$locationChangeStart', function(e, url) {
-      var loc = url.split('/');
-      loc = loc.slice(-2);
-
-      if (loc[0] == 'chats' && $rootScope.unread[loc[1]] > 0) {
-        var chat = funcs.chat(loc[1]);
-
-        $rootScope.totalUnread -= $rootScope.unread[chat.hash];
-        $rootScope.unread[chat.hash] = 0;
-        $ionicScrollDelegate.scrollBottom(true);
       }
     });
   };
@@ -493,6 +486,7 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
 .controller('ChatsCtrl', function($scope, $rootScope, $state, $q, Auth, Chats, User) {
   $scope.loaded = false;
   $scope.users = {};
+  $scope.unread = Chats.unread;
 
   $scope.isOnline = Chats.isOnline;
 
@@ -521,7 +515,6 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
 
     $scope.loadChats().then(function(chats) {
       $scope.user = Auth.user();
-      $scope.unread = Chats.unread;
 
       var promises = [];
       chats.forEach(function(chat) {

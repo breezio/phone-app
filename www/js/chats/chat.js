@@ -20,6 +20,19 @@ angular.module('breezio.chats.chat', [])
     });
   };
 
+  $scope.$watch('messages', function(val, old) {
+    if (val && val.length && !$scope.more) {
+      if ($scope.chat && !$scope.chat.gotten) {
+        $ionicScrollDelegate.$getByHandle('chat-scroll').scrollBottom(false);
+        $scope.chat.gotten = true;
+      } else if ($scope.chat && $scope.chat.pos) {
+        $ionicScrollDelegate.$getByHandle('chat-scroll').scrollTo(0, $scope.chat.pos, false);
+      }
+    } else if ($scope.more) {
+      delete $scope.more;
+    }
+  });
+
   $scope.formatLine = function(lines, index) {
     var line = lines[index];
     var text = '';
@@ -46,16 +59,24 @@ angular.module('breezio.chats.chat', [])
     $ionicScrollDelegate.scrollBottom(true);
   };
 
-  $scope.checkScroll = function() {
-    if ($scope.chat.unread) {
-      var height = $ionicScrollDelegate.getScrollView().__maxScrollTop;
-      var top = $ionicScrollDelegate.getScrollPosition().top;
+  $scope.atBottom = function() {
+    var height = $ionicScrollDelegate.$getByHandle('chat-scroll').getScrollView().__maxScrollTop;
+    var top = $ionicScrollDelegate.$getByHandle('chat-scroll').getScrollPosition().top;
 
-      if (height - top <= 50) {
-        $rootScope.totalUnread -= $scope.chat.unread;
-        delete $scope.chat.unread;
-        $scope.$digest();
-      }
+    if (height - top <= 50) {
+      return true;
+    }
+
+    return false;
+  };
+
+  $scope.checkScroll = function() {
+    $scope.chat.atBottom = $scope.atBottom();
+    if ($scope.chat.unread && $scope.chat.atBottom) {
+      $rootScope.totalUnread -= $scope.chat.unread;
+      $rootScope.$digest();
+      delete $scope.chat.unread;
+      $scope.$digest();
     }
   };
 
@@ -69,6 +90,7 @@ angular.module('breezio.chats.chat', [])
         if (res.items.length < 1) {
           $scope.chat.exhausted = true;
         } else {
+          $scope.more = true;
           $scope.messages = res.items.concat($scope.messages);
           $scope.chat.lastId = res.items[0].id;
         }
@@ -163,13 +185,16 @@ angular.module('breezio.chats.chat', [])
     window.removeEventListener('native.keyboardshow', $scope.keyboardShow);
     window.removeEventListener('native.keyboardhide', $scope.keyboardHide);
 
+    var pos = $ionicScrollDelegate.$getByHandle('chat-scroll').getScrollPosition();
+    if (pos) {
+      $scope.chat.pos = pos.top;
+    } else {
+      delete pos;
+    }
+
     if ($scope.chat) {
       if (Chats.messages($scope.chat.hash) != $scope.messages) {
         Chats.setMessages($scope.chat.hash, $scope.messages);
-      }
-
-      if ($scope.chat.unread) {
-        Chats.setUnread($scope.chat.hash, $scope.chat.unread);
       }
 
       if (typeof $scope.recieveHandler == 'function') {
@@ -198,22 +223,20 @@ angular.module('breezio.chats.chat', [])
     $scope.loadChat().then(function(chat) {
       var promises = [];
 
-      if (chat.unread) {
-        delete chat.unread;
-      }
-
       $scope.loadMessages(chat.hash).then(function(msgs) {
-        if (!chat.gotten) {
-          $ionicScrollDelegate.scrollBottom(true);
-        }
-
-        chat.gotten = true;
         $scope.messages = msgs;
 
         window.addEventListener('native.keyboardshow', $scope.keyboardShow);
         window.addEventListener('native.keyboardhide', $scope.keyboardHide);
 
         $scope.msgsLoaded = true;
+
+        if (chat.unread > 0 && chat.atBottom) {
+          $timeout(function() {
+            $ionicScrollDelegate.$getByHandle('chat-scroll').resize();
+            $ionicScrollDelegate.$getByHandle('chat-scroll').scrollBottom(true);
+          }, 50);
+        }
 
         $scope.recieveHandler = $rootScope.$on('chat:new-message:' + chat.hash, function(e, msg) {
           $scope.messages.push(msg);
@@ -230,6 +253,7 @@ angular.module('breezio.chats.chat', [])
 
             chat.unread += 1;
             $rootScope.totalUnread += 1;
+            $rootScope.$digest();
           }
 
           try {

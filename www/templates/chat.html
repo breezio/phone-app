@@ -15,7 +15,7 @@
     </button>
   </ion-nav-buttons>
 
-  <ion-content on-scroll="checkScroll()">
+  <ion-content on-scroll="checkScroll()" delegate-handle="chat-scroll">
 
     <ion-refresher
       ng-if="!chat.exhausted && msgsLoaded"
