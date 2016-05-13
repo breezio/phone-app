@@ -11,7 +11,7 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
   };
 })
 
-.factory('Chats', function($http, $rootScope, $q, $location, $ionicScrollDelegate, md5, ChatToken, Auth, User, Config) {
+.factory('Chats', function($http, $rootScope, $q, $location, md5, ChatToken, Auth, User, Config) {
   var funcs = {};
   var chatToken = null;
   var chats = {};
@@ -456,6 +456,12 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
           fetched = true;
           funcs.connect();
           $rootScope.$broadcast('chat:chats', val.items);
+
+          $rootScope.$on('app:resume', function() {
+            if (!connection || !connection.connected) {
+              funcs.connect();
+            }
+          });
         });
       });
     });

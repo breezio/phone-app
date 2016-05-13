@@ -68,6 +68,10 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
   Chats.init();
   Roster.init();
 
+  $ionicPlatform.on('resume', function() {
+    $rootScope.$broadcast('app:resume');
+  });
+
   $ionicPlatform.ready(function() {
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
