@@ -4,8 +4,8 @@
       <a class="item item-avatar" ng-repeat="chat in chats" ng-click="openChat(chat.hash)">
         <img ng-src="{{chat.imagePath | static}}">
         <span class="user-status" ng-repeat="user in chat.users">
-          <i ng-if="isOnline(user)" class="status balanced icon ion-record"></i>
-          <i ng-if="!isOnline(user)" class="status assertive icon ion-record"></i>
+          <i ng-if="isOnline(user.id)" class="status balanced icon ion-record"></i>
+          <i ng-if="!isOnline(user.id)" class="status assertive icon ion-record"></i>
         </span>
         <h2>{{chat.title}}</h2>
         <p>{{chat.subtitle}}</p>
