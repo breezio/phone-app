@@ -39,13 +39,25 @@ i {
   line-height: 60px !important;
 }
 
-.bar-subheader {
+ion-header-bar.bar-subheader {
   top: 60px !important;
   height: 44px !important;
 }
 
-.has-subheader {
-  top: 104px !important;
+ion-header-bar.warning-bar.bar-subheader {
+  border: none;
+  position: fixed;
+  opacity: 0;
+}
+
+ion-header-bar.warning-bar.bar-subheader.enter {
+  top: 60px !important;
+  height: 44px !important;
+  opacity: 1;
+}
+
+ion-content.has-subheader {
+  top: 60px !important;
 }
 
 ion-footer-bar.has-tabs.hidden-tabs {
@@ -298,12 +310,12 @@ div.spinner {
   width: 225px;
 }
 
-ion-content.content.enter  {
-  transition: 0.5s linear all;
+ion-content.content.fade-in  {
   opacity: 1;
 }
 
 ion-content.content {
+  transition: opacity 0.5s linear;
   opacity: 0;
 }
 

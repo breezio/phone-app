@@ -257,7 +257,6 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
   funcs.connect = function() {
     if (fetched) {
       connection = new Strophe.Connection(chatToken.ws_address);
-
       connection.connect(chatToken.username, chatToken.token, function(s) {
         switch(s) {
           case Strophe.Status.CONNECTING:
@@ -457,8 +456,24 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
           funcs.connect();
           $rootScope.$broadcast('chat:chats', val.items);
 
+          $rootScope.$on('chat:connected', function() {
+            $rootScope.$broadcast('warning:connection', {
+              message: 'Connected to chat',
+              barClass: 'bar-balanced',
+              duration: 2000
+            });
+          });
+
+          $rootScope.$on('chat:disconnected', function() {
+            $rootScope.$broadcast('warning:connection', {
+              message: 'Disconnected. Tap to retry',
+              barClass: 'bar-assertive'
+            });
+          });
+
           $rootScope.$on('app:resume', function() {
             if (!connection || !connection.connected) {
+              console.log('Attempting to reconnect');
               funcs.connect();
             }
           });

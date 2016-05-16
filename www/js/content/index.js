@@ -22,9 +22,9 @@ angular.module('breezio.content', ['breezio.content.posts', 'breezio.content.use
       $scope.exhausted = false;
 
       var content = angular.element(document.querySelector('ion-content.content'));
-      content.removeClass('enter');
+      content.removeClass('fade-in');
       $timeout(function() {
-        content.addClass('enter');
+        content.addClass('fade-in');
       }, 50);
     });
   };

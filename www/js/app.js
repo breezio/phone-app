@@ -1,31 +1,5 @@
 angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.chats', 'breezio.account', 'ionic-native-transitions'])
 
-.run(function($rootScope) {
-  var a = $rootScope.$on('auth:logged-in', function(e) {
-    console.log('Logged in');
-
-    var b = $rootScope.$on('auth:logged-out', function() {
-      console.log('Logged out');
-      b();
-    });
-
-    var d = $rootScope.$on('chat:token', function() {
-      console.log('Chat token fetched');
-      d();
-    });
-
-    var e = $rootScope.$on('chat:chats', function() {
-      console.log('Chats fetched');
-      e();
-    });
-  });
-
-  var c = $rootScope.$on('auth:login-failed', function() {
-    console.log('Login failed');
-    c();
-  });
-})
-
 .factory('Config', function($localStorage) {
   var config = {};
 
@@ -63,6 +37,29 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
 })
 
 .run(function($ionicPlatform, $rootScope, $location, $http, Config, Auth, Chats, Roster) {
+  var a = $rootScope.$on('auth:logged-in', function(e) {
+    console.log('Logged in');
+
+    var b = $rootScope.$on('auth:logged-out', function() {
+      console.log('Logged out');
+      b();
+    });
+
+    var d = $rootScope.$on('chat:token', function() {
+      console.log('Chat token fetched');
+      d();
+    });
+
+    var e = $rootScope.$on('chat:chats', function() {
+      console.log('Chats fetched');
+      e();
+    });
+  });
+
+  var c = $rootScope.$on('auth:login-failed', function() {
+    console.log('Login failed');
+    c();
+  });
 
   Auth.init();
   Chats.init();
@@ -140,7 +137,7 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
   };
 })
 
-.controller('NavCtrl', function($scope, $rootScope, $ionicHistory) {
+.controller('NavCtrl', function($scope, $rootScope) {
   $scope.backText = '';
 })
 
@@ -294,5 +291,41 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
   } else {
     $urlRouterProvider.otherwise('/portals');
   }
+})
 
+.directive('warningBar', function($rootScope, $timeout) {
+  return {
+    restrict: 'E',
+    replace: true,
+    templateUrl: 'templates/warning-bar.html',
+    link: function(scope, element, attrs) {
+      scope.show = function(warning) {
+        scope.message = warning.message;
+        element.removeClass('bar-assertive');
+        element.removeClass('bar-balanced');
+        element.removeClass('bar-energized');
+        $timeout(function() {
+          element.addClass(warning.barClass);
+          element.addClass('enter');
+        }, 50);
+      }
+
+      scope.hide = function(warning) {
+        element.removeClass('enter');
+
+        if (scope.warning && warning.barClass) {
+          element.removeClass(warning.barClass);
+        }
+      }
+
+      $rootScope.$on(attrs.event, function(e, warning) {
+        scope.show(warning);
+        if (typeof warning.duration === 'number') {
+          $timeout(function() {
+            scope.hide(warning);
+          }, warning.duration);
+        }
+      });
+    }
+  };
 });
