@@ -11,7 +11,7 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
   };
 })
 
-.factory('Chats', function($http, $rootScope, $q, $location, md5, ChatToken, Auth, User, Config) {
+.factory('Chats', function($http, $rootScope, $q, $location, $timeout, $ionicHistory, md5, ChatToken, Auth, User, Config) {
   var funcs = {};
   var chatToken = null;
   var chats = {};
@@ -20,6 +20,10 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
   var connection = null;
   var connected = false;
   var presence = {};
+  var stale = false;
+  var initial = 3000;
+  var max = 120000;
+  var timeout = initial;
 
   funcs.get = function(params) {
     var params = angular.extend({}, params);
@@ -257,63 +261,109 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
   funcs.connect = function() {
     if (fetched) {
       connection = new Strophe.Connection(chatToken.ws_address);
-      connection.connect(chatToken.username, chatToken.token, function(s) {
-        switch(s) {
-          case Strophe.Status.CONNECTING:
-            console.log('Connecting');
-            $rootScope.$broadcast('chat:connecting', connection)
-            break;
-          case Strophe.Status.CONNFAIL:
-            console.log('Connection failed');
-            $rootScope.$broadcast('chat:connection-failed', connection)
-            break;
-          case Strophe.Status.DISCONNECTING:
-            console.log('Disconnecting');
-            $rootScope.$broadcast('chat:disconnecting', connection)
-            break;
-          case Strophe.Status.DISCONNECTED:
-            console.log('Disconnected');
-            $rootScope.$broadcast('chat:disconnected', connection)
-            break;
-          case Strophe.Status.AUTHFAIL:
-            console.log('Authorization failed');
-            $rootScope.$broadcast('chat:auth-failed', connection)
-            break;
-          case Strophe.Status.CONNECTED:
-            console.log('Connected');
-            connected = true;
-            $rootScope.$broadcast('chat:connected', connection);
+      try {
+        connection.connect(chatToken.username, chatToken.token, function(s) {
+          switch(s) {
+            case Strophe.Status.CONNECTING:
+              console.log('Connecting');
+              $rootScope.$broadcast('chat:connecting', connection)
+              break;
+            case Strophe.Status.CONNFAIL:
+              console.log('Connection failed');
+              $rootScope.$broadcast('chat:connection-failed', connection)
+              connected = false;
+              stale = true;
+              break;
+            case Strophe.Status.DISCONNECTING:
+              console.log('Disconnecting');
+              $rootScope.$broadcast('chat:disconnecting', connection)
+              connected = false;
+              stale = true;
+              break;
+            case Strophe.Status.DISCONNECTED:
+              console.log('Disconnected');
+              $rootScope.$broadcast('chat:disconnected', connection)
+              connected = false;
+              stale = true;
 
-            connection.addHandler(function(msg) {
-              var m = funcs.parseMessage(msg);
+              $rootScope.$broadcast('warning:connection', {
+                message: 'Disconnected. Tap to reconnect.',
+                barClass: 'bar-assertive'
+              });
 
-              if (m.body != undefined) {
-                $rootScope.$broadcast('chat:new-message', m);
-                $rootScope.$broadcast('chat:new-message:' + m.hash, m);
+              console.log('Reconnecting in ' + timeout/1000 + ' seconds');
+
+              $timeout(function() {
+                funcs.connect()
+              }, timeout);
+
+              if (timeout < max) {
+                timeout = timeout * 2;
               }
 
-              return true;
-            }, null, 'message', null, null, null);
+              if (timeout > max) {
+                timeout = max;
+              }
+              break;
+            case Strophe.Status.AUTHFAIL:
+              console.log('Authorization failed');
+              $rootScope.$broadcast('chat:auth-failed', connection)
+              connected = false;
+              stale = true;
+              break;
+            case Strophe.Status.CONNECTED:
+              console.log('Connected');
 
-            connection.addHandler(function(msg) {
-              var m = {};
-              m.from = msg.getAttribute('from');
-              m.type = msg.getAttribute('type');
-              m.fromId = funcs.jidToId(m.from);
+              if (stale) {
+                var state = $ionicHistory.currentStateName();
+                console.log('Refreshing state ' + state);
+                $rootScope.$broadcast(state + ':refresh');
+                stale = false;
+              }
 
-              presence[m.fromId] = m;
-              $rootScope.$broadcast('chat:new-presence', m);
-              return true;
-            }, null, 'presence', null, null, null);
+              connected = true;
+              timeout = initial;
 
-            connection.send($pres({type: 'available'}));
-            break;
-          default:
-            break;
-        }
+              $rootScope.$broadcast('chat:connected', connection);
+              $rootScope.$broadcast('warning:connection', {
+                message: 'Connected to chat!',
+                barClass: 'bar-balanced',
+                duration: 2000
+              });
 
-        return true;
-      }, null, 'message', null, null, null);
+              connection.addHandler(function(msg) {
+                var m = funcs.parseMessage(msg);
+
+                if (m.body != undefined) {
+                  $rootScope.$broadcast('chat:new-message', m);
+                  $rootScope.$broadcast('chat:new-message:' + m.hash, m);
+                }
+
+                return true;
+              }, null, 'message', null, null, null);
+
+              connection.addHandler(function(msg) {
+                var m = {};
+                m.from = msg.getAttribute('from');
+                m.type = msg.getAttribute('type');
+                m.fromId = funcs.jidToId(m.from);
+
+                presence[m.fromId] = m;
+                $rootScope.$broadcast('chat:new-presence', m);
+                return true;
+              }, null, 'presence', null, null, null);
+
+              connection.send($pres({type: 'available'}));
+              break;
+            default:
+              break;
+          }
+
+          return true;
+        }, null, 'message', null, null, null);
+      } catch (e) {
+        console.log('CHECK THIS OUT:', e);
+      }
     }
   };
 
@@ -455,28 +505,6 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
           fetched = true;
           funcs.connect();
           $rootScope.$broadcast('chat:chats', val.items);
-
-          $rootScope.$on('chat:connected', function() {
-            $rootScope.$broadcast('warning:connection', {
-              message: 'Connected to chat',
-              barClass: 'bar-balanced',
-              duration: 2000
-            });
-          });
-
-          $rootScope.$on('chat:disconnected', function() {
-            $rootScope.$broadcast('warning:connection', {
-              message: 'Disconnected. Tap to retry',
-              barClass: 'bar-assertive'
-            });
-          });
-
-          $rootScope.$on('app:resume', function() {
-            if (!connection || !connection.connected) {
-              console.log('Attempting to reconnect');
-              funcs.connect();
-            }
-          });
         });
       });
     });

@@ -299,32 +299,32 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
     replace: true,
     templateUrl: 'templates/warning-bar.html',
     link: function(scope, element, attrs) {
-      scope.show = function(warning) {
-        scope.message = warning.message;
+      var old = {};
+
+      scope.hide = function() {
+        element.removeClass('enter');
         element.removeClass('bar-assertive');
         element.removeClass('bar-balanced');
         element.removeClass('bar-energized');
-        $timeout(function() {
-          element.addClass(warning.barClass);
-          element.addClass('enter');
-        }, 50);
-      }
-
-      scope.hide = function(warning) {
-        element.removeClass('enter');
-
-        if (scope.warning && warning.barClass) {
-          element.removeClass(warning.barClass);
-        }
       }
 
       $rootScope.$on(attrs.event, function(e, warning) {
-        scope.show(warning);
+        scope.message = warning.message;
+
+        if (warning.barClass && warning.barClass != old.barClass) {
+          element.addClass(warning.barClass);
+          element.removeClass(old.barCLass);
+        }
+
+        $timeout(function() { element.addClass('enter') }, 50);
+
         if (typeof warning.duration === 'number') {
           $timeout(function() {
-            scope.hide(warning);
-          }, warning.duration);
+            scope.hide();
+          }, warning.duration + 50);
         }
+
+        old = warning;
       });
     }
   };
