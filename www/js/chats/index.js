@@ -435,6 +435,77 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
     }
   };
 
+  funcs.refreshChats = function() {
+    return $q(function(resolve, reject) {
+      funcs.get().success(function(val) {
+        var promises = [];
+
+        var ids = [];
+        val.items.map(function(chat) {
+          angular.forEach(chat.users, function(user) {
+            if (ids.indexOf(user.id) == -1) {
+              ids.push(user.id);
+            }
+          });
+        });
+
+        var userData = {};
+        var bulkUsers = User.getBulk(ids).then(function(users) {
+          angular.forEach(users, function(user, index) {
+            userData[user.id] = user;
+          });
+
+          angular.forEach(val.items, function(chat) {
+            messages[chat.hash] = [];
+
+            var title = [];
+            var subtitle = [];
+            var selfIndex = null;
+            angular.forEach(chat.users, function(user, index) {
+              var id = typeof user === 'object' ? user.id : user;
+
+              if (id == Auth.user().id) {
+                selfIndex = index;
+              } else {
+                if (!chat.title) {
+                  title.push(userData[id].firstName + ' ' + userData[id].lastName);
+                }
+
+                if (!chat.subtitle) {
+                  subtitle.push(userData[id].username);
+                }
+              }
+            });
+
+            if (selfIndex != null) {
+              chat.users.splice(selfIndex, 1);
+            }
+
+            if (!chat.title) {
+              chat.title = title.sort().join(', ');
+            }
+
+            if (!chat.subtitle) {
+              chat.subtitle = subtitle.sort().join(', ');
+            }
+
+            if (!chat.imagePath) {
+              if (chat.context && chat.context.imagePath) {
+                chat.imagePath = chat.context.imagePath;
+              } else {
+                var id = typeof chat.users[0] === 'object' ? chat.users[0].id : chat.users[0];
+                chat.imagePath = userData[id].imagePath;
+              }
+            }
+          });
+
+          chats = val.items;
+          resolve(chats);
+        });
+      });
+    });
+  };
+
   funcs.init = function() {
     var clearToken = $rootScope.$on('chat:token', function(e, token) {
       chatToken = token;
@@ -536,7 +607,7 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
   return funcs;
 })
 
-.controller('ChatsCtrl', function($scope, $rootScope, $state, $q, Auth, Chats, User) {
+.controller('ChatsCtrl', function($scope, $rootScope, $state, $ionicHistory, $q, Auth, Chats, User) {
   $scope.loaded = false;
   $scope.users = {};
   $scope.unread = Chats.unread;
@@ -560,6 +631,12 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
   $scope.openChat = function(hash) {
     $state.go('tab.chats-chat', {hash: hash});
   };
+
+  $scope.$on($ionicHistory.currentStateName() + ':refresh', function() {
+    Chats.refreshChats().then(function(chats) {
+      $scope.chats = chats;
+    });
+  });
 
   $scope.$on('$ionicView.beforeEnter', function() {
     $rootScope.$on('chat:new-presence', function(e, p) {

@@ -177,6 +177,19 @@ angular.module('breezio.chats.chat', [])
     });
   };
 
+  $scope.$on($ionicHistory.currentStateName() + ':refresh', function() {
+    Chats.getMessages($scope.chat.hash).success(function(res) {
+      if (res.items.length < 1) {
+        $scope.chat.exhausted = true;
+      } else {
+        $scope.chat.lastId = res.items[0].id;
+      }
+
+      $scope.messages = res.items;
+      $scope.msgsLoaded = true;
+    });
+  });
+
   $scope.$on('$ionicView.beforeLeave', function() {
     $rootScope.$ionicGoBack = $scope.oldBack;
     window.removeEventListener('native.keyboardshow', $scope.keyboardShow);
