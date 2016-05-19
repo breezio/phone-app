@@ -24,6 +24,7 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
   var initial = 3000;
   var max = 120000;
   var timeout = initial;
+  var timer = null;
 
   funcs.get = function(params) {
     var params = angular.extend({}, params);
@@ -258,6 +259,14 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
     return m;
   };
 
+  funcs.reconnect = function() {
+    if (timer != null) {
+      clearTimeout(timer);
+    }
+
+    funcs.connect();
+  };
+
   funcs.connect = function() {
     if (fetched) {
       connection = new Strophe.Connection(chatToken.ws_address);
@@ -288,22 +297,23 @@ angular.module('breezio.chats', ['angular-md5', 'breezio.chats.chat', 'breezio.c
 
               $rootScope.$broadcast('warning:connection', {
                 message: 'Disconnected. Tap to reconnect.',
-                barClass: 'bar-assertive'
+                barClass: 'bar-assertive',
+                onClick: funcs.reconnect
               });
 
               console.log('Reconnecting in ' + timeout/1000 + ' seconds');
 
-              $timeout(function() {
-                funcs.connect()
+              timer = setTimeout(function() {
+                if (timeout < max) {
+                  timeout = timeout * 2;
+                }
+
+                if (timeout > max) {
+                  timeout = max;
+                }
+
+                funcs.connect();
               }, timeout);
-
-              if (timeout < max) {
-                timeout = timeout * 2;
-              }
-
-              if (timeout > max) {
-                timeout = max;
-              }
               break;
             case Strophe.Status.AUTHFAIL:
               console.log('Authorization failed');

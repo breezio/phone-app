@@ -300,6 +300,7 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
     templateUrl: 'templates/warning-bar.html',
     link: function(scope, element, attrs) {
       var old = {};
+      var cb;
 
       scope.hide = function() {
         element.removeClass('enter');
@@ -308,8 +309,20 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
         element.removeClass('bar-energized');
       }
 
+      element.bind('click', function() {
+        if (typeof cb === 'function') {
+          cb();
+        }
+      });
+
       $rootScope.$on(attrs.event, function(e, warning) {
         scope.message = warning.message;
+
+        if (typeof warning.onClick === 'function') {
+          cb = warning.onClick;
+        } else {
+          cb = undefined;
+        }
 
         if (warning.barClass && warning.barClass != old.barClass) {
           element.addClass(warning.barClass);
