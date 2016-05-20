@@ -1,9 +1,5 @@
 angular.module('breezio.content', ['breezio.content.posts', 'breezio.content.users', 'breezio.content.notes'])
 
-.run(function($rootScope) {
-  $rootScope.posts = {};
-})
-
 .controller('ContentCtrl', function($scope, $rootScope, $state, $timeout, Posts, Config) {
   $scope.loading = true;
   $scope.start = 0;
