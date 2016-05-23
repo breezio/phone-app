@@ -138,44 +138,17 @@ angular.module('breezio.content.posts', [])
 .controller('PostCtrl', function($scope, $state, $stateParams, $timeout, $ionicModal, Post, Chats, Auth) {
   $scope.post = {};
   $scope.alone = false;
-  $scope.noteMode = false;
   $scope.isOnline = Chats.isOnline;
 
   $scope.openNotes = function(e) {
     var id = e.target.getAttribute('name');
-    if (!e.target.classList.contains('empty') && $scope.noteMode && $scope.post.id && id) {
-      var clear = $scope.$on('$ionicView.afterLeave', function() {
-        $scope.toggleNotes();
-        clear();
-      });
-
+    if (!e.target.classList.contains('empty') && $scope.post.id && id) {
       $state.go('tab.content-notes', {postId: $scope.post.id, noteId: id});
     }
   };
 
   $scope.openGeneralNotes = function() {
-    if ($scope.noteMode) {
-      var clear = $scope.$on('$ionicView.afterLeave', function() {
-        $scope.toggleNotes();
-        clear();
-      });
-
-      $state.go('tab.content-notes', {postId: $scope.post.id, noteId: 0});
-    }
-  };
-
-  var noteBar = angular.element(document.querySelector('ion-header-bar.bar-subheader'));
-  $scope.toggleNotes = function() {
-    var post = angular.element(document.querySelectorAll('breezio-post .blurb'));
-    if ($scope.noteMode) {
-      noteBar.addClass('ng-hide');
-      post.removeClass('note-mode');
-    } else {
-      noteBar.removeClass('ng-hide');
-      post.addClass('note-mode');
-    }
-
-    $scope.noteMode = !$scope.noteMode;
+    $state.go('tab.content-notes', {postId: $scope.post.id, noteId: 0});
   };
 
   $scope.refreshPost = function() {

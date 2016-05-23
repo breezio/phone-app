@@ -12,14 +12,7 @@
     <button logged-in class="button" ng-show="(post.experts.length > 0)" ng-click="toggleExperts()">
       <i class="icon ion-person-stalker"></i>
     </button>
-    <button class="button" ng-click="toggleNotes()">
-      <i class="icon ion-edit"></i>
-    </button>
   </ion-nav-buttons>
-
-  <ion-header-bar align-title="center" class="bar bar-subheader bar-assertive ng-hide">
-    <h1 class="title">Select a blurb to comment</h1>
-  </ion-header-bar>
 
   <ion-content>
     <div ng-show="loaded" class="list">
@@ -30,7 +23,7 @@
         <p ng-show="subtitleExists()">{{post.subtitle}}</p>
       </div>
 
-      <breezio-post ng-click="openNotes($event)"></breezio-post>
+      <breezio-post ng-click=""></breezio-post>
 
     </div>
   </ion-content>
