@@ -12,7 +12,7 @@ angular.module('breezio', ['ionic', 'ngStorage', 'breezio.content', 'breezio.cha
     config.host = $localStorage.host;
   } else {
     if (window.cordova) {
-      config.portal = 'health';
+      config.portal = 'demo';
       config.host = config.toHost(config.portal);
     } else {
       config.portal = 'local';
