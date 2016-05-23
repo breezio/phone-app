@@ -318,3 +318,7 @@ ion-footer-bar.change-portal {
 ion-footer-bar.change-portal .title a {
   color: #387EF5;
 }
+
+.platform-ios.platform-cordova:not(.fullscreen) .bar-header:not(.bar-subheader) > * {
+  margin-top: 10px !important;
+}
