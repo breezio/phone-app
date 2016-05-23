@@ -75,7 +75,7 @@ angular.module('breezio.content.posts', [])
   return {
     link: function(scope, element, attrs) {
       scope.$parent.$watch('post.content', function(val) {
-        if (typeof val == 'object') {
+        if (typeof val === 'object') {
           var item = angular.element('<div class="post item item-text-wrap"></div>');
           for (var i = 0; i < val.length; i++) {
             var blurb = val[i];
@@ -121,7 +121,12 @@ angular.module('breezio.content.posts', [])
             item.append(e);
           }
           element.html('');
-          element.append($compile(angular.element(item))(scope));
+          element.append($compile(item)(scope));
+        } else if (typeof val === 'string') {
+          var item = angular.element('<div class="post item item-text-wrap"></div>');
+          item.append($compile(val)(scope));
+          element.html('');
+          element.append(item);
         } else {
           console.log('Post content format not handled');
         }

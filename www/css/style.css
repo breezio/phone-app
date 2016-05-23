@@ -99,11 +99,7 @@ ion-content {
 }
 
 .post {
-  padding: 0px;
-}
-
-.post .blurb:first-child {
-  padding-top: 16px;
+  padding: 16px;
 }
 
 .post p {
@@ -141,10 +137,6 @@ ion-content {
 
 .post span {
   display: none;
-}
-
-.blurb {
-  padding: 0px 16px;
 }
 
 .blurb.note-mode:active {
