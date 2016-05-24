@@ -71,7 +71,7 @@ angular.module('breezio.content.posts', [])
   return funcs;
 })
 
-.directive('breezioPost', function($compile, $timeout) {
+.directive('breezioPost', function($compile, $timeout, $ionicScrollDelegate) {
   return {
     link: function(scope, element, attrs) {
       scope.$parent.$watch('post.content', function(val) {
@@ -136,8 +136,31 @@ angular.module('breezio.content.posts', [])
           var timeoutHandler;
           var noteItems = angular.element(noteItems);
           noteItems.bind('touchstart', function(evt) {
+            var oldPos = $ionicScrollDelegate.getScrollPosition();
             timeoutHandler = $timeout(function() {
-              console.log(evt);
+              var newPos = $ionicScrollDelegate.getScrollPosition();
+              if (Math.abs(oldPos.top - newPos.top) <= 10) {
+                var name;
+                var done = false;
+                var target = angular.element(evt.target);
+                while (!done) {
+                  if (target[0].tagName != 'BREEZIO-POST') {
+                    name = target.attr('name');
+                    if (typeof name === 'string') {
+                      done = true;
+                    } else {
+                      target = target.parent();
+                    }
+                  } else {
+                    name = undefined;
+                    done = true;
+                  }
+                }
+
+                if (typeof name === 'string') {
+                  scope.openNotes(name);
+                }
+              }
             }, 600);
           });
 
@@ -155,10 +178,9 @@ angular.module('breezio.content.posts', [])
   $scope.alone = false;
   $scope.isOnline = Chats.isOnline;
 
-  $scope.openNotes = function(e) {
-    var id = e.target.getAttribute('name');
-    if (!e.target.classList.contains('empty') && $scope.post.id && id) {
-      $state.go('tab.content-notes', {postId: $scope.post.id, noteId: id});
+  $scope.openNotes = function(noteId) {
+    if ($scope.post.id && noteId) {
+      $state.go('tab.content-notes', {postId: $scope.post.id, noteId: noteId});
     }
   };
 
