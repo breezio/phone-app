@@ -71,7 +71,7 @@ angular.module('breezio.content.posts', [])
   return funcs;
 })
 
-.directive('breezioPost', function($compile) {
+.directive('breezioPost', function($compile, $timeout) {
   return {
     link: function(scope, element, attrs) {
       scope.$parent.$watch('post.content', function(val) {
@@ -129,6 +129,21 @@ angular.module('breezio.content.posts', [])
           element.append(item);
         } else {
           console.log('Post content format not handled');
+        }
+
+        var noteItems = document.querySelectorAll('breezio-post .post [name]');
+        if (noteItems.length > 0) {
+          var timeoutHandler;
+          var noteItems = angular.element(noteItems);
+          noteItems.bind('touchstart', function(evt) {
+            timeoutHandler = $timeout(function() {
+              console.log(evt);
+            }, 600);
+          });
+
+          noteItems.bind('touchend', function(evt) {
+            $timeout.cancel(timeoutHandler);
+          });
         }
       });
     }
