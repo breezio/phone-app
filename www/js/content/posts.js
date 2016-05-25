@@ -71,7 +71,18 @@ angular.module('breezio.content.posts', [])
   return funcs;
 })
 
-.directive('breezioPost', function($compile, $timeout, $ionicScrollDelegate) {
+.directive('breezioPost', function($compile, $timeout, $ionicScrollDelegate, Config) {
+
+  function fixLinks(linkItems, attribute) {
+    var r = new RegExp('^(?:[a-z]+:)?//', 'i');
+    angular.forEach(linkItems, function(item) {
+      var attr = item.getAttribute(attribute);
+      if (!r.test(attr)) {
+        item.setAttribute(attribute, Config.host + attr);
+      }
+    });
+  };
+
   return {
     link: function(scope, element, attrs) {
       scope.$parent.$watch('post.content', function(val) {
@@ -133,8 +144,19 @@ angular.module('breezio.content.posts', [])
 
         var noteItems = document.querySelectorAll('breezio-post .post [name]');
         if (noteItems.length > 0) {
+          var hrefItems = document.querySelectorAll('breezio-post .post [href]');
+          if (hrefItems.length > 0) {
+            fixLinks(hrefItems, 'href');
+          }
+
+          var srcItems = document.querySelectorAll('breezio-post .post [src]');
+          if (srcItems.length > 0) {
+            fixLinks(srcItems, 'src');
+          }
+
           var timeoutHandler;
           var noteItems = angular.element(noteItems);
+
           noteItems.bind('touchstart', function(evt) {
             var oldPos = $ionicScrollDelegate.getScrollPosition();
             timeoutHandler = $timeout(function() {
