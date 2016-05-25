@@ -102,6 +102,22 @@ ion-content {
   padding: 16px;
 }
 
+.post figure {
+  margin: 10px auto;
+}
+
+.post figure a.file {
+  background: #EAEAEA;
+  border-radius: 5px;
+  padding: 5px;
+  display: inline-block;
+}
+
+.post img, .post video, .post .video-container iframe {
+  max-width: 100%;
+  vertical-align: middle;
+}
+
 .post p {
   padding-bottom: 10px;
   padding-top: 10px;
